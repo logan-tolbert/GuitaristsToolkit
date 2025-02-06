@@ -1,5 +1,5 @@
 ﻿
-namespace AppData.Context
+namespace App.Data.Context
 {
     public interface ISqlDbContext
     {

@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeTracker", "Practice
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PracticeTrackerDB", "PracticeTrackerDB\PracticeTrackerDB.sqlproj", "{CB225BE5-B6FF-44D7-8F0A-9BA9E822BE00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppData", "AppData\AppData.csproj", "{FEAF0165-9AF1-4665-9B78-C76CD21118FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Data", "AppData\App.Data.csproj", "{FEAF0165-9AF1-4665-9B78-C76CD21118FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeTracker.Tests", "PracticeTracker.Tests\PracticeTracker.Tests.csproj", "{E75C4DBB-C2ED-46F0-98BD-253554A46C79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Models", "App.Models\App.Models.csproj", "{A4424DC0-432C-4F9C-985B-BFB9C53D9EBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{E75C4DBB-C2ED-46F0-98BD-253554A46C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E75C4DBB-C2ED-46F0-98BD-253554A46C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E75C4DBB-C2ED-46F0-98BD-253554A46C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4424DC0-432C-4F9C-985B-BFB9C53D9EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4424DC0-432C-4F9C-985B-BFB9C53D9EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4424DC0-432C-4F9C-985B-BFB9C53D9EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4424DC0-432C-4F9C-985B-BFB9C53D9EBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

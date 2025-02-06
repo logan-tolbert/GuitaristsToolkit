@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 
 
-namespace AppData.Context
+namespace App.Data.Context
 {
     public class SqlDbContext : ISqlDbContext
     {
