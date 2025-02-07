@@ -1,12 +1,15 @@
 ﻿using App.Data.Context;
 using App.Models;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace PracticeTracker.Tests
 {
-    public class SqlDbContextIntegrationTests
+    public class SqlDbContextIntegrationTests : IDisposable
     {
         private readonly SqlDbContext _sqlDbContext;
 
@@ -26,7 +29,7 @@ namespace PracticeTracker.Tests
             // Arrange
             string sqlStatement = "SELECT * FROM PracticeSessions WHERE UserId = @UserId";
             var parameters = new { UserId = 1 };
-            string connectionName = "Default";
+            string connectionName = "Testing";
 
             // Act
             IEnumerable<PracticeSession> result = _sqlDbContext.LoadData<PracticeSession, dynamic>(sqlStatement, parameters, connectionName);
@@ -34,7 +37,12 @@ namespace PracticeTracker.Tests
             // Assert
             Assert.NotNull(result);
             Assert.NotEmpty(result);
-            Assert.Equal(1, result.First().UserId);
+            var firstResult = result.First();
+            Assert.Equal(1, firstResult.UserId);
+            Assert.Equal(new DateTime(2023, 10, 1), firstResult.Date);
+            Assert.Equal(30, firstResult.DurationMinutes);
+            Assert.Equal("New Focus Area", firstResult.FocusArea);
+            Assert.Equal("Some notes", firstResult.Notes);
         }
 
         [Fact]
@@ -50,7 +58,7 @@ namespace PracticeTracker.Tests
                 FocusArea = "New Focus Area",
                 Notes = "Some notes"
             };
-            string connectionName = "Default";
+            string connectionName = "Testing";
 
             // Act
             _sqlDbContext.SaveData<dynamic, dynamic>(sqlStatement, parameters, connectionName, false);
@@ -64,6 +72,17 @@ namespace PracticeTracker.Tests
             Assert.NotNull(result);
             Assert.NotEmpty(result);
             Assert.Equal("New Focus Area", result.First().FocusArea);
+        }
+
+
+        public void Dispose()
+        {
+            // Cleanup code here
+            string cleanupSql = "DELETE FROM PracticeSessions WHERE UserId = @UserId";
+            var cleanupParameters = new { UserId = 1 };
+            string connectionName = "Testing";
+
+            _sqlDbContext.SaveData<dynamic, dynamic>(cleanupSql, cleanupParameters, connectionName, false);
         }
     }
 }
