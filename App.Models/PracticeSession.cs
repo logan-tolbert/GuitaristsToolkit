@@ -11,7 +11,7 @@ namespace App.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public DateTime Date { get; set; }
-        public int Duration { get; set; }
+        public int DurationMinutes { get; set; }
         public string FocusArea { get; set; } = null!;
         public string? Notes { get; set; }
         public virtual User User { get; set; }
