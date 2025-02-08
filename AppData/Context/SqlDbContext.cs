@@ -15,7 +15,7 @@ namespace App.Data.Context
             _config = config;
         }
 
-        public IEnumerable<T> LoadData<T, U>(string sqlStatement, U parameters, string connectionName, bool isStoredProcedure = false)
+        public IEnumerable<T> LoadData<T, U>(string sqlStatement, U parameters, string connectionName = "Default", bool isStoredProcedure = false)
         {
             string connectionString = _config.GetConnectionString(connectionName)!;
             CommandType commandType = CommandType.Text;
@@ -32,7 +32,7 @@ namespace App.Data.Context
             }
         }
 
-        public void SaveData<T, U>(string sqlStatement, U parameters, string connectionName, bool isStoredProcedure = false)
+        public void SaveData<T, U>(string sqlStatement, U parameters, string connectionName = "Default", bool isStoredProcedure = false)
         {
             string connectionString = _config.GetConnectionString(connectionName)!;
 

@@ -17,18 +17,34 @@ namespace App.Repo
             _db = db;
         }
 
-        public void Create()
+        public void Create(PracticeSession session)
         {
-            throw new NotImplementedException();
+            var sql = @"INSERT INTO PracticeSessions
+                        (UserId, Date, DurationMinutes, FocusArea, Notes)
+                        VALUES (@UserId, @Date, @DurationMinutes, @FocusArea, @Notes);";
+
+            _db.SaveData<PracticeSession, dynamic>(sql, new
+            {
+                session.UserId,
+                session.Date,
+                session.DurationMinutes,
+                session.FocusArea,
+                session.Notes
+            });
         }
 
         public IEnumerable<PracticeSession> GetAll()
         {
             var sql = @"SELECT * FROM PracticeSessions;";
-            return _db.LoadData<PracticeSession, dynamic>(sql, new { }, "Default");
+            return _db.LoadData<PracticeSession, dynamic>(sql, new { });
         }
 
         public void GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(int id)
         {
             throw new NotImplementedException();
         }
