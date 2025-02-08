@@ -33,6 +33,7 @@ namespace App.Tests.Repo
             _repo.Create(session);
 
             // Assert
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
                        It.Is<string>(sql => sql.Contains("INSERT INTO PracticeSessions")),
                        It.Is<object>(param =>
@@ -45,6 +46,7 @@ namespace App.Tests.Repo
                        It.IsAny<string>(),
                        false
                    ), Times.Once);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         [Fact]
@@ -56,8 +58,13 @@ namespace App.Tests.Repo
                     new PracticeSession { Id = 1, UserId = 1, Date = DateTime.Now, DurationMinutes = 60, FocusArea = "Technique" },
                     new PracticeSession { Id = 2, UserId = 2, Date = DateTime.Now, DurationMinutes = 45, FocusArea = "Repertoire" }
                 };
-            _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), false))
-                          .Returns(practiceSessions);
+
+            _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
+                It.IsAny<string>(),
+                It.IsAny<object>(),
+                It.IsAny<string>(),
+                false))
+                .Returns(practiceSessions);
 
             // Act
             var result = _repo.GetAll();
@@ -67,11 +74,40 @@ namespace App.Tests.Repo
         }
 
         [Fact]
-        public void GetById_ShouldThrowNotImplementedException()
+        public void GetById_ShouldReturnMatch_WhenValidIdIsProvided()
         {
-            // Act & Assert
-            Assert.Throws<NotImplementedException>(() => _repo.GetById(It.IsAny<int>()));
+            // Arrange
+            var id = 1;
+
+            var expectedSession = new PracticeSession
+            {
+                Id = 1,
+                UserId = 1,
+                Date = DateTime.Now,
+                DurationMinutes = 60,
+                FocusArea = "Technique"
+            };
+
+            var practiceSessions = new List<PracticeSession>
+            {
+             expectedSession,
+            new PracticeSession { Id = 2, UserId = 2, Date = DateTime.Now, DurationMinutes = 45, FocusArea = "Scales" }
+            };
+
+            _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
+                It.IsAny<string>(),
+                It.IsAny<object>(),
+                It.IsAny<string>(),
+                false))
+                .Returns(practiceSessions.Where(ps => ps.Id == id));
+
+            // Act
+            var result = _repo.GetById(id)
+
+            // Assert
+            Assert.Equal(expectedSession, result);
         }
+
 
 
         [Fact]

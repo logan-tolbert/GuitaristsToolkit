@@ -39,7 +39,7 @@ namespace App.Repo
             return _db.LoadData<PracticeSession, dynamic>(sql, new { });
         }
 
-        public void GetById(int id)
+        public IEnumerable<PracticeSession> GetById(int id)
         {
             throw new NotImplementedException();
         }
