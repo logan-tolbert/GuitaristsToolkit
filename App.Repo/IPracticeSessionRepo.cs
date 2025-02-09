@@ -7,7 +7,7 @@ namespace App.Repo
         void Create(PracticeSession session);
         void Delete(int id);
         IEnumerable<PracticeSession> GetAll();
-        IEnumerable<PracticeSession> GetById(int id);
+        PracticeSession GetById(int id);
         void Update(PracticeSession session);
     }
 }
