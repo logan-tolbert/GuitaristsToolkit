@@ -46,8 +46,20 @@ namespace App.Repo
 
         public void Update(PracticeSession session)
         {
-            throw new NotImplementedException();
+            var sql = @"UPDATE PracticeSessions 
+                SET Date = @Date, DurationMinutes = @DurationMinutes, FocusArea = @FocusArea, Notes = @Notes
+                WHERE Id = @Id;";
+
+            _db.SaveData<PracticeSession, dynamic>(sql, new
+            {
+                session.Date,
+                session.DurationMinutes,
+                session.FocusArea,
+                session.Notes,
+                session.Id
+            });
         }
+
 
         public void Delete(int id)
         {

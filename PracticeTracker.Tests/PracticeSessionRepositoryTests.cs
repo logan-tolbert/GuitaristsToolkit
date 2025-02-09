@@ -130,17 +130,18 @@ namespace App.Tests.Repo
             _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
                        It.Is<string>(sql => sql.Contains("UPDATE PracticeSessions")),
                        It.Is<object>(param =>
-                           param.GetType().GetProperty("UserId").GetValue(param).Equals(session.UserId) &&
                            param.GetType().GetProperty("Date").GetValue(param).Equals(session.Date) &&
                            param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
                            param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
-                           param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes)
+                           param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes) &&
+                           param.GetType().GetProperty("Id").GetValue(param).Equals(session.Id)
                        ),
                        It.IsAny<string>(),
                        false
                    ), Times.Once);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
+
 
         [Fact]
         public void Delete_ShouldDeleteSession()
