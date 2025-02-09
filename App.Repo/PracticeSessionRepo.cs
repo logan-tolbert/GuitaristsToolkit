@@ -39,10 +39,12 @@ namespace App.Repo
             return _db.LoadData<PracticeSession, dynamic>(sql, new { });
         }
 
-        public IEnumerable<PracticeSession> GetById(int id)
+        public PracticeSession GetById(int id)
         {
-            throw new NotImplementedException();
+            var sql = @"SELECT * FROM PracticeSessions WHERE Id = @Id;";
+            return _db.LoadData<PracticeSession, dynamic>(sql, new { Id = id }).Single();
         }
+
 
         public void Update(PracticeSession session)
         {

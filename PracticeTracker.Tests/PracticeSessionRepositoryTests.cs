@@ -102,7 +102,7 @@ namespace App.Tests.Repo
                 .Returns(practiceSessions.Where(ps => ps.Id == id));
 
             // Act
-            var result = _repo.GetById(id).FirstOrDefault();
+            var result = _repo.GetById(id);
 
             // Assert
             Assert.Equal(expectedSession, result);
