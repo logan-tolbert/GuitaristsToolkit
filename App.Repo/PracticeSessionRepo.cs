@@ -51,7 +51,9 @@ namespace App.Repo
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var sql = @"DELETE FROM PracticeSessions WHERE Id = @Id;";
+            _db.SaveData<PracticeSession, dynamic>(sql, new { Id = id });
         }
+
     }
 }
