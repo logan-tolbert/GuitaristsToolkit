@@ -1,7 +1,12 @@
+using App.Data.Context;
+using App.Repo;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ISqlDbContext, SqlDbContext>();
+builder.Services.AddScoped<IPracticeSessionRepo, PracticeSessionRepo>();
 
 var app = builder.Build();
 
