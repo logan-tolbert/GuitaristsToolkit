@@ -49,7 +49,7 @@ namespace App.Repo
             throw new NotImplementedException();
         }
 
-        public void Delete()
+        public void Delete(int id)
         {
             throw new NotImplementedException();
         }

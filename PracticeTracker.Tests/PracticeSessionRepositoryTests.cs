@@ -143,10 +143,24 @@ namespace App.Tests.Repo
         }
 
         [Fact]
-        public void Delete_ShouldThrowNotImplementedException()
+        public void Delete_ShouldDeleteSession()
         {
-            // Act & Assert
-            Assert.Throws<NotImplementedException>(() => _repo.Delete());
+            // Arrange
+            var id = 1;
+
+            // Act
+            _repo.Delete(id);
+
+            // Assert
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
+                It.Is<string>(sql => sql.Contains("DELETE FROM PracticeSessions WHERE Id = @Id")),
+                It.Is<object>(param => param.GetType().GetProperty("Id").GetValue(param).Equals(id)),
+                It.IsAny<string>(),
+                false
+            ), Times.Once);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
+
     }
 }
