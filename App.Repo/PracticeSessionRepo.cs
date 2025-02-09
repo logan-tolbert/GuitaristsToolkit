@@ -44,7 +44,7 @@ namespace App.Repo
             throw new NotImplementedException();
         }
 
-        public void Update(int id)
+        public void Update(PracticeSession session)
         {
             throw new NotImplementedException();
         }

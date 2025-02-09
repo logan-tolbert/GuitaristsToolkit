@@ -102,18 +102,44 @@ namespace App.Tests.Repo
                 .Returns(practiceSessions.Where(ps => ps.Id == id));
 
             // Act
-            var result = _repo.GetById(id)
+            var result = _repo.GetById(id).FirstOrDefault();
 
             // Assert
             Assert.Equal(expectedSession, result);
         }
 
-
-
         [Fact]
-        public void Update_ShouldThrowNotImplementedException()
+        public void Update_ShouldModifySession_WhenCalledWithValidSession()
         {
-            Assert.Throws<NotImplementedException>(() => _repo.Update(It.IsAny<int>()));
+            // Arrange
+            var session = new PracticeSession
+            {
+                Id = 1,
+                UserId = 1,
+                Date = DateTime.Now,
+                DurationMinutes = 60,
+                FocusArea = "Technique",
+                Notes = "Focus on arpeggios"
+            };
+
+            // Act
+            _repo.Update(session);
+
+            // Assert
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
+                       It.Is<string>(sql => sql.Contains("UPDATE PracticeSessions")),
+                       It.Is<object>(param =>
+                           param.GetType().GetProperty("UserId").GetValue(param).Equals(session.UserId) &&
+                           param.GetType().GetProperty("Date").GetValue(param).Equals(session.Date) &&
+                           param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
+                           param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
+                           param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes)
+                       ),
+                       It.IsAny<string>(),
+                       false
+                   ), Times.Once);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         [Fact]
