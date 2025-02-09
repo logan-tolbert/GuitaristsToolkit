@@ -28,6 +28,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult UserHub()
+    {
+        var sessions = _session.GetAll();
+        return View(sessions);
+    }
     public IActionResult Sessions()
     {
         var sessions = _session.GetAll();

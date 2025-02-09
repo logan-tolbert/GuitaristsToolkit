@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "User Hub";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2 class="mb-4">Welcome to Your Practice Session Hub</h2>
+        <p class="lead">Manage your practice sessions efficiently.</p>
+    </div>
+
+    <h2>Practice Sessions</h2>
+    <table class="table table-striped table-bordered">
+        <thead >
+            <tr>
+                <th asp-for="Date">Date</th>
+                <th asp-for="DurationMinutes">Duration</th>
+                <th asp-for="FocusArea">Focus Area</th>
+                <th asp-for="Notes">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var session in Model)
+            {
+                if (session.UserId == 1)
+                {
+                    <tr>
+                        <td>@session.Date.ToString("MM/dd/yyyy")</td>
+                        <td>@session.DurationMinutes min</td>
+                        <td>@session.FocusArea</td>
+                        <td>@session.Notes</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="row mt-4">
+        <!-- Create New Session -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Start a New Practice Session</h4>
+                    <p class="card-text">Log a new session to track your progress.</p>
+                    <a asp-controller="Session" asp-action="Create" class="btn btn-primary btn-lg">
+                        New Session
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Sessions -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Manage Existing Sessions</h4>
+                    <p class="card-text">View and edit your past practice sessions.</p>
+                    <a asp-controller="Session" asp-action="Edit" class="btn btn-secondary btn-lg">
+                        Edit Sessions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

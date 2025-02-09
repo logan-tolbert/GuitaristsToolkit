@@ -14,12 +14,16 @@
     <tbody>
         @foreach (var session in Model)
         {
-            <tr>
-                <td>@session.Date</td>
-                <td>@session.DurationMinutes min</td>
-                <td>@session.FocusArea</td>
-                <td>@session.Notes</td>
-            </tr>
+            if(session.UserId == 1)
+            {
+                <tr>
+                    <td>@session.Date</td>
+                    <td>@session.DurationMinutes min</td>
+                    <td>@session.FocusArea</td>
+                    <td>@session.Notes</td>
+                </tr>
+            }
+          
         }
     </tbody>
 </table>
