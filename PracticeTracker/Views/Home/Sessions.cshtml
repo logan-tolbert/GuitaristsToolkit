@@ -1,0 +1,25 @@
+﻿@using App.Models
+@model IEnumerable<PracticeSession>
+
+<h2>Practice Sessions</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Focus Area</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var session in Model)
+        {
+            <tr>
+                <td>@session.Date</td>
+                <td>@session.DurationMinutes min</td>
+                <td>@session.FocusArea</td>
+                <td>@session.Notes</td>
+            </tr>
+        }
+    </tbody>
+</table>

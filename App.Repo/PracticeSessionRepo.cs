@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace App.Repo
 {
-    public class PracticeSessionRepo
+    public class PracticeSessionRepo : IPracticeSessionRepo
     {
         private readonly ISqlDbContext _db;
 
