@@ -17,7 +17,7 @@ namespace App.Repo
             _db = db;
         }
 
-        public void Create(Setlist setList)
+        public int Create(Setlist setList)
         {
             var sql = @"INSERT INTO SetLists 
                         (UserId, Name, CreatedAt)

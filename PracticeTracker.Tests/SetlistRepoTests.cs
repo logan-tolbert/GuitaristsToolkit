@@ -23,7 +23,7 @@ namespace PracticeTracker.Tests
         }
 
         [Fact]
-        public void Create_ShouldCreateNewSetlist()
+        public void Create_ShouldCreateNewSetlistAndReturnId()
         {
             // Arrange 
             var setList = new Setlist
@@ -33,11 +33,20 @@ namespace PracticeTracker.Tests
                 CreatedAt = DateTime.Now
             };
 
+            _mockDBContext.Setup(db => db.LoadData<int, dynamic>(
+                It.IsAny<string>(),
+                It.IsAny<object>(),
+                It.IsAny<string>(),
+                false
+               )).Returns(new List<int> { 1 });
+
             // Act
-            _repo.Create(setList);
+            var result = _repo.Create(setList);
 
             // Assert
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
+            Assert.Equal(1, result);
+
             _mockDBContext.Verify(db => db.SaveData<Setlist, object>(
                 It.Is<string>(sql => sql.Contains("INSERT INTO SetLists")),
                 It.Is<object>(param => param.GetType().GetProperty("UserId").GetValue(param).Equals(setList.UserId) &&
@@ -47,7 +56,7 @@ namespace PracticeTracker.Tests
                 It.IsAny<string>(),
                 false
                 ), Times.Once);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+
         }
     }
 
