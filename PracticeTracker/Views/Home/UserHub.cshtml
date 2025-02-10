@@ -28,6 +28,16 @@
                         <td>@session.DurationMinutes min</td>
                         <td>@session.FocusArea</td>
                         <td>@session.Notes</td>
+                        <td class="text-center">
+                            <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-success btn-secondary btn-sm text-light px-3 py-1 ">
+                                Edit 
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-danger btn-sm text-light">
+                                Delete
+                            </a>
+                        </td>
                     </tr>
                 }
             }
@@ -49,17 +59,17 @@
         </div>
 
         <!-- Edit Sessions -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h4 class="card-title">Manage Existing Sessions</h4>
-                    <p class="card-text">View and edit your past practice sessions.</p>
-                    <a asp-controller="Session" asp-action="Edit" class="btn btn-secondary btn-lg">
-                        Edit Sessions
-                    </a>
-                </div>
-            </div>
-        </div>
+        @* <div class="col-md-6"> *@
+        @*     <div class="card shadow-sm"> *@
+        @*         <div class="card-body text-center"> *@
+        @*             <h4 class="card-title">Manage Existing Sessions</h4> *@
+        @*             <p class="card-text">View and edit your past practice sessions.</p> *@
+        @*             <a asp-controller="Session" asp-action="Edit" class="btn btn-secondary btn-sm"> *@
+        @*                 Edit Sessions *@
+        @*             </a> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
     </div>
 
 </div>

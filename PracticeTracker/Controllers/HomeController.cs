@@ -9,12 +9,12 @@ namespace PracticeTracker.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IPracticeSessionRepo _session;
+    private readonly IPracticeSessionRepo _repo;
 
-    public HomeController(ILogger<HomeController> logger, IPracticeSessionRepo session)
+    public HomeController(ILogger<HomeController> logger, IPracticeSessionRepo repo)
     {
         _logger = logger;
-        _session = session;
+        _repo = repo;
 
     }
 
@@ -30,12 +30,7 @@ public class HomeController : Controller
 
     public IActionResult UserHub()
     {
-        var sessions = _session.GetAll();
-        return View(sessions);
-    }
-    public IActionResult Sessions()
-    {
-        var sessions = _session.GetAll();
+        var sessions = _repo.GetAll();
         return View(sessions);
     }
 
