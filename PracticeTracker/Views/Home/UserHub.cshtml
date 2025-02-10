@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Duration</th>
+                <th>Duration (min)</th>
                 <th>Focus Area</th>
                 <th>Notes</th>
                 <th class="text-center">Actions</th>
@@ -34,8 +34,6 @@
                             <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-success btn-sm text-light px-3 py-1">
                                 Edit
                             </a>
-
-                            <!-- Delete Button with Modal Trigger -->
                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                     data-session-id="@session.Id">
                                 Delete
@@ -47,10 +45,7 @@
         </tbody>
     </table>
 
-
-
     <div class="row mt-4">
-        <!-- Create New Session -->
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
@@ -65,6 +60,7 @@
     </div>
 </div>
 
+<!-- Modal - Delete Session -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
