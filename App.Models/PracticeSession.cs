@@ -10,6 +10,7 @@ namespace App.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
+        //TODO: Update name to CreatedAt
         public DateTime Date { get; set; }
         public int DurationMinutes { get; set; }
         public string FocusArea { get; set; } = null!;

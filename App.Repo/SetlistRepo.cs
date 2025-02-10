@@ -48,7 +48,7 @@ namespace App.Repo
 #pragma warning restore CS8603 // Possible null reference return.
         }
 
-
+//TODO: Implement Update method and tests
         public void Update(Setlist setlist)
         {
             var sql = @"";
@@ -57,6 +57,8 @@ namespace App.Repo
             {
 
             });
+
+            throw new NotImplementedException();
         }
 
 
