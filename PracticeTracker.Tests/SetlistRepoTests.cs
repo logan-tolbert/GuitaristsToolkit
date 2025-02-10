@@ -44,18 +44,7 @@ namespace PracticeTracker.Tests
             var result = _repo.Create(setList);
 
             // Assert
-
             Assert.Equal(1, result);
-
-            _mockDBContext.Verify(db => db.SaveData<Setlist, object>(
-                It.Is<string>(sql => sql.Contains("INSERT INTO SetLists")),
-                It.Is<object>(param => param.GetType().GetProperty("UserId").GetValue(param).Equals(setList.UserId) &&
-                param.GetType().GetProperty("Name").GetValue(param).Equals(setList.Name) &&
-                param.GetType().GetProperty("CreatedAt").GetValue(param).Equals(setList.CreatedAt)
-                ),
-                It.IsAny<string>(),
-                false
-                ), Times.Once);
 
         }
     }

@@ -21,14 +21,17 @@ namespace App.Repo
         {
             var sql = @"INSERT INTO SetLists 
                         (UserId, Name, CreatedAt)
-                        VALUES (@UserId, @Name, @CreatedAt);";
+                        VALUES (@UserId, @Name, @CreatedAt);
+                        SELECT CAST(SCOPE_IDENTITY() as int);";
 
-            _db.SaveData<Setlist, dynamic>(sql, new
+            var id = _db.LoadData<int, dynamic>(sql, new
             {
                 setList.UserId,
                 setList.Name,
                 setList.CreatedAt
-            });
+            }).FirstOrDefault();
+
+            return id;
         }
     }
 }
