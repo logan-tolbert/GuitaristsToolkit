@@ -3,7 +3,7 @@ using App.Models;
 using App.Repo;
 using Moq;
 
-namespace App.Tests.Repo
+namespace PracticeTracker.Tests
 {
     public class PracticeSessionRepoTests
     {
@@ -17,7 +17,7 @@ namespace App.Tests.Repo
         }
 
         [Fact]
-        public void Create_ShouldSaveSession_WhenCalledWithValidSession()
+        public void Create_ShouldSaveSession()
         {
             // Arrange
             var session = new PracticeSession
