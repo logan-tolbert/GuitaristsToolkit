@@ -46,5 +46,10 @@ namespace PracticeTracker.Controllers
                 return RedirectToAction("UserHub", "Home");
         }
 
+        public IActionResult Delete(int id)
+        {
+            _repo.Delete(id);
+            return RedirectToAction("UserHub", "Home");
+        }
     }
 }
