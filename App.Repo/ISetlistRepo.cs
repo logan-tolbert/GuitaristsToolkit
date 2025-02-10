@@ -1,0 +1,13 @@
+﻿using App.Models;
+
+namespace App.Repo
+{
+    public interface ISetlistRepo
+    {
+        int Create(Setlist setlist);
+        void Delete(int id);
+        IEnumerable<Setlist> GetAll();
+        Setlist GetById(int id);
+        void Update(Setlist setlist);
+    }
+}
