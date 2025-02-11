@@ -153,8 +153,9 @@ namespace PracticeTracker.Tests
             _mockDbContext.Setup(db => db.LoadData<SetlistSummary, dynamic>(
                 It.IsAny<string>(),
                 It.IsAny<object>(),
-                false,
-            )).Returns(setlists);
+                It.IsAny<string>(),
+                false)
+            ).Returns(setlists);
 
             // Act
             var result = _repo.GetUserSetlists(userId);

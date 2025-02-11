@@ -1,4 +1,6 @@
-﻿namespace PracticeTracker.Models
+﻿using App.Models;
+
+namespace PracticeTracker.Models
 {
     public class UserHubViewModel
     {

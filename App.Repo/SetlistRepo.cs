@@ -103,7 +103,13 @@ namespace App.Repo
 
         public List<SetlistSummary> GetUserSetlists(int userId)
         {
-            throw new NotImplementedException();
+            var sql = @"SELECT s.Id AS SetlistId, s.Name, s.CreatedAt,
+                            COUNT(ss.SongId) AS SongCount
+                        FROM SetlistSongs ss ON s.Id = ss.SetlistId
+                        WHERE UserId = @UserId
+                        GROUP BY s.Id, s.Name, s.CreatedAt;";
+
+            return _db.LoadData<SetlistSummary, dynamic>(sql, new { UserId = userId }).ToList();
         }
 
         //TODO: Implement Update method and tests
