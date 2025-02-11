@@ -7,6 +7,7 @@ namespace App.Repo
         int Create(Setlist setlist);
         IEnumerable<Setlist> GetAll();
         Setlist GetById(int id);
+        Setlist GetSetlistWithSongs(int id);
         void Update(Setlist setlist);
         void Delete(int id);
     }

@@ -1,0 +1,43 @@
+﻿@model App.Models.Setlist
+
+@{
+    ViewData["Title"] = "View Setlist";
+}
+
+<h2>@Model.Name</h2>
+<p><strong>Created On:</strong> @Model.CreatedAt.ToString("MMMM dd, yyyy")</p>
+
+@if (Model.SetlistSongs.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Key</th>
+                <th>BPM</th>
+                <th>Duration (min)</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var song in Model.SetlistSongs.OrderBy(s => s.SongOrder))
+            {
+                <tr>
+                    <td>@song.SongOrder</td>
+                    <td>@song.Song.Title</td>
+                    <td>@song.Song.Key</td>
+                    <td>@song.Song.BPM</td>
+                    <td>@song.Song.DurationMinutes</td>
+                    <td>@song.Notes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No songs have been added to this setlist yet.</p>
+}
+
+<a asp-controller="Setlist" asp-action="Index" class="btn btn-secondary">Back to Setlists</a>

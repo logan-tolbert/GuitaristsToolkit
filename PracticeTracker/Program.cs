@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ISqlDbContext, SqlDbContext>();
 builder.Services.AddScoped<IPracticeSessionRepo, PracticeSessionRepo>();
+builder.Services.AddScoped<ISetlistRepo, SetlistRepo>();
 
 var app = builder.Build();
 

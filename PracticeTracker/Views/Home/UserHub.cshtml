@@ -23,7 +23,7 @@
         <tbody>
             @foreach (var session in Model)
             {
-                if (session.UserId == 1)
+                if (session.UserId == 2)
                 {
                     <tr>
                         <td>@session.Date.ToString("MM/dd/yyyy")</td>
@@ -46,13 +46,26 @@
     </table>
 
     <div class="row mt-4">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h4 class="card-title">Start a New Practice Session</h4>
                     <p class="card-text">Log a new session to track your progress.</p>
                     <a asp-controller="Session" asp-action="Create" class="btn btn-primary btn-lg">
                         New Session
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Start a New Setlist</h4>
+                    <p class="card-text">Keep track of your favortite songs or tonights big show.</p>
+                    <a asp-controller="Setlist" asp-action="Create" class="btn btn-primary btn-lg">
+                        New Setlist
                     </a>
                 </div>
             </div>

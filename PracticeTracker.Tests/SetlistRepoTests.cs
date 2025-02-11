@@ -137,40 +137,7 @@ namespace PracticeTracker.Tests
             Assert.Equal("Song 2", result.SetlistSongs[1].Song.Title);
         }
 
-
-        //        [Fact]
-        //        public void Update_ShouldModifySetlist_WhenCalledWithValidSession()
-        //        {
-        //            // Arrange
-
-        //            var setlist = new Setlist
-        //            {
-        //                Id = 1,
-        //                UserId = 1,
-        //                Name = "My Jams",
-        //                CreatedAt = DateTime.Now
-
-        //            };
-
-        //            // Act
-        //            _repo.Update(setlist);
-
-        //            // Assert
-        //#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        //            _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
-        //                       It.Is<string>(sql => sql.Contains("UPDATE PracticeSessions")),
-        //                       It.Is<object>(param =>
-        //                           param.GetType().GetProperty("Date").GetValue(param).Equals(session.Date) &&
-        //                           param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
-        //                           param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
-        //                           param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes) &&
-        //                           param.GetType().GetProperty("Id").GetValue(param).Equals(session.Id)
-        //                       ),
-        //                       It.IsAny<string>(),
-        //                       false
-        //                   ), Times.Once);
-        //#pragma warning restore CS8602 // Dereference of a possibly null reference.
-        //        }
+        //TODO: Implement update test
 
         [Fact]
         public void Delete_ShouldRemoveSetlist()

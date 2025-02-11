@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace App.Repo
 {
-    public partial class SetlistRepo : ISetlistRepo
+    public class SetlistRepo : ISetlistRepo
     {
         private readonly ISqlDbContext _db;
 
@@ -50,9 +50,9 @@ namespace App.Repo
 
         public Setlist GetSetlistWithSongs(int id)
         {
-            var sql = @"SELECT s.Id, s.UserId, s.Name, s.CreatedAt, 
-                            ss.SongId, ss.SongOrder, ss.Notes, 
-                            so.Id AS SongId, so.Title, so.Key, so.BPM, so.DurationMinutes
+            var sql = @"SELECT DISTINCT s.Id, s.UserId, s.Name, s.CreatedAt, 
+                           ss.SongId, ss.SongOrder, ss.Notes, 
+                           so.Id AS SongId, so.Title, so.[Key], so.BPM, so.DurationMinutes
                         FROM Setlists s
                         LEFT JOIN SetlistSongs ss ON s.Id = ss.SetlistId
                         LEFT JOIN Songs so ON ss.SongId = so.Id
