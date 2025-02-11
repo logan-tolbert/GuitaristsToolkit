@@ -43,12 +43,16 @@ namespace App.Repo
         public Setlist GetById(int id)
         {
             var sql = @"SELECT * FROM Setlists WHERE Id = @Id;";
-#pragma warning disable CS8603 // Possible null reference return.
-            return _db.LoadData<Setlist, dynamic>(sql, new { Id = id }).SingleOrDefault();
-#pragma warning restore CS8603 // Possible null reference return.
+
+            return _db.LoadData<Setlist, dynamic>(sql, new { Id = id }).Single();
         }
 
-//TODO: Implement Update method and tests
+        public Setlist GetSetlistWithSongs(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        //TODO: Implement Update method and tests
         public void Update(Setlist setlist)
         {
             var sql = @"";

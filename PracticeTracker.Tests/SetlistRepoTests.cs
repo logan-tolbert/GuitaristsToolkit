@@ -102,6 +102,56 @@ namespace PracticeTracker.Tests
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public void GetSetlistWithSongs_ShouldReturnSetlistWithSongs_WhenValidIdIsProvided()
+        {
+            // Arrange
+            var setlist = new Setlist
+            {
+                Id = 1,
+                UserId = 1,
+                Name = "Gig Setlist",
+                CreatedAt = DateTime.Now,
+                SetlistSongs = new List<SetlistSong>
+                {
+                    new SetlistSong
+                    {
+                        SetlistId = 1,
+                        SongId = 101,
+                        SongOrder = 1,
+                        Notes = "Opener",
+                        Song = new Song{Id = 101, Title = "Song A", Key = "C", BPM = 120, DurationMinutes = 3 }
+                    },
+                    new SetlistSong
+                    {
+                        SetlistId = 1,
+                        SongId = 102,
+                        SongOrder = 2,
+                        Notes = "Closer",
+                        Song = new Song{Id = 102, Title = "Song B", Key = "G", BPM = 100, DurationMinutes = 4 }
+                    }
+
+                }
+            };
+
+            _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
+                It.IsAny<string>(),
+                It.IsAny<object>(),
+                It.IsAny<string>(),
+                false
+                )).Returns(new List<Setlist> { setlist });
+
+            // Act
+            var result = _repo.GetSetlistWithSongs(1);
+
+            // Assert 
+            Assert.NotNull(result);
+            Assert.Equal(2, result.SetlistSongs.Count);
+            Assert.Equal(101, result.SetlistSongs[0].Song.Id);
+            Assert.Equal("Song A", result.SetlistSongs[0].Song.Title);
+            Assert.Equal(102, result.SetlistSongs[1].Song.Id);
+        }
+
         //        [Fact]
         //        public void Update_ShouldModifySetlist_WhenCalledWithValidSession()
         //        {
