@@ -153,16 +153,21 @@ namespace PracticeTracker.Tests
             _repo.Delete(id);
 
             // Assert
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
                 It.Is<string>(sql => sql.Contains("DELETE FROM PracticeSessions WHERE Id = @Id")),
-                It.Is<object>(param => param.GetType().GetProperty("Id").GetValue(param).Equals(id)),
+                It.Is<object>(param => IsMatchingId(param, id)),
                 It.IsAny<string>(),
                 false
-            ), Times.Once);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            ), Times.Once); 
         }
+        private bool IsMatchingId(object param, int expectedId)
+        {
+            var idProperty = param.GetType().GetProperty("Id");
+            if (idProperty == null) return false;
 
+            var value = idProperty.GetValue(param);
+            return value is int intValue && intValue == expectedId;
+        }
 
     }
 }

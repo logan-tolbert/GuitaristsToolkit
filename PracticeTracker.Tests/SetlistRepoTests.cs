@@ -2,11 +2,6 @@
 using App.Models;
 using App.Repo;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PracticeTracker.Tests
 {
