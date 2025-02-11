@@ -1,7 +1,10 @@
 ﻿using App.Data.Context;
 using App.Models;
 using App.Repo;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Moq;
+using Xunit.Abstractions;
+using static App.Repo.SetlistRepo;
 
 namespace PracticeTracker.Tests
 {
@@ -11,12 +14,12 @@ namespace PracticeTracker.Tests
         private readonly Mock<ISqlDbContext> _mockDbContext;
         private readonly SetlistRepo _repo;
 
+
         public SetlistRepoTests()
         {
             _mockDbContext = new Mock<ISqlDbContext>();
             _repo = new SetlistRepo(_mockDbContext.Object);
         }
-
         [Fact]
         public void Create_ShouldCreateNewSetlistAndReturnId()
         {
@@ -101,56 +104,39 @@ namespace PracticeTracker.Tests
             // Assert
             Assert.Equal(expected, result);
         }
-
         [Fact]
         public void GetSetlistWithSongs_ShouldReturnSetlistWithSongs_WhenValidIdIsProvided()
         {
             // Arrange
-            var setlist = new Setlist
+            var id = 1;
+            var setlistData = new List<SetlistSongResult>
+        {
+            new SetlistSongResult
             {
-                Id = 1,
-                UserId = 1,
-                Name = "Gig Setlist",
-                CreatedAt = DateTime.Now,
-                SetlistSongs = new List<SetlistSong>
-                {
-                    new SetlistSong
-                    {
-                        SetlistId = 1,
-                        SongId = 101,
-                        SongOrder = 1,
-                        Notes = "Opener",
-                        Song = new Song{Id = 101, Title = "Song A", Key = "C", BPM = 120, DurationMinutes = 3 }
-                    },
-                    new SetlistSong
-                    {
-                        SetlistId = 1,
-                        SongId = 102,
-                        SongOrder = 2,
-                        Notes = "Closer",
-                        Song = new Song{Id = 102, Title = "Song B", Key = "G", BPM = 100, DurationMinutes = 4 }
-                    }
+                Id = 1, UserId = 1, Name = "Setlist 1", CreatedAt = DateTime.Now,
+                SongId = 1, SongOrder = 1, Notes = "Note 1", Title = "Song 1", Key = "C", BPM = 120, DurationMinutes = 3
+            },
+            new SetlistSongResult
+            {
+                Id = 1, UserId = 1, Name = "Setlist 1", CreatedAt = DateTime.Now,
+                SongId = 2, SongOrder = 2, Notes = "Note 2", Title = "Song 2", Key = "D", BPM = 130, DurationMinutes = 4
+            }
+        };
 
-                }
-            };
-
-            _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false
-                )).Returns(new List<Setlist> { setlist });
+            _mockDbContext.Setup(db => db.LoadData<SetlistSongResult, dynamic>(
+                It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .Returns(setlistData);
 
             // Act
-            var result = _repo.GetSetlistWithSongs(1);
+            var result = _repo.GetSetlistWithSongs(id);
 
-            // Assert 
+            // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.SetlistSongs.Count);
-            Assert.Equal(101, result.SetlistSongs[0].Song.Id);
-            Assert.Equal("Song A", result.SetlistSongs[0].Song.Title);
-            Assert.Equal(102, result.SetlistSongs[1].Song.Id);
+            Assert.Equal("Song 1", result.SetlistSongs[0].Song.Title);
+            Assert.Equal("Song 2", result.SetlistSongs[1].Song.Title);
         }
+
 
         //        [Fact]
         //        public void Update_ShouldModifySetlist_WhenCalledWithValidSession()
@@ -207,7 +193,7 @@ namespace PracticeTracker.Tests
         private bool IsMatchingId(object param, int expectedId)
         {
             var idProperty = param.GetType().GetProperty("Id");
-            if (idProperty == null) return false; // Ensure the property exists
+            if (idProperty == null) return false;
 
             var value = idProperty.GetValue(param);
             return value is int intValue && intValue == expectedId;

@@ -1,5 +1,6 @@
 ﻿using App.Data.Context;
 using App.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace App.Repo
 {
-    public class SetlistRepo : ISetlistRepo
+    public partial class SetlistRepo : ISetlistRepo
     {
         private readonly ISqlDbContext _db;
 
@@ -49,8 +50,58 @@ namespace App.Repo
 
         public Setlist GetSetlistWithSongs(int id)
         {
-            throw new NotImplementedException();
+            var sql = @"SELECT s.Id, s.UserId, s.Name, s.CreatedAt, 
+                            ss.SongId, ss.SongOrder, ss.Notes, 
+                            so.Id AS SongId, so.Title, so.Key, so.BPM, so.DurationMinutes
+                        FROM Setlists s
+                        LEFT JOIN SetlistSongs ss ON s.Id = ss.SetlistId
+                        LEFT JOIN Songs so ON ss.SongId = so.Id
+                        WHERE s.Id = @Id;";
+
+            var result = _db.LoadData<SetlistSongResult, dynamic>(sql, new { Id = id });
+
+            var setlistDictionary = new Dictionary<int, Setlist>();
+
+            foreach (var row in result)
+            {
+                if (!setlistDictionary.TryGetValue(row.Id, out var setlist))
+                {
+                    setlist = new Setlist
+                    {
+                        Id = row.Id,
+                        UserId = row.UserId,
+                        Name = row.Name,
+                        CreatedAt = row.CreatedAt,
+                        SetlistSongs = new List<SetlistSong>()
+                    };
+
+                    setlistDictionary[row.Id] = setlist;
+                }
+
+                if (row.SongId.HasValue)
+                {
+                    setlist.SetlistSongs.Add(new SetlistSong
+                    {
+                        SetlistId = row.Id,
+                        SongId = row.SongId.Value,
+                        SongOrder = row.SongOrder ?? 0,
+                        Notes = row.Notes ?? string.Empty,
+                        Song = new Song
+                        {
+                            Id = row.SongId.Value,
+                            Title = row.Title ?? "Unknown",
+                            Key = row.Key ?? "N/A",
+                            BPM = row.BPM ?? 0,
+                            DurationMinutes = row.DurationMinutes ?? 0
+                        }
+                    });
+                }
+            }
+
+            return setlistDictionary.Values.First();
         }
+
+
 
         //TODO: Implement Update method and tests
         public void Update(Setlist setlist)
