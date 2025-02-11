@@ -137,6 +137,36 @@ namespace PracticeTracker.Tests
             Assert.Equal("Song 2", result.SetlistSongs[1].Song.Title);
         }
 
+
+        [Fact]
+        public void GetUserSetlists_ShouldReturnCorrectSetlistSummaries()
+        {
+            // Arrange
+            int userId = 1;
+            var setlists = new List<SetlistSummary>
+        {
+            new SetlistSummary { Id = 1, Title = "Rock Set", CreatedAt = new DateTime(2024, 1, 1), SongCount = 3 },
+            new SetlistSummary { Id = 2, Title = "Acoustic Vibes", CreatedAt = new DateTime(2024, 2, 1), SongCount = 5 },
+            new SetlistSummary { Id = 3, Title = "Empty Set", CreatedAt = new DateTime(2024, 3, 1), SongCount = 0 }
+        };
+
+            _mockDbContext.Setup(db => db.LoadData<SetlistSummary, dynamic>(
+                It.IsAny<string>(),
+                It.IsAny<object>(),
+                false,
+            )).Returns(setlists);
+
+            // Act
+            var result = _repo.GetUserSetlists(userId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Count);
+            Assert.Contains(result, s => s.Title == "Rock Set" && s.SongCount == 3);
+            Assert.Contains(result, s => s.Title == "Acoustic Vibes" && s.SongCount == 5);
+            Assert.Contains(result, s => s.Title == "Empty Set" && s.SongCount == 0); 
+        }
+
         //TODO: Implement update test
 
         [Fact]
