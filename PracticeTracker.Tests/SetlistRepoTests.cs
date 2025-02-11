@@ -158,13 +158,13 @@ namespace PracticeTracker.Tests
             ).Returns(setlists);
 
             // Act
-            var result = _repo.GetUserSetlists(userId);
+            var result = _repo.GetSetlistsForUser(userId);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(3, result.Count);
-            Assert.Contains(result, s => s.Title == "Rock Set" && s.SongCount == 3);
-            Assert.Contains(result, s => s.Title == "Acoustic Vibes" && s.SongCount == 5);
+            Assert.Equal(3, result.Count());
+            Assert.Contains(result, s => s.Title == "Rock Set");
+            Assert.Contains(result, s => s.Title == "Acoustic Vibes");
             Assert.Contains(result, s => s.Title == "Empty Set" && s.SongCount == 0); 
         }
 

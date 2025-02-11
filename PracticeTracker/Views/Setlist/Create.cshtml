@@ -1,5 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model App.Models.Setlist
+
 @{
+    ViewData["Title"] = "Create Setlist";
 }
+
+<h2>Create a New Setlist</h2>
+
+<form asp-controller="Setlist" asp-action="Create" method="post">
+    <div class="mb-3">
+        <label for="name" class="form-label">Setlist Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Enter setlist name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Setlist</button>
+    <a asp-controller="Setlist" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

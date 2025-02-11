@@ -98,19 +98,22 @@ namespace App.Repo
                 }
             }
 
-            return setlistDictionary.Values.First();
+            return setlistDictionary.Values.FirstOrDefault();
         }
 
-        public List<SetlistSummary> GetUserSetlists(int userId)
+        public IEnumerable<SetlistSummary> GetSetlistsForUser(int userId)
         {
-            var sql = @"SELECT s.Id AS SetlistId, s.Name, s.CreatedAt,
-                            COUNT(ss.SongId) AS SongCount
-                        FROM SetlistSongs ss ON s.Id = ss.SetlistId
-                        WHERE UserId = @UserId
-                        GROUP BY s.Id, s.Name, s.CreatedAt;";
+            var sql = @"
+                        SELECT s.Id, s.Name AS Title, COUNT(ss.SongId) AS SongCount
+                        FROM Setlists s
+                        LEFT JOIN SetlistSongs ss ON s.Id = ss.SetlistId
+                        WHERE s.UserId = @UserId
+                        GROUP BY s.Id, s.Name;";
 
-            return _db.LoadData<SetlistSummary, dynamic>(sql, new { UserId = userId }).ToList();
+            return _db.LoadData<SetlistSummary, dynamic>(sql, new { UserId = userId });
         }
+
+
 
         //TODO: Implement Update method and tests
         public void Update(Setlist setlist)

@@ -1,0 +1,62 @@
+﻿@model App.Models.Setlist
+
+@{
+    ViewData["Title"] = "Edit Setlist";
+}
+
+<h2>Edit Setlist: @Model.Name</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Key</th>
+            <th>BPM</th>
+            <th>Duration</th>
+            <th>Notes</th> <!-- Added Notes Column -->
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var song in Model.SetlistSongs)
+        {
+            <tr>
+                <td>@song.Song.Title</td>
+                <td>@song.Song.Key</td>
+                <td>@song.Song.BPM</td>
+                <td>@song.Song.DurationMinutes</td>
+                <td>@song.Notes</td> <!-- Display Song Notes -->
+                <td>
+                    <form asp-controller="Setlist" asp-action="RemoveSong" method="post">
+                        <input type="hidden" name="setlistId" value="@Model.Id" />
+                        <input type="hidden" name="songId" value="@song.Song.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<h3>Add a Song</h3>
+<form asp-controller="Setlist" asp-action="AddSong" method="post">
+    <input type="hidden" name="setlistId" value="@Model.Id" />
+    <div class="mb-3">
+        <label for="songId" class="form-label">Select a Song</label>
+        <select name="songId" class="form-select">
+            @foreach (var song in ViewBag.Songs)
+            {
+                <option value="@song.Id">@song.Title</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="notes" class="form-label">Notes (Optional)</label>
+        <textarea name="notes" class="form-control" rows="2"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Song</button>
+</form>
+
+<a asp-controller="Setlist" asp-action="Index" class="btn btn-secondary mt-3">Back to Setlists</a>

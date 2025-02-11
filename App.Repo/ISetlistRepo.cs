@@ -10,6 +10,7 @@ namespace App.Repo
         Setlist GetSetlistWithSongs(int id);
         void Update(Setlist setlist);
         void Delete(int id);
-        List<SetlistSummary> GetUserSetlists(int userId);
+        IEnumerable<SetlistSummary> GetSetlistsForUser(int userId);
+
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace App.Models
+﻿using System.Text.Json.Serialization;
+
+namespace App.Models
 {
     public class SetlistSummary 
     {
