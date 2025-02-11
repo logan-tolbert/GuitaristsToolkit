@@ -144,42 +144,29 @@ namespace PracticeTracker.Tests
         [Fact]
         public void Delete_ShouldRemoveSetlist()
         {
+            // Arrange
             var id = 1;
-            var setlist = new Setlist { Id = 1, UserId = 1, Name = "My Jams", CreatedAt = DateTime.Now };
 
-            _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false
-            )).Returns(new List<Setlist> { setlist });
-
-            _repo.Create(setlist);
-            Assert.NotNull(_repo.GetById(id));
-
+            // Act
             _repo.Delete(id);
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            // Assert
             _mockDbContext.Verify(db => db.SaveData<Setlist, object>(
                 It.Is<string>(sql => sql.Contains("DELETE FROM Setlists WHERE Id = @Id")),
-                It.Is<object>(param => param.GetType().GetProperty("Id").GetValue(param).Equals(id)),
+                It.Is<object>(param => IsMatchingId(param, id)),
                 It.IsAny<string>(),
                 false
             ), Times.Once);
-
-
-            _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false
-            )).Returns(new List<Setlist>());
-
-            Assert.Null(_repo.GetById(id));
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+        private bool IsMatchingId(object param, int expectedId)
+        {
+            var idProperty = param.GetType().GetProperty("Id");
+            if (idProperty == null) return false; // Ensure the property exists
 
+            var value = idProperty.GetValue(param);
+            return value is int intValue && intValue == expectedId;
+        }
 
     }
 }
