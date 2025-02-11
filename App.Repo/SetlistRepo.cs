@@ -101,7 +101,10 @@ namespace App.Repo
             return setlistDictionary.Values.First();
         }
 
-
+        public List<SetlistSummary> GetUserSetlists(int userId)
+        {
+            throw new NotImplementedException();
+        }
 
         //TODO: Implement Update method and tests
         public void Update(Setlist setlist)

@@ -1,4 +1,4 @@
-﻿namespace PracticeTracker.Models
+﻿namespace App.Models
 {
     public class SetlistSummary 
     {
