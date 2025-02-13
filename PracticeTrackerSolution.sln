@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35731.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeTracker", "PracticeTracker\PracticeTracker.csproj", "{CA6A4B12-6796-49F2-B8B3-BDCE58D73776}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PracticeTrackerDB", "PracticeTrackerDB\PracticeTrackerDB.sqlproj", "{CB225BE5-B6FF-44D7-8F0A-9BA9E822BE00}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GuitaristsToolkitTestDB", "PracticeTrackerDB\GuitaristsToolkitTestDB.sqlproj", "{CB225BE5-B6FF-44D7-8F0A-9BA9E822BE00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Data", "AppData\App.Data.csproj", "{FEAF0165-9AF1-4665-9B78-C76CD21118FA}"
 EndProject
