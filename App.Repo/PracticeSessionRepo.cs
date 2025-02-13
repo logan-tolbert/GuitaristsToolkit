@@ -21,12 +21,12 @@ namespace App.Repo
         {
             var sql = @"INSERT INTO PracticeSessions
                         (UserId, Date, DurationMinutes, FocusArea, Notes)
-                        VALUES (@UserId, @Date, @DurationMinutes, @FocusArea, @Notes);";
+                        VALUES (@UserId, @CreatedAt, @DurationMinutes, @FocusArea, @Notes);";
 
             _db.SaveData<PracticeSession, dynamic>(sql, new
             {
                 session.UserId,
-                session.Date,
+                session.CreatedAt,
                 session.DurationMinutes,
                 session.FocusArea,
                 session.Notes
@@ -49,12 +49,12 @@ namespace App.Repo
         public void Update(PracticeSession session)
         {
             var sql = @"UPDATE PracticeSessions 
-                SET Date = @Date, DurationMinutes = @DurationMinutes, FocusArea = @FocusArea, Notes = @Notes
+                SET Date = @CreatedAt, DurationMinutes = @DurationMinutes, FocusArea = @FocusArea, Notes = @Notes
                 WHERE Id = @Id;";
 
             _db.SaveData<PracticeSession, dynamic>(sql, new
             {
-                session.Date,
+                session.CreatedAt,
                 session.DurationMinutes,
                 session.FocusArea,
                 session.Notes,

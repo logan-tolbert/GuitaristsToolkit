@@ -67,4 +67,7 @@
     <Build Include="dbo\tables\Songs.sql" />
     <Build Include="dbo\tables\Users.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="PracticeTrackerDB.refactorlog" />
+  </ItemGroup>
 </Project>

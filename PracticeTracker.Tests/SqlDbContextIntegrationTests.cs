@@ -3,7 +3,6 @@ using App.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Xunit;
 
@@ -21,12 +20,61 @@ namespace PracticeTracker.Tests
                 .Build();
 
             _sqlDbContext = new SqlDbContext(configuration);
+
+           
+            CleanupTestData();
+        }
+        
+        private void InsertTestData()
+        {
+            string sqlStatement = "INSERT INTO PracticeSessions (UserId, CreatedAt, DurationMinutes, FocusArea, Notes) VALUES (@UserId, @CreatedAt, @DurationMinutes, @FocusArea, @Notes)";
+            var parameters = new
+            {
+                UserId = 1,
+                CreatedAt = new DateTime(2023, 10, 1),
+                DurationMinutes = 30,
+                FocusArea = "New Focus Area",
+                Notes = "Some notes"
+            };
+            string connectionName = "Testing";
+
+            _sqlDbContext.SaveData<dynamic, dynamic>(sqlStatement, parameters, connectionName, false);
+        }
+
+        private void CleanupTestData()
+        {
+            string sql = "DELETE FROM PracticeSessions WHERE UserId = @UserId";
+            var parameters = new { UserId = 1 };
+            string connectionName = "Testing";
+
+            _sqlDbContext.SaveData<dynamic, dynamic>(sql, parameters, connectionName, false);
+        }
+
+        [Fact]
+        public void SaveData_ShouldSaveDataCorrectly()
+        {
+            // Arrange
+            InsertTestData();
+
+            string verifySql = "SELECT * FROM PracticeSessions WHERE UserId = @UserId AND FocusArea = @FocusArea";
+            var verifyParameters = new { UserId = 1, FocusArea = "New Focus Area" };
+            string connectionName = "Testing";
+            IEnumerable<PracticeSession> result = _sqlDbContext.LoadData<PracticeSession, dynamic>(verifySql, verifyParameters, connectionName);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            var session = result.FirstOrDefault();
+            Assert.NotNull(session);
+            Assert.Equal("New Focus Area", session.FocusArea);
         }
 
         [Fact]
         public void LoadData_ShouldReturnExpectedResults()
         {
             // Arrange
+            InsertTestData();
+
             string sqlStatement = "SELECT * FROM PracticeSessions WHERE UserId = @UserId";
             var parameters = new { UserId = 1 };
             string connectionName = "Testing";
@@ -37,52 +85,20 @@ namespace PracticeTracker.Tests
             // Assert
             Assert.NotNull(result);
             Assert.NotEmpty(result);
-            var firstResult = result.First();
-            Assert.Equal(1, firstResult.UserId);
-            Assert.Equal(new DateTime(2023, 10, 1), firstResult.Date);
-            Assert.Equal(30, firstResult.DurationMinutes);
-            Assert.Equal("New Focus Area", firstResult.FocusArea);
-            Assert.Equal("Some notes", firstResult.Notes);
+            var session = result.FirstOrDefault();
+            Assert.NotNull(session);
+            Assert.Equal(1, session.UserId);
+            Assert.Equal(new DateTime(2023, 10, 1), session.CreatedAt);
+            Assert.Equal(30, session.DurationMinutes);
+            Assert.Equal("New Focus Area", session.FocusArea);
+            Assert.Equal("Some notes", session.Notes);
         }
-
-        [Fact]
-        public void SaveData_ShouldSaveDataCorrectly()
-        {
-            // Arrange
-            string sqlStatement = "INSERT INTO PracticeSessions (UserId, Date, DurationMinutes, FocusArea, Notes) VALUES (@UserId, @Date, @DurationMinutes, @FocusArea, @Notes)";
-            var parameters = new
-            {
-                UserId = 1,
-                Date = new DateTime(2023, 10, 1),
-                DurationMinutes = 30,
-                FocusArea = "New Focus Area",
-                Notes = "Some notes"
-            };
-            string connectionName = "Testing";
-
-            // Act
-            _sqlDbContext.SaveData<dynamic, dynamic>(sqlStatement, parameters, connectionName, false);
-
-            // Verify by loading the data
-            string verifySql = "SELECT * FROM PracticeSessions WHERE UserId = @UserId AND FocusArea = @FocusArea";
-            var verifyParameters = new { UserId = 1, FocusArea = "New Focus Area" };
-            IEnumerable<PracticeSession> result = _sqlDbContext.LoadData<PracticeSession, dynamic>(verifySql, verifyParameters, connectionName);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.NotEmpty(result);
-            Assert.Equal("New Focus Area", result.First().FocusArea);
-        }
-
 
         public void Dispose()
         {
-            // Cleanup code here
-            string cleanupSql = "DELETE FROM PracticeSessions WHERE UserId = @UserId";
-            var cleanupParameters = new { UserId = 1 };
-            string connectionName = "Testing";
-
-            _sqlDbContext.SaveData<dynamic, dynamic>(cleanupSql, cleanupParameters, connectionName, false);
+            CleanupTestData();
         }
     }
 }
+
+

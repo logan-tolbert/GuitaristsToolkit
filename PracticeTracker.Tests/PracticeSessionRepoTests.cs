@@ -23,7 +23,7 @@ namespace PracticeTracker.Tests
             var session = new PracticeSession
             {
                 UserId = 1,
-                Date = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 DurationMinutes = 60,
                 FocusArea = "Technique",
                 Notes = "Focus on scales"
@@ -38,7 +38,7 @@ namespace PracticeTracker.Tests
                        It.Is<string>(sql => sql.Contains("INSERT INTO PracticeSessions")),
                        It.Is<object>(param =>
                            param.GetType().GetProperty("UserId").GetValue(param).Equals(session.UserId) &&
-                           param.GetType().GetProperty("Date").GetValue(param).Equals(session.Date) &&
+                           param.GetType().GetProperty("CreatedAt").GetValue(param).Equals(session.CreatedAt) &&
                            param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
                            param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
                            param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes)
@@ -55,8 +55,8 @@ namespace PracticeTracker.Tests
             // Arrange
             var practiceSessions = new List<PracticeSession>
                 {
-                    new PracticeSession { Id = 1, UserId = 1, Date = DateTime.Now, DurationMinutes = 60, FocusArea = "Technique" },
-                    new PracticeSession { Id = 2, UserId = 2, Date = DateTime.Now, DurationMinutes = 45, FocusArea = "Repertoire" }
+                    new PracticeSession { Id = 1, UserId = 1, CreatedAt = DateTime.Now, DurationMinutes = 60, FocusArea = "Technique" },
+                    new PracticeSession { Id = 2, UserId = 2, CreatedAt = DateTime.Now, DurationMinutes = 45, FocusArea = "Repertoire" }
                 };
 
             _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
@@ -83,7 +83,7 @@ namespace PracticeTracker.Tests
             {
                 Id = 1,
                 UserId = 1,
-                Date = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 DurationMinutes = 60,
                 FocusArea = "Technique"
             };
@@ -91,7 +91,7 @@ namespace PracticeTracker.Tests
             var practiceSessions = new List<PracticeSession>
             {
              expectedSession,
-            new PracticeSession { Id = 2, UserId = 2, Date = DateTime.Now, DurationMinutes = 45, FocusArea = "Scales" }
+            new PracticeSession { Id = 2, UserId = 2, CreatedAt = DateTime.Now, DurationMinutes = 45, FocusArea = "Scales" }
             };
 
             _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
@@ -116,7 +116,7 @@ namespace PracticeTracker.Tests
             {
                 Id = 1,
                 UserId = 1,
-                Date = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 DurationMinutes = 60,
                 FocusArea = "Technique",
                 Notes = "Focus on arpeggios"
@@ -130,7 +130,7 @@ namespace PracticeTracker.Tests
             _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
                        It.Is<string>(sql => sql.Contains("UPDATE PracticeSessions")),
                        It.Is<object>(param =>
-                           param.GetType().GetProperty("Date").GetValue(param).Equals(session.Date) &&
+                           param.GetType().GetProperty("CreatedAt").GetValue(param).Equals(session.CreatedAt) &&
                            param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
                            param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
                            param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes) &&
