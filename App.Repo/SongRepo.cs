@@ -43,6 +43,7 @@ namespace App.Repo
             return _db.LoadData<Song, dynamic>(sql, new { });
         }
 
+
         public Song GetById(int id)
         {
             var sql = @"SELECT * FROM Songs WHERE Id = @Id;";

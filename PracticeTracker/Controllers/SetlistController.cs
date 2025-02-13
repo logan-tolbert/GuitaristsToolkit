@@ -24,6 +24,7 @@ namespace PracticeTracker.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.Songs = _repo.GetAll(); 
             return View();
         }
 
@@ -33,8 +34,7 @@ namespace PracticeTracker.Controllers
             setlist.UserId = 1;
             setlist.CreatedAt = DateTime.UtcNow;
 
-            //TODO: Implement song repo
-            //ViewBag.Songs = _songRepo.GetAll();
+            ViewBag.Songs = _repo.GetAll();
             int setListId = _repo.Create(setlist);
 
             return RedirectToAction("Edit", new { id = setListId });
@@ -62,10 +62,14 @@ namespace PracticeTracker.Controllers
         public IActionResult Edit(int id)
         {
             var setlist = _repo.GetSetlistWithSongs(id);
-            //TODO: Implement song repo
-            //ViewBag.Songs = _songRepo.GetAll();
+            var songs = _repo.GetAll(); 
+
+            ViewBag.Songs = songs;
+
             return View(setlist);
         }
+
+
 
 
     }

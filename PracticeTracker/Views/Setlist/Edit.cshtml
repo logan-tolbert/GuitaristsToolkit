@@ -12,50 +12,63 @@
             <th>Key</th>
             <th>BPM</th>
             <th>Duration</th>
-            <th>Notes</th> <!-- Added Notes Column -->
+            <th>Notes</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var song in Model.SetlistSongs)
+        @if (Model.SetlistSongs != null && Model.SetlistSongs.Any())
+        {
+            @foreach (var song in Model.SetlistSongs)
+            {
+                <tr>
+                    <td><input type="text" class="form-control" name="Title" value="@song.Song.Title"></td>
+                    <td><input type="text" class="form-control" name="Key" value="@song.Song.Key"></td>
+                    <td><input type="number" class="form-control" name="BPM" value="@song.Song.BPM"></td>
+                    <td><input type="number" class="form-control" name="DurationMinutes" value="@song.Song.DurationMinutes"></td>
+                    <td><input type="text" class="form-control" name="Notes" value="@song.Notes"></td>
+                    <td>
+                        <form asp-controller="Setlist" asp-action="RemoveSong" method="post">
+                            <input type="hidden" name="setlistId" value="@Model.Id" />
+                            <input type="hidden" name="songId" value="@song.Song.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@song.Song.Title</td>
-                <td>@song.Song.Key</td>
-                <td>@song.Song.BPM</td>
-                <td>@song.Song.DurationMinutes</td>
-                <td>@song.Notes</td> <!-- Display Song Notes -->
-                <td>
-                    <form asp-controller="Setlist" asp-action="RemoveSong" method="post">
-                        <input type="hidden" name="setlistId" value="@Model.Id" />
-                        <input type="hidden" name="songId" value="@song.Song.Id" />
-                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                    </form>
-                </td>
+                <td colspan="6" class="text-center">No songs in this setlist. Add one below.</td>
             </tr>
         }
     </tbody>
 </table>
 
-
-<h3>Add a Song</h3>
+<h3>Add a New Song</h3>
 <form asp-controller="Setlist" asp-action="AddSong" method="post">
     <input type="hidden" name="setlistId" value="@Model.Id" />
     <div class="mb-3">
-        <label for="songId" class="form-label">Select a Song</label>
-        <select name="songId" class="form-select">
-            @foreach (var song in ViewBag.Songs)
-            {
-                <option value="@song.Id">@song.Title</option>
-            }
-        </select>
+        <label for="songTitle" class="form-label">Song Title</label>
+        <input type="text" name="songTitle" class="form-control" required />
     </div>
-
+    <div class="mb-3">
+        <label for="songKey" class="form-label">Key</label>
+        <input type="text" name="songKey" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="songBPM" class="form-label">BPM</label>
+        <input type="number" name="songBPM" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="songDuration" class="form-label">Duration (Minutes)</label>
+        <input type="number" name="songDuration" class="form-control" />
+    </div>
     <div class="mb-3">
         <label for="notes" class="form-label">Notes (Optional)</label>
         <textarea name="notes" class="form-control" rows="2"></textarea>
     </div>
-
     <button type="submit" class="btn btn-primary">Add Song</button>
 </form>
 
