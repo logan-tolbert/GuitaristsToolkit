@@ -22,11 +22,11 @@
             @foreach (var song in Model.SetlistSongs)
             {
                 <tr>
-                    <td><input type="text" class="form-control" name="Title" value="@song.Song.Title"></td>
-                    <td><input type="text" class="form-control" name="Key" value="@song.Song.Key"></td>
-                    <td><input type="number" class="form-control" name="BPM" value="@song.Song.BPM"></td>
-                    <td><input type="number" class="form-control" name="DurationMinutes" value="@song.Song.DurationMinutes"></td>
-                    <td><input type="text" class="form-control" name="Notes" value="@song.Notes"></td>
+                    <td>@song.Song.Title</td>
+                    <td>@song.Song.Key</td>
+                    <td>@song.Song.BPM</td>
+                    <td>@song.Song.DurationMinutes</td>
+                    <td>@song.Notes</td>
                     <td>
                         <form asp-controller="Setlist" asp-action="RemoveSong" method="post">
                             <input type="hidden" name="setlistId" value="@Model.Id" />

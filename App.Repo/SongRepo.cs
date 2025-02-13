@@ -21,7 +21,7 @@ namespace App.Repo
         public int Create(Song song)
         {
             var sql = @"INSERT INTO Songs 
-                        (Title, Key, BPM, DurationMinutes, Notes)
+                        (Title, [Key], BPM, DurationMinutes, Notes)
                         Values (@Title, @Key, @BPM, @DurationMinutes, @Notes)
                         SELECT CAST(SCOPE_IDENTITY() as int);";
 
@@ -54,7 +54,7 @@ namespace App.Repo
         public void Update(Song song)
         {
             var sql = @"UPDATE Songs
-                       SET Title = @Title, Key = @Key, BPM = @BPM,
+                       SET Title = @Title, [Key] = @Key, BPM = @BPM,
                            DurationMinutes = @DurationMinutes, Notes = @Notes
                        WHERE Id = @Id;";
 

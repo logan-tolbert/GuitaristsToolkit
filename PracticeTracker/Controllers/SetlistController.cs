@@ -9,10 +9,12 @@ namespace PracticeTracker.Controllers
     public class SetlistController : Controller
     {
         private ISetlistRepo _repo;
+        private ISongRepo _songRepo;
 
-        public SetlistController(ISetlistRepo repo)
+        public SetlistController(ISetlistRepo repo, ISongRepo songRepo)
         {
             _repo = repo;
+            _songRepo = songRepo;
         }
 
         public IActionResult Index(int id)
@@ -39,6 +41,32 @@ namespace PracticeTracker.Controllers
 
             return RedirectToAction("Edit", new { id = setListId });
         }
+        [HttpPost]
+        public IActionResult AddSong(int setlistId, string songTitle, string? songKey, int? songBPM, int? songDuration, string? notes)
+        {
+            var song = new Song
+            {
+                Title = songTitle,
+                Key = songKey,
+                BPM = songBPM,
+                DurationMinutes = songDuration,
+                Notes = notes
+            };
+
+            int songId = _songRepo.Create(song); 
+
+            var setlistSong = new SetlistSong
+            {
+                SetlistId = setlistId,
+                SongId = songId,
+                SongOrder = 0 
+            };
+
+            _repo.AddSongToSetlist(setlistSong);
+
+            return RedirectToAction("Edit", new { id = setlistId }); 
+        }
+
 
 
         [HttpGet]
@@ -68,9 +96,6 @@ namespace PracticeTracker.Controllers
 
             return View(setlist);
         }
-
-
-
 
     }
 }

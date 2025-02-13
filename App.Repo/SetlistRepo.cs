@@ -114,18 +114,26 @@ namespace App.Repo
         }
 
 
-
-        //TODO: Implement Update method and tests
-        public void Update(Setlist setlist)
+        public void AddSongToSetlist(SetlistSong setlistSong)
         {
-            var sql = @"";
+            var sqlOrder = @"SELECT COALESCE(MAX(SongOrder), 0) + 1 FROM SetlistSongs WHERE SetlistId = @SetlistId;";
+            int nextOrder = _db.LoadData<int, dynamic>(sqlOrder, new { setlistSong.SetlistId }).FirstOrDefault();
 
-            _db.SaveData<Setlist, dynamic>(sql, new
+            if (nextOrder == 0)
             {
+                nextOrder = 1; 
+            }
 
+            var sql = @"INSERT INTO SetlistSongs (SetlistId, SongId, SongOrder, Notes)
+                VALUES (@SetlistId, @SongId, @SongOrder, @Notes);";
+
+            _db.SaveData<SetlistSong, dynamic>(sql, new
+            {
+                setlistSong.SetlistId,
+                setlistSong.SongId,
+                SongOrder = nextOrder,
+                setlistSong.Notes
             });
-
-            throw new NotImplementedException();
         }
 
 

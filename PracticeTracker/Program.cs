@@ -8,6 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ISqlDbContext, SqlDbContext>();
 builder.Services.AddScoped<IPracticeSessionRepo, PracticeSessionRepo>();
 builder.Services.AddScoped<ISetlistRepo, SetlistRepo>();
+builder.Services.AddScoped<ISongRepo, SongRepo>();
 
 var app = builder.Build();
 

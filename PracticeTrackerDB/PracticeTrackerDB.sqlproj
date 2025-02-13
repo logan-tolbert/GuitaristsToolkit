@@ -59,6 +59,7 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\tables" />
     <Folder Include="dbo\PublishProfiles" />
+    <Folder Include="scripts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\PracticeSessions.sql" />

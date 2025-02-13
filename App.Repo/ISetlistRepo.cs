@@ -8,9 +8,9 @@ namespace App.Repo
         IEnumerable<Setlist> GetAll();
         Setlist GetById(int id);
         Setlist GetSetlistWithSongs(int id);
-        void Update(Setlist setlist);
         void Delete(int id);
         IEnumerable<SetlistSummary> GetSetlistsForUser(int userId);
+        public void AddSongToSetlist(SetlistSong setlistSong);
 
     }
 }
