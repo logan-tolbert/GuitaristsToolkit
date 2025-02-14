@@ -16,7 +16,7 @@ public class UserRepoIntegrationTests : IDisposable
 {
 
     private readonly ISqlDbContext _db;
-
+    private readonly IUserRepo _repo;
 
     public UserRepoIntegrationTests()
     {
@@ -26,6 +26,7 @@ public class UserRepoIntegrationTests : IDisposable
             .Build();
 
         _db = new SqlDbContext(config);
+        _repo = new UserRepo(_db);
 
         CleanupTestData();
 
@@ -65,14 +66,27 @@ public class UserRepoIntegrationTests : IDisposable
     [Fact]
     public void CreateUser_ShouldInsertUserSuccessfully()
     {
+        // Arrange & Act
         InsertTestUser();
         var sql = @"SELECT * FROM Users WHERE Email = @input OR Username = @input;";
         var usr = "TestUser";
         string connectionName = "Testing";
 
+        // Assert
         var result = _db.LoadData<User, dynamic>(sql, new { input = usr }, connectionName, false).FirstOrDefault();
 
+        Assert.NotNull(result);
+        Assert.Equal("TestUser", result.Username);
+        Assert.Equal("John", result.FirstName);
+        Assert.Equal("Doe", result.LastName);
+        Assert.Equal("testuser@example.com", result.Email);
+    }
 
+    [Fact]
+    public void GetUserByEmailOrUsername_ShouldReturnCorrectUser()
+    {
+        InsertTestUser();
+        var result = _repo.GetUserByEmailOrUsername("testuser@example.com", "Testing");
         Assert.NotNull(result);
         Assert.Equal("TestUser", result.Username);
         Assert.Equal("John", result.FirstName);

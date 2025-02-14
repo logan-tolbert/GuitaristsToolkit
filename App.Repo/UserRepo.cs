@@ -12,10 +12,10 @@ namespace App.Repo
             _db = db;
         }
 
-        public User? GetUserByEmailOrUsername(string input)
+        public User? GetUserByEmailOrUsername(string input, string connectionName)
         {
             var sql = @"SELECT * FROM Users WHERE Email = @input OR Username = @input;";
-            return _db.LoadData<User, dynamic>(sql, new { input }).FirstOrDefault();
+            return _db.LoadData<User, dynamic>(sql, new { input }, connectionName, false).FirstOrDefault();
         }
 
         public void CreateUser(User user)
