@@ -9,7 +9,7 @@ namespace App.Models
 {
     public class User
     {
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MinLength(3)]
