@@ -21,17 +21,17 @@ namespace App.Repo
         public void CreateUser(User user)
         {
             var sql = @"INSERT INTO Users 
-                        (Username, FirstName, LastName, Email, PasswordHash, CreatedAt)
-                        VALUES (@Username, @FirstName, @LastName, @Email, @PasswordHash, @CreatedAt);";
+                        (Id, Username, FirstName, LastName, Email, PasswordHash)
+                        VALUES (@Id, @Username, @FirstName, @LastName, @Email, @PasswordHash);";
 
             _db.SaveData<User, dynamic>(sql, new
-            {
+            {  
+                user.Id,
                 user.Username,
                 user.FirstName,
                 user.LastName,
                 user.Email,
-                user.PasswordHash,
-                user.CreatedAt
+                user.PasswordHash
             });
         }
     }

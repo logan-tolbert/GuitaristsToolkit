@@ -10,16 +10,16 @@ namespace PracticeTracker.Tests
 {
     public class SqlDbContextIntegrationTests : IDisposable
     {
-        private readonly SqlDbContext _sqlDbContext;
+        private readonly SqlDbContext _db;
 
         public SqlDbContextIntegrationTests()
         {
-            var configuration = new ConfigurationBuilder()
+            var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            _sqlDbContext = new SqlDbContext(configuration);
+            _db = new SqlDbContext(config);
 
            
             CleanupTestData();
@@ -38,7 +38,7 @@ namespace PracticeTracker.Tests
             };
             string connectionName = "Testing";
 
-            _sqlDbContext.SaveData<dynamic, dynamic>(sqlStatement, parameters, connectionName, false);
+            _db.SaveData<dynamic, dynamic>(sqlStatement, parameters, connectionName, false);
         }
 
         private void CleanupTestData()
@@ -47,7 +47,7 @@ namespace PracticeTracker.Tests
             var parameters = new { UserId = 1 };
             string connectionName = "Testing";
 
-            _sqlDbContext.SaveData<dynamic, dynamic>(sql, parameters, connectionName, false);
+            _db.SaveData<dynamic, dynamic>(sql, parameters, connectionName, false);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace PracticeTracker.Tests
             string verifySql = "SELECT * FROM PracticeSessions WHERE UserId = @UserId AND FocusArea = @FocusArea";
             var verifyParameters = new { UserId = 1, FocusArea = "New Focus Area" };
             string connectionName = "Testing";
-            IEnumerable<PracticeSession> result = _sqlDbContext.LoadData<PracticeSession, dynamic>(verifySql, verifyParameters, connectionName);
+            IEnumerable<PracticeSession> result = _db.LoadData<PracticeSession, dynamic>(verifySql, verifyParameters, connectionName);
 
             // Assert
             Assert.NotNull(result);
@@ -80,7 +80,7 @@ namespace PracticeTracker.Tests
             string connectionName = "Testing";
 
             // Act
-            IEnumerable<PracticeSession> result = _sqlDbContext.LoadData<PracticeSession, dynamic>(sqlStatement, parameters, connectionName);
+            IEnumerable<PracticeSession> result = _db.LoadData<PracticeSession, dynamic>(sqlStatement, parameters, connectionName);
 
             // Assert
             Assert.NotNull(result);
