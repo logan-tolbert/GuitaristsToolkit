@@ -1,16 +1,11 @@
-﻿namespace PracticeTracker.Tests;
+﻿namespace GuitaristsToolkit.Tests.IntegrationTests;
 
 using App.Data.Context;
 using App.Models;
 using App.Repo;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 
 public class UserRepoIntegrationTests : IDisposable
 {
@@ -85,7 +80,10 @@ public class UserRepoIntegrationTests : IDisposable
     [Fact]
     public void GetUserByEmailOrUsername_ShouldReturnCorrectUser()
     {
+        // Arrange & Act
         InsertTestUser();
+
+        // Assert
         var result = _repo.GetUserByEmailOrUsername("testuser@example.com", "Testing");
         Assert.NotNull(result);
         Assert.Equal("TestUser", result.Username);

@@ -68,9 +68,4 @@
     <Build Include="dbo\tables\Songs.sql" />
     <Build Include="dbo\tables\Users.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="dbo\PublishProfiles\GuitaristsToolkitTestDB.publish.xml" />
-    <None Include="GuitaristsToolkitTestDB.publish.xml" />
-    <None Include="GuitaristsToolkitTestDBs.publish.publish.xml" />
-  </ItemGroup>
 </Project>

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\App.Models\App.Models.csproj" />
     <ProjectReference Include="..\App.Repo\App.Repo.csproj" />
+    <ProjectReference Include="..\App.Security\App.Security.csproj" />
     <ProjectReference Include="..\AppData\App.Data.csproj" />
   </ItemGroup>
 

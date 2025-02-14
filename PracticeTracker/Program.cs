@@ -1,10 +1,14 @@
 using App.Data.Context;
+using App.Models;
 using App.Repo;
+using App.Security;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher>();
 builder.Services.AddScoped<ISqlDbContext, SqlDbContext>();
 builder.Services.AddScoped<IPracticeSessionRepo, PracticeSessionRepo>();
 builder.Services.AddScoped<ISetlistRepo, SetlistRepo>();

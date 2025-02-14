@@ -1,10 +1,11 @@
-﻿using App.Data.Context;
+﻿namespace GuitaristsToolkit.Tests;
+using App.Data.Context;
 using App.Models;
 using App.Repo;
 using Moq;
 
-namespace PracticeTracker.Tests
-{
+
+
     public class PracticeSessionRepoTests
     {
         private readonly Mock<ISqlDbContext> _mockDbContext;
@@ -170,4 +171,4 @@ namespace PracticeTracker.Tests
         }
 
     }
-}
+

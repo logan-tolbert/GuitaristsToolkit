@@ -1,4 +1,5 @@
-﻿using App.Data.Context;
+﻿namespace GuitaristsToolkit.Tests;
+using App.Data.Context;
 using App.Models;
 using App.Repo;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
@@ -6,110 +7,110 @@ using Moq;
 using Xunit.Abstractions;
 using static App.Repo.SetlistRepo;
 
-namespace PracticeTracker.Tests
+
+
+
+public class SetlistRepoTests
 {
+    private readonly Mock<ISqlDbContext> _mockDbContext;
+    private readonly SetlistRepo _repo;
 
-    public class SetlistRepoTests
+
+    public SetlistRepoTests()
     {
-        private readonly Mock<ISqlDbContext> _mockDbContext;
-        private readonly SetlistRepo _repo;
-
-
-        public SetlistRepoTests()
+        _mockDbContext = new Mock<ISqlDbContext>();
+        _repo = new SetlistRepo(_mockDbContext.Object);
+    }
+    [Fact]
+    public void Create_ShouldCreateNewSetlistAndReturnId()
+    {
+        // Arrange 
+        var setList = new Setlist
         {
-            _mockDbContext = new Mock<ISqlDbContext>();
-            _repo = new SetlistRepo(_mockDbContext.Object);
-        }
-        [Fact]
-        public void Create_ShouldCreateNewSetlistAndReturnId()
-        {
-            // Arrange 
-            var setList = new Setlist
-            {
-                UserId = 1,
-                Name = "Practice Set",
-                CreatedAt = DateTime.Now
-            };
+            UserId = 1,
+            Name = "Practice Set",
+            CreatedAt = DateTime.Now
+        };
 
-            _mockDbContext.Setup(db => db.LoadData<int, dynamic>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false
-               )).Returns(new List<int> { 1 });
+        _mockDbContext.Setup(db => db.LoadData<int, dynamic>(
+            It.IsAny<string>(),
+            It.IsAny<object>(),
+            It.IsAny<string>(),
+            false
+           )).Returns(new List<int> { 1 });
 
-            // Act
-            var result = _repo.Create(setList);
+        // Act
+        var result = _repo.Create(setList);
 
-            // Assert
-            Assert.Equal(1, result);
+        // Assert
+        Assert.Equal(1, result);
 
-        }
+    }
 
-        [Fact]
-        public void GetAll_ShouldReturnAllSetlists()
-        {
-            // Arrange
-            var setlists = new List<Setlist>
+    [Fact]
+    public void GetAll_ShouldReturnAllSetlists()
+    {
+        // Arrange
+        var setlists = new List<Setlist>
                 {
                     new Setlist { Id = 1, UserId = 1, Name = "My Jams", CreatedAt = DateTime.Now},
                     new Setlist { Id = 2, UserId = 2, Name = "Favorites", CreatedAt = DateTime.Now}
                 };
 
-            _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false))
-                .Returns(setlists);
+        _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
+            It.IsAny<string>(),
+            It.IsAny<object>(),
+            It.IsAny<string>(),
+            false))
+            .Returns(setlists);
 
-            // Act
-            var result = _repo.GetAll();
+        // Act
+        var result = _repo.GetAll();
 
-            // Assert
-            Assert.Equal(setlists, result);
-        }
+        // Assert
+        Assert.Equal(setlists, result);
+    }
 
-        [Fact]
-        public void GetById_ShouldReturnMatch_WhenValidIdIsProvided()
+    [Fact]
+    public void GetById_ShouldReturnMatch_WhenValidIdIsProvided()
+    {
+        // Arrange
+        var id = 1;
+
+        var expected = new Setlist
         {
-            // Arrange
-            var id = 1;
+            Id = 1,
+            UserId = 1,
+            Name = "My Jams",
+            CreatedAt = DateTime.Now
 
-            var expected = new Setlist
-            {
-                Id = 1,
-                UserId = 1,
-                Name = "My Jams",
-                CreatedAt = DateTime.Now
+        };
 
-            };
-
-            var setlists = new List<Setlist>
+        var setlists = new List<Setlist>
             {
                  expected,
                  new Setlist { Id = 2, UserId = 2, Name = "Favorites", CreatedAt = DateTime.Now}
             };
 
-            _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false))
-                .Returns(setlists.Where(s => s.Id == id));
+        _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
+            It.IsAny<string>(),
+            It.IsAny<object>(),
+            It.IsAny<string>(),
+            false))
+            .Returns(setlists.Where(s => s.Id == id));
 
-            // Act
-            var result = _repo.GetById(id);
+        // Act
+        var result = _repo.GetById(id);
 
-            // Assert
-            Assert.Equal(expected, result);
-        }
-        [Fact]
-        public void GetSetlistWithSongs_ShouldReturnSetlistWithSongs_WhenValidIdIsProvided()
-        {
-            // Arrange
-            var id = 1;
-            var setlistData = new List<SetlistSongResult>
+        // Assert
+        Assert.Equal(expected, result);
+    }
+    [Fact]
+    public void GetSetlistWithSongs_ShouldReturnSetlistWithSongs_WhenValidIdIsProvided()
+    {
+        // Arrange
+        var id = 1;
+        var setlistData = new List<SetlistSongResult>
         {
             new SetlistSongResult
             {
@@ -123,80 +124,80 @@ namespace PracticeTracker.Tests
             }
         };
 
-            _mockDbContext.Setup(db => db.LoadData<SetlistSongResult, dynamic>(
-                It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .Returns(setlistData);
+        _mockDbContext.Setup(db => db.LoadData<SetlistSongResult, dynamic>(
+            It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<bool>()))
+            .Returns(setlistData);
 
-            // Act
-            var result = _repo.GetSetlistWithSongs(id);
+        // Act
+        var result = _repo.GetSetlistWithSongs(id);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(2, result.SetlistSongs.Count);
-            Assert.Equal("Song 1", result.SetlistSongs[0].Song.Title);
-            Assert.Equal("Song 2", result.SetlistSongs[1].Song.Title);
-        }
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(2, result.SetlistSongs.Count);
+        Assert.Equal("Song 1", result.SetlistSongs[0].Song.Title);
+        Assert.Equal("Song 2", result.SetlistSongs[1].Song.Title);
+    }
 
 
-        [Fact]
-        public void GetUserSetlists_ShouldReturnCorrectSetlistSummaries()
-        {
-            // Arrange
-            int userId = 1;
-            var setlists = new List<SetlistSummary>
+    [Fact]
+    public void GetUserSetlists_ShouldReturnCorrectSetlistSummaries()
+    {
+        // Arrange
+        int userId = 1;
+        var setlists = new List<SetlistSummary>
         {
             new SetlistSummary { Id = 1, Title = "Rock Set", CreatedAt = new DateTime(2024, 1, 1), SongCount = 3 },
             new SetlistSummary { Id = 2, Title = "Acoustic Vibes", CreatedAt = new DateTime(2024, 2, 1), SongCount = 5 },
             new SetlistSummary { Id = 3, Title = "Empty Set", CreatedAt = new DateTime(2024, 3, 1), SongCount = 0 }
         };
 
-            _mockDbContext.Setup(db => db.LoadData<SetlistSummary, dynamic>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false)
-            ).Returns(setlists);
+        _mockDbContext.Setup(db => db.LoadData<SetlistSummary, dynamic>(
+            It.IsAny<string>(),
+            It.IsAny<object>(),
+            It.IsAny<string>(),
+            false)
+        ).Returns(setlists);
 
-            // Act
-            var result = _repo.GetSetlistsForUser(userId);
+        // Act
+        var result = _repo.GetSetlistsForUser(userId);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(3, result.Count());
-            Assert.Contains(result, s => s.Title == "Rock Set");
-            Assert.Contains(result, s => s.Title == "Acoustic Vibes");
-            Assert.Contains(result, s => s.Title == "Empty Set" && s.SongCount == 0); 
-        }
-
-        //TODO: Implement update test
-
-        [Fact]
-        public void Delete_ShouldRemoveSetlist()
-        {
-            // Arrange
-            var id = 1;
-
-            // Act
-            _repo.Delete(id);
-
-            // Assert
-            _mockDbContext.Verify(db => db.SaveData<Setlist, object>(
-                It.Is<string>(sql => sql.Contains("DELETE FROM Setlists WHERE Id = @Id")),
-                It.Is<object>(param => IsMatchingId(param, id)),
-                It.IsAny<string>(),
-                false
-            ), Times.Once);
-        }
-
-        private bool IsMatchingId(object param, int expectedId)
-        {
-            var idProperty = param.GetType().GetProperty("Id");
-            if (idProperty == null) return false;
-
-            var value = idProperty.GetValue(param);
-            return value is int intValue && intValue == expectedId;
-        }
-
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(3, result.Count());
+        Assert.Contains(result, s => s.Title == "Rock Set");
+        Assert.Contains(result, s => s.Title == "Acoustic Vibes");
+        Assert.Contains(result, s => s.Title == "Empty Set" && s.SongCount == 0);
     }
+
+    //TODO: Implement update test
+
+    [Fact]
+    public void Delete_ShouldRemoveSetlist()
+    {
+        // Arrange
+        var id = 1;
+
+        // Act
+        _repo.Delete(id);
+
+        // Assert
+        _mockDbContext.Verify(db => db.SaveData<Setlist, object>(
+            It.Is<string>(sql => sql.Contains("DELETE FROM Setlists WHERE Id = @Id")),
+            It.Is<object>(param => IsMatchingId(param, id)),
+            It.IsAny<string>(),
+            false
+        ), Times.Once);
+    }
+
+    private bool IsMatchingId(object param, int expectedId)
+    {
+        var idProperty = param.GetType().GetProperty("Id");
+        if (idProperty == null) return false;
+
+        var value = idProperty.GetValue(param);
+        return value is int intValue && intValue == expectedId;
+    }
+
 }
+
 
