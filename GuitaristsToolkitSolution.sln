@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35731.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeTracker", "PracticeTracker\PracticeTracker.csproj", "{CA6A4B12-6796-49F2-B8B3-BDCE58D73776}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitaristsToolkit", "PracticeTracker\GuitaristsToolkit.csproj", "{CA6A4B12-6796-49F2-B8B3-BDCE58D73776}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GuitaristsToolkitTestDB", "PracticeTrackerDB\GuitaristsToolkitTestDB.sqlproj", "{CB225BE5-B6FF-44D7-8F0A-9BA9E822BE00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Data", "AppData\App.Data.csproj", "{FEAF0165-9AF1-4665-9B78-C76CD21118FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeTracker.Tests", "PracticeTracker.Tests\PracticeTracker.Tests.csproj", "{E75C4DBB-C2ED-46F0-98BD-253554A46C79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitaristsToolkit.Tests", "PracticeTracker.Tests\GuitaristsToolkit.Tests.csproj", "{E75C4DBB-C2ED-46F0-98BD-253554A46C79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Models", "App.Models\App.Models.csproj", "{A4424DC0-432C-4F9C-985B-BFB9C53D9EBE}"
 EndProject

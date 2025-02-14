@@ -1,7 +1,7 @@
 ﻿@model App.Models.Setlist
 
 @{
-    ViewData["Title"] = "Create Setlist";
+    ViewData["Title"] = "New Setlist";
 }
 
 <h2>Create a New Setlist</h2>
@@ -13,6 +13,6 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Setlist</button>
-    <a asp-controller="Setlist" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-success">Create Setlist</button>
+    <a asp-controller="Home" asp-action="UserHub" class="btn btn-danger">Cancel</a>
 </form>
