@@ -48,7 +48,7 @@ namespace App.Repo
         {
             var sql = @"SELECT * FROM Songs WHERE Id = @Id;";
 
-            return _db.LoadData<Song, dynamic>(sql, new { }).Single();
+            return _db.LoadData<Song, dynamic>(sql, new { Id = id }).Single();
         }
 
         public void Update(Song song)
