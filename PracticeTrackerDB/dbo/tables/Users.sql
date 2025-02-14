@@ -1,8 +1,9 @@
-﻿CREATE TABLE [dbo].[Users]
-(
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
-    [Username] NVARCHAR(255) UNIQUE NOT NULL, 
-    [Password] NVARCHAR(255) NOT NULL, 
-    [Email] NVARCHAR(255) NOT NULL, 
-    [CreatedAt] DATETIME2 NOT NULL
-)
+﻿CREATE TABLE Users (
+    Id UNIQUEIDENTIFIER PRIMARY KEY,  
+    Username NVARCHAR(30) UNIQUE NOT NULL CHECK (LEN(Username) >= 3),
+    FirstName NVARCHAR(75) NOT NULL CHECK (LEN(FirstName) >= 1),
+    LastName NVARCHAR(75) NOT NULL CHECK (LEN(LastName) >= 1),
+    Email NVARCHAR(255) UNIQUE NOT NULL CHECK (Email LIKE '_%@_%._%'),
+    PasswordHash NVARCHAR(255) NOT NULL CHECK (LEN(PasswordHash) >= 8),
+    CreatedAt DATETIME NOT NULL DEFAULT GETUTCDATE()
+);

@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[PracticeSessions]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
-    [UserId] INT NOT NULL, 
+    [UserId] UNIQUEIDENTIFIER NOT NULL, 
     [CreatedAt] DATETIME2 NOT NULL, 
     [DurationMinutes] INT NOT NULL, 
     [FocusArea] NVARCHAR(255) NOT NULL, 

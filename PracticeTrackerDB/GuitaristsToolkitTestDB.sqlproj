@@ -69,9 +69,8 @@
     <Build Include="dbo\tables\Users.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="scripts\TestingScript.PostDeployment.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="dbo\PublishProfiles\GuitaristsToolkitTestDB.publish.xml" />
+    <None Include="GuitaristsToolkitTestDB.publish.xml" />
+    <None Include="GuitaristsToolkitTestDBs.publish.publish.xml" />
   </ItemGroup>
 </Project>
