@@ -20,20 +20,21 @@ public class SqlDbContextIntegrationTests : IDisposable
 
         _db = new SqlDbContext(config);
 
-
         CleanupTestData();
     }
 
-    private void InsertTestData()
+    private void InsertTestUser()
     {
-        string sqlStatement = "INSERT INTO PracticeSessions (UserId, CreatedAt, DurationMinutes, FocusArea, Notes) VALUES (@UserId, @CreatedAt, @DurationMinutes, @FocusArea, @Notes)";
+        string sqlStatement = "INSERT INTO Users (Id, Username, FirstName, LastName, Email, PasswordHash, CreatedAt) VALUES (@Id, @Username, @FirstName, @LastName, @Email, @PasswordHash, @CreatedAt)";
         var parameters = new
         {
-            UserId = 1,
-            CreatedAt = new DateTime(2023, 10, 1),
-            DurationMinutes = 30,
-            FocusArea = "New Focus Area",
-            Notes = "Some notes"
+            Id = Guid.NewGuid(),
+            Username = "testuser",
+            FirstName = "Test",
+            LastName = "User",
+            Email = "testuser@example.com",
+            PasswordHash = "hashedpassword",
+            CreatedAt = DateTime.UtcNow
         };
         string connectionName = "Testing";
 
@@ -42,54 +43,58 @@ public class SqlDbContextIntegrationTests : IDisposable
 
     private void CleanupTestData()
     {
-        string sql = "DELETE FROM PracticeSessions WHERE UserId = @UserId";
-        var parameters = new { UserId = 1 };
+        string sql = "DELETE FROM Users WHERE Email = @Email";
+        var parameters = new { Email = "testuser@example.com" };
         string connectionName = "Testing";
 
         _db.SaveData<dynamic, dynamic>(sql, parameters, connectionName, false);
     }
 
     [Fact]
-    public void SaveData_ShouldSaveDataCorrectly()
+    public void SaveData_ShouldSaveUserCorrectly()
     {
         // Arrange
-        InsertTestData();
+        InsertTestUser();
 
-        string verifySql = "SELECT * FROM PracticeSessions WHERE UserId = @UserId AND FocusArea = @FocusArea";
-        var verifyParameters = new { UserId = 1, FocusArea = "New Focus Area" };
+        string verifySql = "SELECT * FROM Users WHERE Email = @Email";
+        var verifyParameters = new { Email = "testuser@example.com" };
         string connectionName = "Testing";
-        IEnumerable<PracticeSession> result = _db.LoadData<PracticeSession, dynamic>(verifySql, verifyParameters, connectionName);
+        IEnumerable<User> result = _db.LoadData<User, dynamic>(verifySql, verifyParameters, connectionName);
 
         // Assert
         Assert.NotNull(result);
         Assert.NotEmpty(result);
-        var session = result.FirstOrDefault();
-        Assert.NotNull(session);
-        Assert.Equal("New Focus Area", session.FocusArea);
+        var user = result.FirstOrDefault();
+        Assert.NotNull(user);
+        Assert.Equal("testuser", user.Username);
+        Assert.Equal("Test", user.FirstName);
+        Assert.Equal("User", user.LastName);
+        Assert.Equal("testuser@example.com", user.Email);
+        Assert.Equal("hashedpassword", user.PasswordHash);
     }
 
     [Fact]
-    public void LoadData_ShouldReturnExpectedResults()
+    public void LoadData_ShouldReturnExpectedUser()
     {
         // Arrange
-        InsertTestData();
-        string sqlStatement = "SELECT * FROM PracticeSessions WHERE UserId = @UserId";
-        var parameters = new { UserId = 1 };
+        InsertTestUser();
+        string sqlStatement = "SELECT * FROM Users WHERE Email = @Email";
+        var parameters = new { Email = "testuser@example.com" };
         string connectionName = "Testing";
 
         // Act
-        IEnumerable<PracticeSession> result = _db.LoadData<PracticeSession, dynamic>(sqlStatement, parameters, connectionName);
+        IEnumerable<User> result = _db.LoadData<User, dynamic>(sqlStatement, parameters, connectionName);
 
         // Assert
         Assert.NotNull(result);
         Assert.NotEmpty(result);
-        var session = result.FirstOrDefault();
-        Assert.NotNull(session);
-        Assert.Equal(1, session.UserId);
-        Assert.Equal(new DateTime(2023, 10, 1), session.CreatedAt);
-        Assert.Equal(30, session.DurationMinutes);
-        Assert.Equal("New Focus Area", session.FocusArea);
-        Assert.Equal("Some notes", session.Notes);
+        var user = result.FirstOrDefault();
+        Assert.NotNull(user);
+        Assert.Equal("testuser", user.Username);
+        Assert.Equal("Test", user.FirstName);
+        Assert.Equal("User", user.LastName);
+        Assert.Equal("testuser@example.com", user.Email);
+        Assert.Equal("hashedpassword", user.PasswordHash);
     }
 
     public void Dispose()
@@ -97,6 +102,3 @@ public class SqlDbContextIntegrationTests : IDisposable
         CleanupTestData();
     }
 }
-
-
-
