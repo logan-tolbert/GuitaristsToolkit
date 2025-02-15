@@ -4,7 +4,7 @@ namespace App.Repo
 {
     public interface IUserRepo
     {
-        void CreateUser(User user);
+        void Create(User user, string connectionName = "Default");
         User? GetUserByEmailOrUsername(string input, string connectionName = "Default");
     }
 }

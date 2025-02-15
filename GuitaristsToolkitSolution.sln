@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Repo", "App.Repo\App.Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Security", "App.Security\App.Security.csproj", "{87E376B1-5C95-4F82-969C-1C8EBFFBB73E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Services", "App.Services\App.Services.csproj", "{A48CF20D-75A6-4C70-94EA-28E851FF4877}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{87E376B1-5C95-4F82-969C-1C8EBFFBB73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87E376B1-5C95-4F82-969C-1C8EBFFBB73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87E376B1-5C95-4F82-969C-1C8EBFFBB73E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A48CF20D-75A6-4C70-94EA-28E851FF4877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A48CF20D-75A6-4C70-94EA-28E851FF4877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A48CF20D-75A6-4C70-94EA-28E851FF4877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A48CF20D-75A6-4C70-94EA-28E851FF4877}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

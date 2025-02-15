@@ -18,21 +18,21 @@ namespace App.Repo
             return _db.LoadData<User, dynamic>(sql, new { input }, connectionName, false).FirstOrDefault();
         }
 
-        public void CreateUser(User user)
+        public void Create(User user, string connectionName = "Default")
         {
-            var sql = @"INSERT INTO Users 
-                        (Id, Username, FirstName, LastName, Email, PasswordHash)
-                        VALUES (@Id, @Username, @FirstName, @LastName, @Email, @PasswordHash);";
+            var sql = @"INSERT INTO Users (Id, Username, FirstName, LastName, Email, PasswordHash)
+                VALUES (@Id, @Username, @FirstName, @LastName, @Email, @PasswordHash);";
 
             _db.SaveData<User, dynamic>(sql, new
-            {  
+            {
                 user.Id,
                 user.Username,
                 user.FirstName,
                 user.LastName,
                 user.Email,
                 user.PasswordHash
-            });
+            }, connectionName, false);
         }
+
     }
 }
