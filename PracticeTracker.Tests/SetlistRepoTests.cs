@@ -2,124 +2,99 @@
 using App.Data.Context;
 using App.Models;
 using App.Repo;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Moq;
-using Xunit.Abstractions;
-using static App.Repo.SetlistRepo;
-
-
-
+using Xunit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class SetlistRepoTests
 {
     private readonly Mock<ISqlDbContext> _mockDbContext;
     private readonly SetlistRepo _repo;
 
-
     public SetlistRepoTests()
     {
         _mockDbContext = new Mock<ISqlDbContext>();
         _repo = new SetlistRepo(_mockDbContext.Object);
     }
+
     [Fact]
     public void Create_ShouldCreateNewSetlistAndReturnId()
     {
-        // Arrange 
+        var userId = Guid.NewGuid();
         var setList = new Setlist
         {
-            UserId = 1,
+            UserId = userId,
             Name = "Practice Set",
             CreatedAt = DateTime.Now
         };
 
         _mockDbContext.Setup(db => db.LoadData<int, dynamic>(
-            It.IsAny<string>(),
-            It.IsAny<object>(),
-            It.IsAny<string>(),
-            false
-           )).Returns(new List<int> { 1 });
+            It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), false))
+            .Returns(new List<int> { 1 });
 
-        // Act
         var result = _repo.Create(setList);
 
-        // Assert
         Assert.Equal(1, result);
-
     }
 
     [Fact]
     public void GetAll_ShouldReturnAllSetlists()
     {
-        // Arrange
         var setlists = new List<Setlist>
-                {
-                    new Setlist { Id = 1, UserId = 1, Name = "My Jams", CreatedAt = DateTime.Now},
-                    new Setlist { Id = 2, UserId = 2, Name = "Favorites", CreatedAt = DateTime.Now}
-                };
+        {
+            new Setlist { Id = 1, UserId = Guid.NewGuid(), Name = "My Jams", CreatedAt = DateTime.Now},
+            new Setlist { Id = 2, UserId = Guid.NewGuid(), Name = "Favorites", CreatedAt = DateTime.Now}
+        };
 
         _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
-            It.IsAny<string>(),
-            It.IsAny<object>(),
-            It.IsAny<string>(),
-            false))
+            It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), false))
             .Returns(setlists);
 
-        // Act
         var result = _repo.GetAll();
 
-        // Assert
         Assert.Equal(setlists, result);
     }
 
     [Fact]
     public void GetById_ShouldReturnMatch_WhenValidIdIsProvided()
     {
-        // Arrange
         var id = 1;
-
         var expected = new Setlist
         {
             Id = 1,
-            UserId = 1,
+            UserId = Guid.NewGuid(),
             Name = "My Jams",
             CreatedAt = DateTime.Now
-
         };
 
-        var setlists = new List<Setlist>
-            {
-                 expected,
-                 new Setlist { Id = 2, UserId = 2, Name = "Favorites", CreatedAt = DateTime.Now}
-            };
+        var setlists = new List<Setlist> { expected };
 
         _mockDbContext.Setup(db => db.LoadData<Setlist, object>(
-            It.IsAny<string>(),
-            It.IsAny<object>(),
-            It.IsAny<string>(),
-            false))
+            It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), false))
             .Returns(setlists.Where(s => s.Id == id));
 
-        // Act
         var result = _repo.GetById(id);
 
-        // Assert
         Assert.Equal(expected, result);
     }
+
     [Fact]
     public void GetSetlistWithSongs_ShouldReturnSetlistWithSongs_WhenValidIdIsProvided()
     {
-        // Arrange
         var id = 1;
+        var userId = Guid.NewGuid();
         var setlistData = new List<SetlistSongResult>
         {
             new SetlistSongResult
             {
-                Id = 1, UserId = 1, Name = "Setlist 1", CreatedAt = DateTime.Now,
+                Id = 1, UserId = userId, Name = "Setlist 1", CreatedAt = DateTime.Now,
                 SongId = 1, SongOrder = 1, Notes = "Note 1", Title = "Song 1", Key = "C", BPM = 120, DurationMinutes = 3
             },
             new SetlistSongResult
             {
-                Id = 1, UserId = 1, Name = "Setlist 1", CreatedAt = DateTime.Now,
+                Id = 1, UserId = userId, Name = "Setlist 1", CreatedAt = DateTime.Now,
                 SongId = 2, SongOrder = 2, Notes = "Note 2", Title = "Song 2", Key = "D", BPM = 130, DurationMinutes = 4
             }
         };
@@ -128,22 +103,18 @@ public class SetlistRepoTests
             It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<bool>()))
             .Returns(setlistData);
 
-        // Act
         var result = _repo.GetSetlistWithSongs(id);
 
-        // Assert
         Assert.NotNull(result);
         Assert.Equal(2, result.SetlistSongs.Count);
         Assert.Equal("Song 1", result.SetlistSongs[0].Song.Title);
         Assert.Equal("Song 2", result.SetlistSongs[1].Song.Title);
     }
 
-
     [Fact]
     public void GetUserSetlists_ShouldReturnCorrectSetlistSummaries()
     {
-        // Arrange
-        int userId = 1;
+        var userId = Guid.NewGuid();
         var setlists = new List<SetlistSummary>
         {
             new SetlistSummary { Id = 1, Title = "Rock Set", CreatedAt = new DateTime(2024, 1, 1), SongCount = 3 },
@@ -152,16 +123,11 @@ public class SetlistRepoTests
         };
 
         _mockDbContext.Setup(db => db.LoadData<SetlistSummary, dynamic>(
-            It.IsAny<string>(),
-            It.IsAny<object>(),
-            It.IsAny<string>(),
-            false)
-        ).Returns(setlists);
+            It.IsAny<string>(), It.IsAny<object>(), It.IsAny<string>(), false))
+            .Returns(setlists);
 
-        // Act
         var result = _repo.GetSetlistsForUser(userId);
 
-        // Assert
         Assert.NotNull(result);
         Assert.Equal(3, result.Count());
         Assert.Contains(result, s => s.Title == "Rock Set");
@@ -169,18 +135,13 @@ public class SetlistRepoTests
         Assert.Contains(result, s => s.Title == "Empty Set" && s.SongCount == 0);
     }
 
-    //TODO: Implement update test
-
     [Fact]
     public void Delete_ShouldRemoveSetlist()
     {
-        // Arrange
         var id = 1;
 
-        // Act
         _repo.Delete(id);
 
-        // Assert
         _mockDbContext.Verify(db => db.SaveData<Setlist, object>(
             It.Is<string>(sql => sql.Contains("DELETE FROM Setlists WHERE Id = @Id")),
             It.Is<object>(param => IsMatchingId(param, id)),
@@ -197,7 +158,4 @@ public class SetlistRepoTests
         var value = idProperty.GetValue(param);
         return value is int intValue && intValue == expectedId;
     }
-
 }
-
-

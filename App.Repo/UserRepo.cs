@@ -12,16 +12,16 @@ namespace App.Repo
             _db = db;
         }
 
-        public User? GetUserByEmailOrUsername(string input, string connectionName)
+        public User? GetUserByEmailOrUsername(string input, string connectionName = "Default")
         {
-            var sql = @"SELECT * FROM Users WHERE Email = @input OR Username = @input;";
-            return _db.LoadData<User, dynamic>(sql, new { input }, connectionName, false).FirstOrDefault();
+            var sql = @"SELECT TOP 1 * FROM Users WHERE Email = @input OR Username = @input;";
+            return _db.LoadData<User, dynamic>(sql, new { input }, connectionName).FirstOrDefault();
         }
 
-        public void Create(User user, string connectionName = "Default")
+        public User? CreateUser(User user, string connectionName = "Default")
         {
             var sql = @"INSERT INTO Users (Id, Username, FirstName, LastName, Email, PasswordHash)
-                VALUES (@Id, @Username, @FirstName, @LastName, @Email, @PasswordHash);";
+                      VALUES (@Id, @Username, @FirstName, @LastName, @Email, @PasswordHash);";
 
             _db.SaveData<User, dynamic>(sql, new
             {
@@ -31,7 +31,11 @@ namespace App.Repo
                 user.LastName,
                 user.Email,
                 user.PasswordHash
-            }, connectionName, false);
+            }, connectionName);
+
+            sql = "SELECT * FROM Users WHERE Id = @Id;";
+
+            return _db.LoadData<User, dynamic>(sql, new { user.Id }, connectionName).FirstOrDefault();
         }
 
     }

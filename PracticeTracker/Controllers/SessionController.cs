@@ -22,7 +22,15 @@ namespace PracticeTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(PracticeSession session)
         {
-             session.UserId = 1;
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized(); 
+            }
+
+            session.UserId = Guid.Parse(userIdClaim);
+
             if (ModelState.IsValid)
             {
                 _repo.Create(session);
@@ -30,6 +38,7 @@ namespace PracticeTracker.Controllers
             }
             return View(session);
         }
+
 
         public IActionResult Edit(int id)
         {
@@ -41,7 +50,7 @@ namespace PracticeTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(PracticeSession session)
         {
-            //TODO: Needs ModelState validation, SQL for Update method may need to be adjusted
+            
                 _repo.Update(session);
                 return RedirectToAction("UserHub", "Home");
         }

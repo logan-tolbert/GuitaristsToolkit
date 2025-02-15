@@ -20,16 +20,19 @@ public class UserRegistrationService
     {
         _repo = repo;
         _hasher = hasher;
-    } 
+    }
 
     public bool RegisterUser(string username, string firstName, string lastName, string email, string password, string connectionName)
     {
-        if (_repo.GetUserByEmailOrUsername(email, connectionName) != null)
+        
+        if (_repo.GetUserByEmailOrUsername(email, connectionName) != null ||
+            _repo.GetUserByEmailOrUsername(username, connectionName) != null)
+        {
             return false;
+        }
+
         var newUser = new User();
         var hashedPassword = _hasher.HashPassword(newUser, password);
-
-
 
         newUser.Id = Guid.NewGuid();
         newUser.Username = username;
@@ -38,9 +41,9 @@ public class UserRegistrationService
         newUser.Email = email;
         newUser.PasswordHash = hashedPassword;
 
-        _repo.Create(newUser, connectionName);
+        _repo.CreateUser(newUser, connectionName);
 
         return true;
-        
     }
+
 }

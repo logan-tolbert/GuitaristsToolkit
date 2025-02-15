@@ -1,11 +1,8 @@
 ﻿using App.Data.Context;
 using App.Models;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Repo
 {
@@ -27,7 +24,7 @@ namespace App.Repo
 
             var id = _db.LoadData<int, dynamic>(sql, new
             {
-                setlist.UserId,
+                UserId = setlist.UserId, 
                 setlist.Name,
                 setlist.CreatedAt
             }).FirstOrDefault();
@@ -44,7 +41,6 @@ namespace App.Repo
         public Setlist GetById(int id)
         {
             var sql = @"SELECT * FROM Setlists WHERE Id = @Id;";
-
             return _db.LoadData<Setlist, dynamic>(sql, new { Id = id }).Single();
         }
 
@@ -69,7 +65,7 @@ namespace App.Repo
                     setlist = new Setlist
                     {
                         Id = row.Id,
-                        UserId = row.UserId,
+                        UserId = row.UserId, // Ensure UserId is treated as a Guid
                         Name = row.Name,
                         CreatedAt = row.CreatedAt,
                         SetlistSongs = new List<SetlistSong>()
@@ -101,7 +97,7 @@ namespace App.Repo
             return setlistDictionary.Values.FirstOrDefault();
         }
 
-        public IEnumerable<SetlistSummary> GetSetlistsForUser(int userId)
+        public IEnumerable<SetlistSummary> GetSetlistsForUser(Guid userId)
         {
             var sql = @"
                         SELECT s.Id, s.Name AS Title, COUNT(ss.SongId) AS SongCount
@@ -113,7 +109,6 @@ namespace App.Repo
             return _db.LoadData<SetlistSummary, dynamic>(sql, new { UserId = userId });
         }
 
-
         public void AddSongToSetlist(SetlistSong setlistSong)
         {
             var sqlOrder = @"SELECT COALESCE(MAX(SongOrder), 0) + 1 FROM SetlistSongs WHERE SetlistId = @SetlistId;";
@@ -121,7 +116,7 @@ namespace App.Repo
 
             if (nextOrder == 0)
             {
-                nextOrder = 1; 
+                nextOrder = 1;
             }
 
             var sql = @"INSERT INTO SetlistSongs (SetlistId, SongId, SongOrder, Notes)
@@ -135,7 +130,6 @@ namespace App.Repo
                 setlistSong.Notes
             });
         }
-
 
         public void Delete(int id)
         {

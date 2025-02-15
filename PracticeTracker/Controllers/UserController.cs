@@ -4,7 +4,7 @@ using GuitaristsToolkit.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Controllers
+namespace GuitaristsToolkit.Controllers
 {
     public class UserController : Controller
     {

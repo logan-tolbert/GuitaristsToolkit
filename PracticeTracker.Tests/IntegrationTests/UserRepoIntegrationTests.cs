@@ -57,25 +57,34 @@ public class UserRepoIntegrationTests : IDisposable
         _db.SaveData<User, dynamic>(sql, parameters, connectionName, false);
 
     }
-
     [Fact]
     public void CreateUser_ShouldInsertUserSuccessfully()
     {
-        // Arrange & Act
-        InsertTestUser();
-        var sql = @"SELECT * FROM Users WHERE Email = @input OR Username = @input;";
-        var usr = "TestUser";
-        string connectionName = "Testing";
+        
+        CleanupTestData();
+
+        // Arrange
+        var testUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Username = "TestUser",
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "test@example.com",
+            PasswordHash = "TestPassword"
+        };
+
+        // Act
+        var result = _repo.CreateUser(testUser, "Testing");
 
         // Assert
-        var result = _db.LoadData<User, dynamic>(sql, new { input = usr }, connectionName, false).FirstOrDefault();
-
         Assert.NotNull(result);
-        Assert.Equal("TestUser", result.Username);
-        Assert.Equal("John", result.FirstName);
-        Assert.Equal("Doe", result.LastName);
-        Assert.Equal("testuser@example.com", result.Email);
+        Assert.Equal(testUser.Username, result.Username);
+        Assert.Equal(testUser.Email, result.Email);
+        Assert.True(result.CreatedAt > DateTime.MinValue);
     }
+
+
 
     [Fact]
     public void GetUserByEmailOrUsername_ShouldReturnCorrectUser()

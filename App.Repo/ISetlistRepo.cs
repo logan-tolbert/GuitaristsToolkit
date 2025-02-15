@@ -1,4 +1,6 @@
 ﻿using App.Models;
+using System;
+using System.Collections.Generic;
 
 namespace App.Repo
 {
@@ -9,8 +11,7 @@ namespace App.Repo
         Setlist GetById(int id);
         Setlist GetSetlistWithSongs(int id);
         void Delete(int id);
-        IEnumerable<SetlistSummary> GetSetlistsForUser(int userId);
-        public void AddSongToSetlist(SetlistSong setlistSong);
-
+        IEnumerable<SetlistSummary> GetSetlistsForUser(Guid userId);
+        void AddSongToSetlist(SetlistSong setlistSong);
     }
 }

@@ -6,169 +6,169 @@ using Moq;
 
 
 
-    public class PracticeSessionRepoTests
+public class PracticeSessionRepoTests
+{
+    private readonly Mock<ISqlDbContext> _mockDbContext;
+    private readonly PracticeSessionRepo _repo;
+
+    public PracticeSessionRepoTests()
     {
-        private readonly Mock<ISqlDbContext> _mockDbContext;
-        private readonly PracticeSessionRepo _repo;
+        _mockDbContext = new Mock<ISqlDbContext>();
+        _repo = new PracticeSessionRepo(_mockDbContext.Object);
+    }
 
-        public PracticeSessionRepoTests()
+    [Fact]
+    public void Create_ShouldSaveSession()
+    {
+        // Arrange
+        var session = new PracticeSession
         {
-            _mockDbContext = new Mock<ISqlDbContext>();
-            _repo = new PracticeSessionRepo(_mockDbContext.Object);
-        }
+            UserId = Guid.NewGuid(),
+            CreatedAt = DateTime.Now,
+            DurationMinutes = 60,
+            FocusArea = "Technique",
+            Notes = "Focus on scales"
+        };
 
-        [Fact]
-        public void Create_ShouldSaveSession()
-        {
-            // Arrange
-            var session = new PracticeSession
-            {
-                UserId = 1,
-                CreatedAt = DateTime.Now,
-                DurationMinutes = 60,
-                FocusArea = "Technique",
-                Notes = "Focus on scales"
-            };
+        // Act 
+        _repo.Create(session);
 
-            // Act 
-            _repo.Create(session);
-
-            // Assert
+        // Assert
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
-                       It.Is<string>(sql => sql.Contains("INSERT INTO PracticeSessions")),
-                       It.Is<object>(param =>
-                           param.GetType().GetProperty("UserId").GetValue(param).Equals(session.UserId) &&
-                           param.GetType().GetProperty("CreatedAt").GetValue(param).Equals(session.CreatedAt) &&
-                           param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
-                           param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
-                           param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes)
-                       ),
-                       It.IsAny<string>(),
-                       false
-                   ), Times.Once);
+        _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
+                   It.Is<string>(sql => sql.Contains("INSERT INTO PracticeSessions")),
+                   It.Is<object>(param =>
+                       param.GetType().GetProperty("UserId").GetValue(param).Equals(session.UserId) &&
+                       param.GetType().GetProperty("CreatedAt").GetValue(param).Equals(session.CreatedAt) &&
+                       param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
+                       param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
+                       param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes)
+                   ),
+                   It.IsAny<string>(),
+                   false
+               ), Times.Once);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-        }
+    }
 
-        [Fact]
-        public void GetAll_ShouldReturnAllPracticeSessions()
-        {
-            // Arrange
-            var practiceSessions = new List<PracticeSession>
+    [Fact]
+    public void GetAll_ShouldReturnAllPracticeSessions()
+    {
+        // Arrange
+        var practiceSessions = new List<PracticeSession>
                 {
-                    new PracticeSession { Id = 1, UserId = 1, CreatedAt = DateTime.Now, DurationMinutes = 60, FocusArea = "Technique" },
-                    new PracticeSession { Id = 2, UserId = 2, CreatedAt = DateTime.Now, DurationMinutes = 45, FocusArea = "Repertoire" }
+                    new PracticeSession { Id = 1, UserId = Guid.NewGuid(), CreatedAt = DateTime.Now, DurationMinutes = 60, FocusArea = "Technique" },
+                    new PracticeSession { Id = 2, UserId = Guid.NewGuid(), CreatedAt = DateTime.Now, DurationMinutes = 45, FocusArea = "Repertoire" }
                 };
 
-            _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false))
-                .Returns(practiceSessions);
+        _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
+            It.IsAny<string>(),
+            It.IsAny<object>(),
+            It.IsAny<string>(),
+            false))
+            .Returns(practiceSessions);
 
-            // Act
-            var result = _repo.GetAll();
+        // Act
+        var result = _repo.GetAll();
 
-            // Assert
-            Assert.Equal(practiceSessions, result);
-        }
-
-        [Fact]
-        public void GetById_ShouldReturnMatch_WhenValidIdIsProvided()
+        // Assert
+        Assert.Equal(practiceSessions, result);
+    }
+    [Fact]
+    public void GetById_ShouldReturnMatch_WhenValidIdIsProvided()
+    {
+        // Arrange
+        var id = 1;
+        var userId = Guid.NewGuid();
+        var expectedSession = new PracticeSession
         {
-            // Arrange
-            var id = 1;
+            Id = 1,
+            UserId = userId,
+            CreatedAt = DateTime.Now,
+            DurationMinutes = 60,
+            FocusArea = "Technique"
+        };
 
-            var expectedSession = new PracticeSession
-            {
-                Id = 1,
-                UserId = 1,
-                CreatedAt = DateTime.Now,
-                DurationMinutes = 60,
-                FocusArea = "Technique"
-            };
+        var practiceSessions = new List<PracticeSession>
+    {
+        expectedSession,
+        new PracticeSession { Id = 2, UserId = userId, CreatedAt = DateTime.Now, DurationMinutes = 60, FocusArea = "Scales" }
+    };
 
-            var practiceSessions = new List<PracticeSession>
-            {
-             expectedSession,
-            new PracticeSession { Id = 2, UserId = 2, CreatedAt = DateTime.Now, DurationMinutes = 45, FocusArea = "Scales" }
-            };
+        _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
+            It.IsAny<string>(),
+            It.IsAny<object>(),
+            It.IsAny<string>(),
+            false))
+            .Returns(practiceSessions.Where(ps => ps.Id == id));
 
-            _mockDbContext.Setup(db => db.LoadData<PracticeSession, object>(
-                It.IsAny<string>(),
-                It.IsAny<object>(),
-                It.IsAny<string>(),
-                false))
-                .Returns(practiceSessions.Where(ps => ps.Id == id));
+        // Act
+        var result = _repo.GetById(id);
 
-            // Act
-            var result = _repo.GetById(id);
+        // Assert
+        Assert.Equal(expectedSession, result);
+    }
 
-            // Assert
-            Assert.Equal(expectedSession, result);
-        }
 
-        [Fact]
-        public void Update_ShouldModifySession_WhenCalledWithValidSession()
+    [Fact]
+    public void Update_ShouldModifySession_WhenCalledWithValidSession()
+    {
+        // Arrange
+        var session = new PracticeSession
         {
-            // Arrange
-            var session = new PracticeSession
-            {
-                Id = 1,
-                UserId = 1,
-                CreatedAt = DateTime.Now,
-                DurationMinutes = 60,
-                FocusArea = "Technique",
-                Notes = "Focus on arpeggios"
-            };
+            Id = 1,
+            UserId = Guid.NewGuid(),
+            CreatedAt = DateTime.Now,
+            DurationMinutes = 60,
+            FocusArea = "Technique",
+            Notes = "Focus on arpeggios"
+        };
 
-            // Act
-            _repo.Update(session);
+        // Act
+        _repo.Update(session);
 
-            // Assert
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
-                       It.Is<string>(sql => sql.Contains("UPDATE PracticeSessions")),
-                       It.Is<object>(param =>
-                           param.GetType().GetProperty("CreatedAt").GetValue(param).Equals(session.CreatedAt) &&
-                           param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
-                           param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
-                           param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes) &&
-                           param.GetType().GetProperty("Id").GetValue(param).Equals(session.Id)
-                       ),
-                       It.IsAny<string>(),
-                       false
-                   ), Times.Once);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-        }
+        // Assert
 
-
-        [Fact]
-        public void Delete_ShouldDeleteSession()
-        {
-            // Arrange
-            var id = 1;
-
-            // Act
-            _repo.Delete(id);
-
-            // Assert
-            _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
-                It.Is<string>(sql => sql.Contains("DELETE FROM PracticeSessions WHERE Id = @Id")),
-                It.Is<object>(param => IsMatchingId(param, id)),
-                It.IsAny<string>(),
-                false
-            ), Times.Once); 
-        }
-        private bool IsMatchingId(object param, int expectedId)
-        {
-            var idProperty = param.GetType().GetProperty("Id");
-            if (idProperty == null) return false;
-
-            var value = idProperty.GetValue(param);
-            return value is int intValue && intValue == expectedId;
-        }
+        _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
+                   It.Is<string>(sql => sql.Contains("UPDATE PracticeSessions")),
+                   It.Is<object>(param =>
+                       param.GetType().GetProperty("CreatedAt").GetValue(param).Equals(session.CreatedAt) &&
+                       param.GetType().GetProperty("DurationMinutes").GetValue(param).Equals(session.DurationMinutes) &&
+                       param.GetType().GetProperty("FocusArea").GetValue(param).Equals(session.FocusArea) &&
+                       param.GetType().GetProperty("Notes").GetValue(param).Equals(session.Notes) &&
+                       param.GetType().GetProperty("Id").GetValue(param).Equals(session.Id)
+                   ),
+                   It.IsAny<string>(),
+                   false
+               ), Times.Once);
 
     }
+
+
+    [Fact]
+    public void Delete_ShouldDeleteSession()
+    {
+        // Arrange
+        var id = 1;
+
+        // Act
+        _repo.Delete(id);
+
+        // Assert
+        _mockDbContext.Verify(db => db.SaveData<PracticeSession, object>(
+            It.Is<string>(sql => sql.Contains("DELETE FROM PracticeSessions WHERE Id = @Id")),
+            It.Is<object>(param => IsMatchingId(param, id)),
+            It.IsAny<string>(),
+            false
+        ), Times.Once);
+    }
+    private bool IsMatchingId(object param, int expectedId)
+    {
+        var idProperty = param.GetType().GetProperty("Id");
+        if (idProperty == null) return false;
+
+        var value = idProperty.GetValue(param);
+        return value is int intValue && intValue == expectedId;
+    }
+
+}
 

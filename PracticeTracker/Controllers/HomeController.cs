@@ -4,7 +4,7 @@ using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
 using PracticeTracker.Models;
 
-namespace PracticeTracker.Controllers;
+namespace GuitaristsToolkit.Controllers;
 
 public class HomeController : Controller
 {

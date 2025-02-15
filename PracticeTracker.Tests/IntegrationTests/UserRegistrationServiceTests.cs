@@ -63,21 +63,21 @@ public class UserRegistrationServiceTests : IDisposable
     [Fact]
     public void RegisterUser_ShouldFail_WhenUserAlreadyExists()
     {
+        
+        CleanupTestData();
+
         // Arrange 
-        var username = "TestUser";
-        var firstName = "John";
-        var lastName = "doe";
-        var email = "testuser@example.com";
-        var password = "password";
-        string connectionName = "Testing";
+        var result1 = _registration.RegisterUser("TestUser", "John", "Doe", "test@example.com", "TestPassword", "Testing");
+        Assert.True(result1); 
 
-        // Act
-        _registration.RegisterUser(username, firstName, lastName, email, password, connectionName);
-        var result = _registration.RegisterUser(username, firstName, lastName, email, password, connectionName);
+        // Act 
+        var result2 = _registration.RegisterUser("TestUser", "John", "Doe", "test@example.com", "TestPassword", "Testing");
 
-        // Assert
-        Assert.False(result);
+        // Assert 
+        Assert.False(result2);
     }
+
+
 
     [Fact]
     public void RegisterUser_ShouldHashPasswordBeforeStoring()

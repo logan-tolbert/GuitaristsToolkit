@@ -3,13 +3,14 @@ using App.Models;
 using App.Repo;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using System.Security.Claims;
 
-namespace PracticeTracker.Controllers
+namespace GuitaristsToolkit.Controllers
 {
     public class SetlistController : Controller
     {
-        private ISetlistRepo _repo;
-        private ISongRepo _songRepo;
+        private readonly ISetlistRepo _repo;
+        private readonly ISongRepo _songRepo;
 
         public SetlistController(ISetlistRepo repo, ISongRepo songRepo)
         {
@@ -26,21 +27,28 @@ namespace PracticeTracker.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Songs = _repo.GetAll(); 
+            ViewBag.Songs = _repo.GetAll();
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(Setlist setlist)
         {
-            setlist.UserId = 1;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized(); 
+            }
+
+            setlist.UserId = Guid.Parse(userIdClaim); 
             setlist.CreatedAt = DateTime.UtcNow;
 
-            ViewBag.Songs = _repo.GetAll();
             int setListId = _repo.Create(setlist);
 
             return RedirectToAction("Edit", new { id = setListId });
         }
+
         [HttpPost]
         public IActionResult AddSong(int setlistId, string songTitle, string? songKey, int? songBPM, int? songDuration, string? notes)
         {
@@ -53,26 +61,31 @@ namespace PracticeTracker.Controllers
                 Notes = notes
             };
 
-            int songId = _songRepo.Create(song); 
+            int songId = _songRepo.Create(song);
 
             var setlistSong = new SetlistSong
             {
                 SetlistId = setlistId,
                 SongId = songId,
-                SongOrder = 0 
+                SongOrder = 0
             };
 
             _repo.AddSongToSetlist(setlistSong);
 
-            return RedirectToAction("Edit", new { id = setlistId }); 
+            return RedirectToAction("Edit", new { id = setlistId });
         }
-
-
 
         [HttpGet]
         public IActionResult GetUserSetlists()
         {
-            int userId = 1;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized();
+            }
+
+            var userId = Guid.Parse(userIdClaim);
             var setlists = _repo.GetSetlistsForUser(userId);
 
             Console.WriteLine("Setlist Results: " + JsonSerializer.Serialize(setlists));
@@ -90,12 +103,10 @@ namespace PracticeTracker.Controllers
         public IActionResult Edit(int id)
         {
             var setlist = _repo.GetSetlistWithSongs(id);
-            var songs = _repo.GetAll(); 
+            var songs = _repo.GetAll();
 
             ViewBag.Songs = songs;
-
             return View(setlist);
         }
-
     }
 }

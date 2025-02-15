@@ -9,7 +9,7 @@ namespace App.Models
     public class PracticeSession
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public DateTime CreatedAt { get; set; }
         public int DurationMinutes { get; set; }
         public string FocusArea { get; set; } = null!;
