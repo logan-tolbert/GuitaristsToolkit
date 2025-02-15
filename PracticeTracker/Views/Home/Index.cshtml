@@ -1,8 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome To The Guitarist's Toolkit!</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>Welcome to The Guitarist's Toolkit</h1>
+    <p>Manage your setlists and track your practice sessions with ease.</p>
+
+    @if (string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+    {
+        <a class="btn btn-primary" asp-controller="User" asp-action="Login">Login</a>
+        <a class="btn btn-secondary" asp-controller="User" asp-action="Register">Register</a>
+    }
 </div>
