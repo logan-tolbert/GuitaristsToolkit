@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using App.Repo;
-using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
 using PracticeTracker.Models;
 
@@ -22,16 +21,19 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        ViewData["ShowLogin"] = true;
         return View();
     }
 
     public IActionResult Privacy()
     {
+        ViewData["ShowLogin"] = false;
         return View();
     }
 
     public IActionResult UserHub()
     {
+        ViewData["ShowLogin"] = false;
         var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userIdClaim))
         {
@@ -55,6 +57,7 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        ViewData["ShowLogin"] = false;
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

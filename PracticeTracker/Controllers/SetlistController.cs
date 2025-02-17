@@ -20,6 +20,7 @@ namespace GuitaristsToolkit.Controllers
 
         public IActionResult Index(int id)
         {
+            ViewData["ShowLogin"] = false;
             var setlist = _repo.GetSetlistWithSongs(id);
             return View(setlist);
         }
@@ -27,6 +28,7 @@ namespace GuitaristsToolkit.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewData["ShowLogin"] = false;
             ViewBag.Songs = _repo.GetAll();
             return View();
         }
@@ -78,6 +80,7 @@ namespace GuitaristsToolkit.Controllers
         [HttpGet]
         public IActionResult GetUserSetlists()
         {
+            ViewData["ShowLogin"] = false;
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(userIdClaim))
@@ -95,6 +98,7 @@ namespace GuitaristsToolkit.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
+            ViewData["ShowLogin"] = false;
             var setlist = _repo.GetSetlistWithSongs(id);
             return View(setlist);
         }
@@ -102,6 +106,7 @@ namespace GuitaristsToolkit.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            ViewData["ShowLogin"] = false;
             var setlist = _repo.GetSetlistWithSongs(id);
             var songs = _repo.GetAll();
 

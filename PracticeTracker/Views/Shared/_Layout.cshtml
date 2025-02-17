@@ -30,7 +30,7 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        @if (string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+                        @if (ViewData["ShowLogin"] as bool? == true)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="User" asp-action="Login">Login</a>
@@ -42,10 +42,17 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="User" asp-action="Logout">Logout</a>
+                                <form asp-controller="User" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-link nav-link" style="border: none; background: none; padding: 0; cursor: pointer;">
+                                        Logout
+                                    </button>
+                                </form>
+
                             </li>
                         }
                     </ul>
+
                 </div>
             </div>
         </nav>

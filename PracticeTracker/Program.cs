@@ -10,15 +10,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ISqlDbContext, SqlDbContext>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/User/Login"; 
+        options.LoginPath = "/User/Login";
         options.AccessDeniedPath = "/Home/Error";
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(60); 
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
     });
 
 builder.Services.AddScoped<UserRegistrationService>();
@@ -41,10 +45,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
-
 app.UseSession();
-app.UseAuthentication(); 
+app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

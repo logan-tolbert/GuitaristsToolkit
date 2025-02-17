@@ -16,6 +16,7 @@ namespace PracticeTracker.Controllers
         //GET: Session/Create
         public IActionResult Create()
         {
+            ViewData["ShowLogin"] = false;
             return View();
         }
 
@@ -53,6 +54,7 @@ namespace PracticeTracker.Controllers
 
         public IActionResult Edit(int id)
         {
+            ViewData["ShowLogin"] = false;
             var session = _repo.GetById(id);
             return View(session);
         }

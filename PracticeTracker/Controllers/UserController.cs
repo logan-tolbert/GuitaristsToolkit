@@ -81,9 +81,11 @@ public class UserController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Logout()
     {
-        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("Login");
+        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
+        return RedirectToAction("Index", "Home");
     }
+
 }
