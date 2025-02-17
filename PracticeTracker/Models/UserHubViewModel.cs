@@ -4,8 +4,9 @@ namespace PracticeTracker.Models
 {
     public class UserHubViewModel
     {
-        public int UserId { get; set; }
-        public string Username { get; set; } = null!;
+        public Guid UserId { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public List<PracticeSession> PracticeSessions { get; set; } = new List<PracticeSession>();
         public List<SetlistSummary> Setlists { get; set; } = new List<SetlistSummary>();
     }
 }

@@ -68,4 +68,10 @@
     <Build Include="dbo\tables\Songs.sql" />
     <Build Include="dbo\tables\Users.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="scripts\Script.PostDeployment1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\PublishProfiles\DEV-GuitaristsToolkitDB.publish.publish.xml" />
+  </ItemGroup>
 </Project>
