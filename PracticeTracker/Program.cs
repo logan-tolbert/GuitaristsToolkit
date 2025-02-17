@@ -22,7 +22,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Home/Error";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
         options.Cookie.HttpOnly = true;
-        options.Cookie.IsEssential = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.SlidingExpiration = true; 
     });
 
 builder.Services.AddScoped<UserRegistrationService>();
