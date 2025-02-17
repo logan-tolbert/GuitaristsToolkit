@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace App.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace App.Models
+public class SetlistSong
 {
-    
-    public class SetlistSong
-    {
-        public int SetlistId { get; set; }
-        public int SongId { get; set; }
-        public int SongOrder { get; set; }
-        public string Notes { get; set; } = string.Empty;
+    public int SetlistId { get; set; }
 
-        public Song Song { get; set; } = new();
-    }
+    public int SongId { get; set; }
+
+    [Range(1, int.MaxValue, ErrorMessage = "Song order must be at least 1.")]
+    public int SongOrder { get; set; }
+
+    [StringLength(1000, ErrorMessage = "Notes cannot be more than 1000 characters.")]
+    public string? Notes { get; set; }
+
+    public Song Song { get; set; } = new();
 }
