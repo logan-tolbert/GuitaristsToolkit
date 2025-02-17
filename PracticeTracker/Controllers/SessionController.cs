@@ -1,6 +1,7 @@
 ﻿using App.Models;
 using App.Repo;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace PracticeTracker.Controllers
 {
@@ -22,23 +23,33 @@ namespace PracticeTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(PracticeSession session)
         {
-            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim))
             {
-                return Unauthorized(); 
+                return Unauthorized();
             }
 
             session.UserId = Guid.Parse(userIdClaim);
+            session.CreatedAt = DateTime.UtcNow;
 
-            if (ModelState.IsValid)
+            ModelState.Remove("User");
+
+            if (!ModelState.IsValid)
+            {
+                return View(session);
+            }
+
+            try
             {
                 _repo.Create(session);
                 return RedirectToAction("UserHub", "Home");
             }
-            return View(session);
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while saving the session.");
+                return View(session);
+            }
         }
-
 
         public IActionResult Edit(int id)
         {
@@ -50,9 +61,9 @@ namespace PracticeTracker.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(PracticeSession session)
         {
-            
-                _repo.Update(session);
-                return RedirectToAction("UserHub", "Home");
+
+            _repo.Update(session);
+            return RedirectToAction("UserHub", "Home");
         }
 
         public IActionResult Delete(int id)

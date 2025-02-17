@@ -20,7 +20,7 @@ namespace App.Repo
         public void Create(PracticeSession session)
         {
             var sql = @"INSERT INTO PracticeSessions
-                        (UserId, Date, DurationMinutes, FocusArea, Notes)
+                        (UserId, CreatedAt, DurationMinutes, FocusArea, Notes)
                         VALUES (@UserId, @CreatedAt, @DurationMinutes, @FocusArea, @Notes);";
 
             _db.SaveData<PracticeSession, dynamic>(sql, new
