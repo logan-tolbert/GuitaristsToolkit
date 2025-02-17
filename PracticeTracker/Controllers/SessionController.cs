@@ -13,7 +13,22 @@ namespace PracticeTracker.Controllers
             _repo = repo;
         }
 
-        //GET: Session/Create
+        public IActionResult ViewAll()
+        {
+            ViewData["ShowLogin"] = false;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized();
+            }
+
+            var userId = Guid.Parse(userIdClaim);
+            var sessions = _repo.GetAll().Where(s => s.UserId == userId).ToList();
+
+            return View(sessions);
+        }
+
+
         public IActionResult Create()
         {
             ViewData["ShowLogin"] = false;

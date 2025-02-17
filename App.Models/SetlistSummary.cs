@@ -13,6 +13,6 @@ namespace App.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public int SongCount { get; set; }
+        public int SongCount { get; set; } = 0;
     }
 }

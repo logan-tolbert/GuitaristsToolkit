@@ -1,0 +1,43 @@
+﻿@using App.Models
+@model IEnumerable<PracticeSession>
+
+@{
+    ViewData["Title"] = "All Practice Sessions";
+}
+
+<h2>All Practice Sessions</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Duration (minutes)</th>
+            <th>Focus Area</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var session in Model)
+        {
+            <tr>
+                <td>@session.CreatedAt.ToShortDateString()</td>
+                <td>@session.DurationMinutes</td>
+                <td>@session.FocusArea</td>
+                <td class="text-center">
+                    <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-success btn-sm text-light px-3 py-1">
+                        Edit
+                    </a>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-session-id="@session.Id">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    <script src="~/js/delete-session-modal.js"></script>
+}
