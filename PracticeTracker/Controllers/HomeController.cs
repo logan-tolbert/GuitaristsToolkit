@@ -26,7 +26,15 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        ViewData["ShowLogin"] = true;
+        if(!User.Identity!.IsAuthenticated)
+        {
+            ViewData["ShowLogin"] = true;
+        }
+        else
+        {
+            ViewData["ShowLogin"] = false;
+        }
+            
 
         return View();
     }

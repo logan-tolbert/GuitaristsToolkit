@@ -4,11 +4,44 @@
 
 <div class="text-center">
     <h1>Welcome to The Guitarist's Toolkit</h1>
-    <p>Manage your setlists and track your practice sessions with ease.</p>
+    <p>Your all-in-one app for organizing setlists and tracking your practice sessions.</p>
 
-    @if (string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+    @if (!User.Identity.IsAuthenticated)
     {
-        <a class="btn btn-primary" asp-controller="User" asp-action="Login">Login</a>
-        <a class="btn btn-secondary" asp-controller="User" asp-action="Register">Register</a>
+        <a class="btn btn-primary btn-lg" asp-controller="User" asp-action="Register">Sign Up</a>
+
+        <hr class="my-4">
+
+        <h2>Why Use Guitarist's Toolkit?</h2>
+        <div class="d-flex justify-content-center">
+            <div class="card m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">🎵 Organize Your Setlists</h5>
+                    <p class="card-text">Easily create, manage, and reorder songs for gigs or jam sessions.</p>
+                </div>
+            </div>
+            <div class="card m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">🎯 Track Your Practice</h5>
+                    <p class="card-text">Log your practice sessions and monitor your progress over time.</p>
+                </div>
+            </div>
+            <div class="card m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">🚀 Improve Efficiency</h5>
+                    <p class="card-text">Plan gigs effectively with a structured approach to song management.</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h2>Welcome back, @User.Identity.Name!</h2>
+        <p>Ready to get started? Jump right back into your toolkit.</p>
+
+        <div class="mt-4">
+            <a class="btn btn-success btn-lg" asp-controller="Home" asp-action="UserHub">Go to User Hub</a>
+            <a class="btn btn-info btn-lg" asp-controller="Setlist" asp-action="ViewAll">View Your Setlists</a>
+        </div>
     }
 </div>
