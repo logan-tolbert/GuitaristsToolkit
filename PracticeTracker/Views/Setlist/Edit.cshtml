@@ -28,11 +28,13 @@
                     <td>@song.Song.DurationMinutes</td>
                     <td>@song.Notes</td>
                     <td>
-                        <form asp-controller="Setlist" asp-action="RemoveSong" method="post">
-                            <input type="hidden" name="setlistId" value="@Model.Id" />
-                            <input type="hidden" name="songId" value="@song.Song.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                        </form>
+                        <a asp-controller="Song" asp-action="Edit" asp-route-id="@song.Song.Id" asp-route-setlistId="@Model.Id" class="btn btn-success btn-sm">
+                            Edit
+                        </a>
+                        <button class="btn btn-danger btn-sm delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                data-song-id="@song.Song.Id" data-setlist-id="@Model.Id">
+                            Delete
+                        </button>
                     </td>
                 </tr>
             }
@@ -72,4 +74,32 @@
     <button type="submit" class="btn btn-primary">Add Song</button>
 </form>
 
-<a asp-controller="Setlist" asp-action="Index" class="btn btn-secondary mt-3">Back to Setlists</a>
+<a asp-controller="Setlist" asp-action="ViewAll" class="btn btn-secondary mt-3">Back to Setlists</a>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove this song?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    <input type="hidden" id="songIdInput" name="id" />
+                    <input type="hidden" id="setlistIdInput" name="setlistId" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/delete-setlist-song.js"></script>
+}

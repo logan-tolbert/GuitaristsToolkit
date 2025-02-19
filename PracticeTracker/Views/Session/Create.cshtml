@@ -8,12 +8,14 @@
    <div class="col-md-8">  
        <h2 class="text-center mb-4">New Session</h2>  
        <form asp-action="Create">  
-           @Html.AntiForgeryToken()
            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           <div class="form-group">  
-               <label asp-for="CreatedAt">Date:</label>  
-               <input asp-for="CreatedAt" type="date" class="form-control" required>
-               <span asp-validation-for="CreatedAt" class="text-danger"></span>
+           <div class="form-group">
+                <label asp-for="CreatedAt">Date:</label>
+                <input type="date" id="Date" asp-for="CreatedAt" class="form-control"
+                       value="@Model.CreatedAt.ToString("yyyy-MM-dd")"
+                       max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
+                       required />
+                <span asp-validation-for="CreatedAt" class="text-danger"></span>
            </div>  
            <div class="form-group">  
                <label asp-for="DurationMinutes">Duration (minutes):</label>  
@@ -31,8 +33,8 @@
                <span asp-validation-for="Notes" class="text-danger"></span>
            </div>
             <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
-                <a asp-controller="Home" asp-action="UserHub" class="btn btn-primary">Back To Hub</a>
+                <input type="submit" value="Submit" class="btn btn-success" />
+                <a asp-controller="Home" asp-action="UserHub" class="btn btn-danger">Cancel</a>
             </div>
         </form>  
    </div>  

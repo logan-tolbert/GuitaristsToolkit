@@ -55,6 +55,7 @@ namespace App.Repo
 
             _db.SaveData<Song, dynamic>(sql, new
             {
+                song.Id,
                 song.Title,
                 song.Key,
                 song.BPM,
@@ -65,9 +66,11 @@ namespace App.Repo
 
         public void Delete(int id)
         {
-            var sql = @"DELETE FROM Songs WHERE Id = @Id;";
+            var sql = @"DELETE FROM SetlistSongs WHERE SongId = @Id;
+                        DELETE FROM Songs WHERE Id = @Id;";
 
             _db.SaveData<Song, dynamic>(sql, new { Id = id });
         }
+
     }
 }

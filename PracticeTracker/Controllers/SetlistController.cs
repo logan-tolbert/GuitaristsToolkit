@@ -1,117 +1,135 @@
-﻿using App.Data.Context;
+﻿namespace GuitaristsToolkit.Controllers;
+
 using App.Models;
 using App.Repo;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Security.Claims;
 
-namespace GuitaristsToolkit.Controllers
+
+[AutoValidateAntiforgeryToken]
+public class SetlistController : Controller
 {
-    public class SetlistController : Controller
+    private readonly ISetlistRepo _repo;
+    private readonly ISongRepo _songRepo;
+
+    public SetlistController(ISetlistRepo repo, ISongRepo songRepo)
     {
-        private readonly ISetlistRepo _repo;
-        private readonly ISongRepo _songRepo;
+        _repo = repo;
+        _songRepo = songRepo;
+    }
 
-        public SetlistController(ISetlistRepo repo, ISongRepo songRepo)
+    [HttpGet]
+    public IActionResult Create()
+    {
+        ViewData["ShowLogin"] = false;
+        ViewBag.Songs = _repo.GetAll();
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Create(Setlist setlist)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
         {
-            _repo = repo;
-            _songRepo = songRepo;
+            return Unauthorized(); 
         }
 
-        public IActionResult Index(int id)
+        setlist.UserId = Guid.Parse(userIdClaim); 
+        setlist.CreatedAt = DateTime.UtcNow;
+
+        int setListId = _repo.Create(setlist);
+
+        return RedirectToAction("Edit", new { id = setListId });
+    }
+
+    [HttpPost]
+    public IActionResult AddSong(int setlistId, string songTitle, string? songKey, int? songBPM, int? songDuration, string? notes)
+    {
+        var song = new Song
         {
-            ViewData["ShowLogin"] = false;
-            var setlist = _repo.GetSetlistWithSongs(id);
-            return View(setlist);
+            Title = songTitle,
+            Key = songKey,
+            BPM = songBPM,
+            DurationMinutes = songDuration,
+            Notes = notes
+        };
+
+        int songId = _songRepo.Create(song);
+
+        var setlistSong = new SetlistSong
+        {
+            SetlistId = setlistId,
+            SongId = songId,
+            SongOrder = 0,
+            Notes = song.Notes
+        };
+
+        _repo.AddSongToSetlist(setlistSong);
+
+        return RedirectToAction("Edit", new { id = setlistId });
+    }
+
+    [HttpGet]
+    public IActionResult ViewAll()
+    {
+        ViewData["ShowLogin"] = false;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+        {
+            return Unauthorized();
         }
 
-        [HttpGet]
-        public IActionResult Create()
+        var userId = Guid.Parse(userIdClaim);
+        var setlists = _repo.GetSetlistsForUser(userId);
+
+        return View(setlists);
+    }
+
+
+    [HttpGet]
+    public IActionResult Details(int id)
+    {
+        ViewData["ShowLogin"] = false;
+        var setlist = _repo.GetSetlistWithSongs(id);
+        return View(setlist);
+    }
+
+    [HttpGet]
+    public IActionResult Edit(int id)
+    {
+        ViewData["ShowLogin"] = false;
+        var setlist = _repo.GetSetlistWithSongs(id);
+        var songs = _repo.GetAll();
+
+        ViewBag.Songs = songs;
+        return View(setlist);
+    }
+
+    [HttpPost]
+    public IActionResult Delete(int id)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
         {
-            ViewData["ShowLogin"] = false;
-            ViewBag.Songs = _repo.GetAll();
-            return View();
+            return Unauthorized();
         }
 
-        [HttpPost]
-        public IActionResult Create(Setlist setlist)
+        try
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userIdClaim))
-            {
-                return Unauthorized(); 
-            }
-
-            setlist.UserId = Guid.Parse(userIdClaim); 
-            setlist.CreatedAt = DateTime.UtcNow;
-
-            int setListId = _repo.Create(setlist);
-
-            return RedirectToAction("Edit", new { id = setListId });
+            _repo.Delete(id);
+            
+            return RedirectToAction("ViewAll", "Setlist");
         }
-
-        [HttpPost]
-        public IActionResult AddSong(int setlistId, string songTitle, string? songKey, int? songBPM, int? songDuration, string? notes)
+        catch (Exception ex)
         {
-            var song = new Song
-            {
-                Title = songTitle,
-                Key = songKey,
-                BPM = songBPM,
-                DurationMinutes = songDuration,
-                Notes = notes
-            };
-
-            int songId = _songRepo.Create(song);
-
-            var setlistSong = new SetlistSong
-            {
-                SetlistId = setlistId,
-                SongId = songId,
-                SongOrder = 0
-            };
-
-            _repo.AddSongToSetlist(setlistSong);
-
-            return RedirectToAction("Edit", new { id = setlistId });
-        }
-
-        [HttpGet]
-        public IActionResult GetUserSetlists()
-        {
-            ViewData["ShowLogin"] = false;
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userIdClaim))
-            {
-                return Unauthorized();
-            }
-
-            var userId = Guid.Parse(userIdClaim);
-            var setlists = _repo.GetSetlistsForUser(userId);
-
-            Console.WriteLine("Setlist Results: " + JsonSerializer.Serialize(setlists));
-            return Json(setlists);
-        }
-
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            ViewData["ShowLogin"] = false;
-            var setlist = _repo.GetSetlistWithSongs(id);
-            return View(setlist);
-        }
-
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            ViewData["ShowLogin"] = false;
-            var setlist = _repo.GetSetlistWithSongs(id);
-            var songs = _repo.GetAll();
-
-            ViewBag.Songs = songs;
-            return View(setlist);
+            return RedirectToAction("ViewAll", "Setlist");
         }
     }
+
+
 }

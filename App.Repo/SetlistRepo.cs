@@ -133,8 +133,11 @@ namespace App.Repo
 
         public void Delete(int id)
         {
-            var sql = @"DELETE FROM Setlists WHERE Id = @Id;";
-            _db.SaveData<Setlist, dynamic>(sql, new { Id = id });
+            var sql = @" DELETE FROM SetlistSongs WHERE SetlistId = @id;
+                         DELETE FROM Setlists WHERE Id = @id;";
+
+            _db.SaveData<dynamic, dynamic>(sql, new { id = id });
         }
+
     }
 }

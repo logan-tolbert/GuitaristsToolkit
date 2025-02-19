@@ -9,7 +9,7 @@ public class Song
     [StringLength(255, MinimumLength = 1)]
     public string Title { get; set; } = string.Empty;
 
-    [RegularExpression(@"^[A-Ga-g][#b]?[m]?", ErrorMessage = "Invalid musical key format.")]
+    
     public string? Key { get; set; }
 
     [Range(30, 300, ErrorMessage = "BPM must be between 30 and 300.")]

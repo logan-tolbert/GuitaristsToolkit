@@ -1,0 +1,40 @@
+﻿
+@model App.Models.Song
+@{
+}
+<h3>Edit Song</h3>
+<form asp-controller="Song" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" name="setlistId" value="@ViewBag.SetlistId" />
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label">Song Title</label>
+        <input asp-for="Title" type="text" class="form-control" required />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Key" class="form-label">Key</label>
+        <input asp-for="Key" type="text" class="form-control" />
+        <span asp-validation-for="Key" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BPM" class="form-label">BPM</label>
+        <input asp-for="BPM" type="number" class="form-control" />
+        <span asp-validation-for="BPM" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DurationMinutes" class="form-label">Duration (min)</label>
+        <input asp-for="DurationMinutes" type="number" class="form-control" />
+        <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label">Notes (Optional)</label>
+        <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

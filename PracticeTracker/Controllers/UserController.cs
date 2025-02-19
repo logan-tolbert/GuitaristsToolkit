@@ -1,4 +1,5 @@
 ﻿namespace GuitaristsToolkit.Controllers;
+
 using App.Services;
 using GuitaristsToolkit.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-
+[AutoValidateAntiforgeryToken]
 public class UserController : Controller
 {
     private readonly UserAuthenticationService _authService;
@@ -81,10 +82,9 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
-        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
 

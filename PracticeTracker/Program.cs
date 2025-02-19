@@ -11,7 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ISqlDbContext, SqlDbContext>();
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -22,13 +27,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Home/Error";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
         options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+            ? CookieSecurePolicy.None
+            : CookieSecurePolicy.Always;
         options.Cookie.SameSite = SameSiteMode.Lax;
-        options.SlidingExpiration = true; 
+        options.SlidingExpiration = true;
     });
 
-builder.Services.AddScoped<UserRegistrationService>();
-builder.Services.AddScoped<UserAuthenticationService>();
+builder.Services.AddSingleton<UserRegistrationService>();
+builder.Services.AddSingleton<UserAuthenticationService>();
 builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher>();
 
 builder.Services.AddScoped<IUserRepo, UserRepo>();
@@ -48,6 +55,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseSession();
+app.UseCookiePolicy();  
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

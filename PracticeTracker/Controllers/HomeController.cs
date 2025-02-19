@@ -1,11 +1,15 @@
+namespace GuitaristsToolkit.Controllers;
+
 using App.Models;
 using App.Repo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PracticeTracker.Models;
 using System.Diagnostics;
 
-namespace GuitaristsToolkit.Controllers;
 
+
+[AutoValidateAntiforgeryToken]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -23,6 +27,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         ViewData["ShowLogin"] = true;
+
         return View();
     }
 
@@ -32,37 +37,56 @@ public class HomeController : Controller
         return View();
     }
 
+    [Authorize]
     public IActionResult UserHub()
     {
         ViewData["ShowLogin"] = false;
-        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userIdClaim))
+        
+        if (!User.Identity.IsAuthenticated)
         {
-            return Unauthorized();
+            return RedirectToAction("Login", "User");
         }
 
-        var userId = Guid.Parse(userIdClaim);
-
-        var model = new UserHubViewModel
+        try
         {
-            UserId = userId,
-            Username = User.Identity.Name,
-            PracticeSessions = _repo.GetAll()
-                .Where(s => s.UserId == userId)
-                .OrderByDescending(s => s.CreatedAt)
-                .Take(3)
-                .ToList(),
-            Setlists = _setlistRepo.GetSetlistsForUser(userId)
-                .Select(setlist => new SetlistSummary
-                {
-                    Id = setlist.Id,
-                    Title = setlist.Title,
-                    CreatedAt = setlist.CreatedAt,
-                    SongCount = setlist.SongCount
-                }).ToList()
-        };
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
-        return View(model);
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return Unauthorized();
+            }
+
+            var userId = Guid.Parse(userIdClaim);
+
+            var model = new UserHubViewModel
+            {
+                UserId = userId,
+                Username = User.Identity.Name,
+                PracticeSessions = _repo.GetAll()
+                    .Where(s => s.UserId == userId)
+                    .OrderByDescending(s => s.CreatedAt)
+                    .Take(3)
+                    .ToList(),
+                Setlists = _setlistRepo.GetSetlistsForUser(userId)
+                    .Select(setlist => new SetlistSummary
+                    {
+                        Id = setlist.Id,
+                        Title = setlist.Title,
+                        CreatedAt = setlist.CreatedAt,
+                        SongCount = setlist.SongCount
+                    })
+                    .OrderByDescending(s => s.CreatedAt)
+                    .Take(3)
+                    .ToList()
+            };
+
+            return View(model);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading UserHub for user: {UserId}", User.Identity.Name);
+            return RedirectToAction("Error");
+        }
     }
 
 
@@ -71,6 +95,10 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         ViewData["ShowLogin"] = false;
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+        var errorId = Activity.Current.Id ?? HttpContext.TraceIdentifier;
+        _logger.LogError("An error occurred. Request ID: {RequestId}", errorId);
+
+        return View(new ErrorViewModel { RequestId = errorId });
     }
 }

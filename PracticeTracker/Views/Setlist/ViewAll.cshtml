@@ -1,0 +1,74 @@
+﻿@model IEnumerable<App.Models.SetlistSummary>
+
+@{
+    ViewData["Title"] = "Your Setlists";
+}
+
+<h2 class="mb-3">Your Setlists</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">You haven't created any setlists yet.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Setlist Name</th>
+                <th>Date Created</th>
+                <th>Number of Songs</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var setlist in Model)
+            {
+                <tr>
+                    <td>@setlist.Title</td>
+                    <td>@setlist.CreatedAt.ToString("MMM dd, yyyy")</td>
+                    <td>@setlist.SongCount</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a asp-controller="Setlist" asp-action="Edit" asp-route-id="@setlist.Id" class="btn btn-success btn-sm">
+                                Edit
+                            </a>
+                            <button type="button" class="btn btn-danger btn-sm delete-btn" data-setlist-id="@setlist.Id" data-setlist-name="@setlist.Title"
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<a asp-controller="Setlist" asp-action="Create" class="btn btn-success mt-3">New Setlist</a>
+<a asp-controller="Setlist" asp-action="ViewAll" class="btn btn-secondary mt-3">Back to Hub</a>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="setlistName"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post" asp-action="Delete" asp-controller="Setlist">
+                    <input type="hidden" name="id" id="deleteSetlistId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <script src="~/js/delete-setlist.js"></script>
+}

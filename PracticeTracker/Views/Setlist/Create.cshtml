@@ -8,11 +8,11 @@
 
 <form asp-controller="Setlist" asp-action="Create" method="post">
     <div class="mb-3">
-        <label for="name" class="form-label">Setlist Name</label>
-        <input asp-for="Name" class="form-control" placeholder="Enter setlist name">
+        <label asp-for="Name" class="form-label">Setlist Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Enter setlist name" required>
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Create Setlist</button>
+    <button type="submit" class="btn btn-success">Create</button>
     <a asp-controller="Home" asp-action="UserHub" class="btn btn-danger">Cancel</a>
 </form>
