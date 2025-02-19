@@ -34,8 +34,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddSingleton<UserRegistrationService>();
-builder.Services.AddSingleton<UserAuthenticationService>();
+builder.Services.AddScoped<UserRegistrationService>();
+builder.Services.AddScoped<UserAuthenticationService>();
 builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher>();
 
 builder.Services.AddScoped<IUserRepo, UserRepo>();
