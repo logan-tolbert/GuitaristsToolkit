@@ -11,7 +11,7 @@
            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            <div class="form-group">
                 <label asp-for="CreatedAt">Date:</label>
-                <input type="date" id="Date" asp-for="CreatedAt" class="form-control"
+                <input type="date" id="CreatedAt" asp-for="CreatedAt" class="form-control"
                        value="@Model.CreatedAt.ToString("yyyy-MM-dd")"
                        max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
                        required />

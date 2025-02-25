@@ -49,7 +49,7 @@ namespace App.Repo
         public void Update(PracticeSession session)
         {
             var sql = @"UPDATE PracticeSessions 
-                SET Date = @CreatedAt, DurationMinutes = @DurationMinutes, FocusArea = @FocusArea, Notes = @Notes
+                SET CreatedAt = @CreatedAt, DurationMinutes = @DurationMinutes, FocusArea = @FocusArea, Notes = @Notes
                 WHERE Id = @Id;";
 
             _db.SaveData<PracticeSession, dynamic>(sql, new
