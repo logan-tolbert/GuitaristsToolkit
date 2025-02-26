@@ -1,22 +1,69 @@
-html {
-  font-size: 14px;
+:root {
+    --background: #E5D5C3; /* Warm Off-White */
+    --text-primary: #1C1C1C; /* Dark Charcoal */
+    --text-secondary: #4A4A4A; /* Muted Gray */
+    --primary: #DAA520; /* Golden Yellow */
+    --secondary: #B22222; /* Firebrick Red */
+    --border: #A9A9A9; /* Dark Gray */
+    --hover: #D97706; /* Burnt Orange */
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
 
 html {
-  position: relative;
-  min-height: 100%;
+    font-size: 14px;
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: var(--background);
+    color: var(--text-primary);
+}
+
+h1, h2, h3 {
+    color: var(--text-primary);
+}
+
+p, span, small {
+    color: var(--text-secondary);
+}
+
+.btn-primary {
+    background-color: var(--primary); /* Golden Yellow */
+    border: 2px solid var(--secondary); /* Firebrick Red */
+    color: var(--text-primary);
+}
+
+    .btn-primary:hover {
+        background-color: var(--secondary); /* Firebrick Red */
+        border-color: var(--highlight); /* Burnt Orange */
+        color: var(--neutral); /* Light Text */
+    }
+
+.navbar {
+    background-color: var(--background); /* Matches page */
+    color: var(--text-primary);
+    border-bottom: none; /* Removes the dividing line */
+}
+
+    .navbar .nav-link {
+        color: var(--text-primary); /* Keep text readable */
+    }
+
+        .navbar .nav-link:hover {
+            color: var(--secondary); /* Firebrick Red */
+        }
+
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
 }
