@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "All Practice Sessions";
 }
-
+<div>
 <h2>All Practice Sessions</h2>
 
 <table class="table">
@@ -37,7 +37,8 @@
         }
     </tbody>
 </table>
-
+    <a asp-controller="Home" asp-action="UserHub" class="btn btn-secondary mt-3">Back to Hub</a>
+</div>
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
