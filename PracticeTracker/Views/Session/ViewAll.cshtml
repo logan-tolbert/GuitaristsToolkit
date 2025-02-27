@@ -5,14 +5,20 @@
 @{
     ViewData["Title"] = "All Practice Sessions";
 }
-<div>
-<h2>All Practice Sessions</h2>
+<div class="mb-3 text-left">
+    <h2>All Practice Sessions</h2>
+
+    <div class="d-flex justify-content-start gap-3 mt-2">
+        <a asp-controller="Setlist" asp-action="Create" class="btn btn-success">New Setlist</a>
+        <a asp-controller="Home" asp-action="UserHub" class="btn btn-secondary">Back to Hub</a>
+    </div>
+</div>
 
 <table class="table">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>Date</th>
-            <th>Duration (minutes)</th>
+            <th>Duration (minutes)</t>
             <th>Focus Area</th>
             <th>Actions</th>
         </tr>
@@ -20,7 +26,7 @@
     <tbody>
         @foreach (var session in Model)
         {
-            <tr>
+            <tr class="text-center">
                 <td>@session.CreatedAt.ToShortDateString()</td>
                 <td>@session.DurationMinutes</td>
                 <td>@Html.Raw(HttpUtility.HtmlEncode(session.FocusArea))</td>
@@ -37,8 +43,7 @@
         }
     </tbody>
 </table>
-    <a asp-controller="Home" asp-action="UserHub" class="btn btn-secondary mt-3">Back to Hub</a>
-</div>
+
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
