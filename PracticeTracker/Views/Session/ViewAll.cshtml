@@ -9,8 +9,8 @@
     <h2>All Practice Sessions</h2>
 
     <div class="d-flex justify-content-start gap-3 mt-2">
-        <a asp-controller="Setlist" asp-action="Create" class="btn btn-success">New Setlist</a>
-        <a asp-controller="Home" asp-action="UserHub" class="btn btn-secondary">Back to Hub</a>
+        <a asp-controller="Session" asp-action="Create" class="btn btn-primary">New Session</a>
+        <a asp-controller="Home" asp-action="UserHub" class="btn btn-primary">Back to Hub</a>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
                 <td>@session.DurationMinutes</td>
                 <td>@Html.Raw(HttpUtility.HtmlEncode(session.FocusArea))</td>
                 <td class="text-center">
-                    <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-success btn-sm text-light px-3 py-1">
+                    <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-primary btn-sm text-light px-3 py-1">
                         Edit
                     </a>
                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"

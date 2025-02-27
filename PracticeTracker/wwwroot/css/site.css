@@ -6,6 +6,10 @@
     --secondary: #B22222; /* Firebrick Red */
     --border: #A9A9A9; /* Dark Gray */
     --hover: #D97706; /* Burnt Orange */
+    --t-hover: #E89B4E; 
+    --table-bg: #F3E5D8; /* Warmer beige for table background */
+    --table-alt-row: #E0CBB8; /* Slightly darker than table background */
+    --table-border: #8B7355; /* Warm brown border for separation */
 }
 
 
@@ -33,29 +37,85 @@ p, span, small {
 }
 
     .btn-primary:hover {
-        background-color: var(--secondary); /* Firebrick Red */
-        border-color: var(--highlight); /* Burnt Orange */
+        background-color: var(--hover); /* Firebrick Red */
+        border-color: var(--secondary); /* Burnt Orange */
         color: var(--neutral); /* Light Text */
     }
 
 .navbar {
-    background-color: var(--background); /* Matches page */
+    background-color: var(--background); 
     color: var(--text-primary);
-    border-bottom: none; /* Removes the dividing line */
+    border-bottom: none; 
 }
 
     .navbar .nav-link {
-        color: var(--text-primary); /* Keep text readable */
+        color: var(--text-primary); 
     }
 
         .navbar .nav-link:hover {
-            color: var(--secondary); /* Firebrick Red */
+            color: var(--secondary);
         }
 
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--table-bg);
+    border: 2px solid var(--table-border);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th {
+    background: var(--primary);
+    color: var(--text-primary);
+    padding: 12px;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: var(--table-alt-row);
+}
+
+tr:hover {
+    background: var(--t-hover);
+    transition: background 0.3s ease-in-out;
+}
+
+    tr:hover td {
+        color: inherit;
+    }
+
+button {
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+    button.edit {
+        background: var(--primary);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+    }
+
+    button.delete {
+        background: var(--secondary);
+        color: white;
+    }
 
 @media (min-width: 768px) {
     html {
