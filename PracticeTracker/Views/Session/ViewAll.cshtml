@@ -5,65 +5,125 @@
 @{
     ViewData["Title"] = "All Practice Sessions";
 }
-<div class="mb-3 text-left">
-    <h2>All Practice Sessions</h2>
 
-    <div class="d-flex justify-content-start gap-3 mt-2">
-        <a asp-controller="Session" asp-action="Create" class="btn btn-primary">New Session</a>
-        <a asp-controller="Home" asp-action="UserHub" class="btn btn-primary">Back to Hub</a>
+<div class="container">
+    <!--SR Skip Link-->
+    <a href="#sessions-heading" class="sr-only sr-only-focusable">Skip to Main Content</a>
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="mb-4">
+                <h2 id="sessions-heading" class="mb-3">All Practice Sessions</h2>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4"
+                     role="group" aria-label="Session actions">
+                    <a asp-controller="Session"
+                       asp-action="Create"
+                       class="btn btn-primary btn-lg px-4"
+                       aria-label="Create new session">
+                        New Session
+                    </a>
+                    <a asp-controller="Home"
+                       asp-action="UserHub"
+                       class="btn btn-secondary btn-lg px-4"
+                       aria-label="Return to user hub">
+                        Back to Hub
+                    </a>
+                </div>
+            </div>
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info" role="alert">
+                    <p>No practice sessions found.</p>
+                </div>
+            }
+            else
+            {
+                <table class="table table-striped" aria-labelledby="sessions-heading">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">Date</th>
+                            <th scope="col">Duration (minutes)</th>
+                            <th scope="col">Focus Area</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var session in Model)
+                        {
+                            <tr class="text-center">
+                                <td>@session.CreatedAt.ToShortDateString()</td>
+                                <td>@session.DurationMinutes</td>
+                                <td>@Html.Raw(HttpUtility.HtmlEncode(session.FocusArea))</td>
+                                <td>
+                                    <div class="d-flex gap-2 justify-content-center flex-wrap"
+                                         role="group" aria-label="Session actions">
+                                        <a asp-controller="Session"
+                                           asp-action="Edit"
+                                           asp-route-id="@session.Id"
+                                           class="btn btn-primary px-3"
+                                           aria-label="View/Edit session from @session.CreatedAt.ToShortDateString()"
+                                           style="min-width: 100px;">
+                                            View / Edit
+                                        </a>
+                                        <button class="btn btn-danger px-3"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
+                                                data-session-id="@session.Id"
+                                                aria-label="Delete session from @session.CreatedAt.ToShortDateString()"
+                                                style="min-width: 100px;">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+        </div>
     </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr class="text-center">
-            <th>Date</th>
-            <th>Duration (minutes)</t>
-            <th>Focus Area</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var session in Model)
-        {
-            <tr class="text-center">
-                <td>@session.CreatedAt.ToShortDateString()</td>
-                <td>@session.DurationMinutes</td>
-                <td>@Html.Raw(HttpUtility.HtmlEncode(session.FocusArea))</td>
-                <td class="text-center">
-                    <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-primary btn-sm text-light px-3 py-1">
-                        Edit
-                    </a>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                            data-session-id="@session.Id">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1"
+     aria-labelledby="deleteModalLabel"
+     aria-hidden="true"
+     role="dialog"
+     aria-modal="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close the delete confirmation modal.">
+                </button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete this practice session?
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
+            <div class="modal-footer" role="group" aria-label="Delete confirmation actions">
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        aria-label="Cancel the delete action and close the modal.">
+                    Cancel
+                </button>
+                <a id="confirmDeleteBtn"
+                   href="#"
+                   class="btn btn-danger"
+                   aria-label="Delete selected practice session.">
+                    Delete
+                </a>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-
     <script src="~/js/delete-session-modal.js"></script>
 }

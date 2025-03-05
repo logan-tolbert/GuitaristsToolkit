@@ -1,40 +1,158 @@
-﻿
-@model App.Models.Song
+﻿@model App.Models.Song
 @{
+    ViewData["Title"] = "View / Edit Song";
 }
-<h3>Edit Song</h3>
-<form asp-controller="Song" asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <input type="hidden" name="setlistId" value="@ViewBag.SetlistId" />
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label">Song Title</label>
-        <input asp-for="Title" type="text" class="form-control" required />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-sm-8 col-10 d-flex flex-column">
+            <h3 id="form-heading">View / Edit Song</h3>
 
-    <div class="mb-3">
-        <label asp-for="Key" class="form-label">Key</label>
-        <input asp-for="Key" type="text" class="form-control" />
-        <span asp-validation-for="Key" class="text-danger"></span>
-    </div>
+            <div class="d-flex justify-content-end">
+                <a asp-controller="Setlist"
+                   asp-action="Details"
+                   asp-route-id="@ViewBag.SetlistId"
+                   asp-route-setlistId="@Model.Id"
+                   class="btn btn-secondary btn-md px-4"
+                   aria-label="Return to setlists">
+                    Back to Setlist
+                </a>
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="BPM" class="form-label">BPM</label>
-        <input asp-for="BPM" type="number" class="form-control" />
-        <span asp-validation-for="BPM" class="text-danger"></span>
-    </div>
+            <form asp-controller="Song" asp-action="Edit" method="post" aria-labelledby="form-heading">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" name="setlistId" value="@ViewBag.SetlistId" />
 
-    <div class="mb-3">
-        <label asp-for="DurationMinutes" class="form-label">Duration (min)</label>
-        <input asp-for="DurationMinutes" type="number" class="form-control" />
-        <span asp-validation-for="DurationMinutes" class="text-danger"></span>
-    </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Title"
+                           class="form-label mb-1"
+                           id="songTitle-label">
+                        Song Title
+                    </label>
+                    <input asp-for="Title"
+                           type="text"
+                           class="form-control mb-1"
+                           required
+                           aria-required="true"
+                           aria-labelledby="songTitle-label"
+                           aria-describedby="songTitle-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="Title"
+                          class="text-danger"
+                          id="songTitle-validation"
+                          role="alert">
+                    </span>
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="Notes" class="form-label">Notes (Optional)</label>
-        <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
-        <span asp-validation-for="Notes" class="text-danger"></span>
-    </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Key"
+                           class="form-label mb-1"
+                           id="songKey-label">
+                        Key
+                    </label>
+                    <input asp-for="Key"
+                           type="text"
+                           class="form-control mb-1"
+                           aria-labelledby="songKey-label"
+                           aria-describedby="songKey-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="Key"
+                          class="text-danger"
+                          id="songKey-validation"
+                          role="alert">
+                    </span>
+                </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+                <div class="form-group mb-3">
+                    <label asp-for="BPM"
+                           class="form-label mb-1"
+                           id="beatsPerMinute-label">
+                        BPM
+                    </label>
+                    <input asp-for="BPM"
+                           type="number"
+                           class="form-control mb-1"
+                           min="1"
+                           max="300"
+                           aria-labelledby="beatsPerMinute-label"
+                           aria-describedby="beatsPerMinute-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="BPM"
+                          class="text-danger"
+                          id="beatsPerMinute-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="DurationMinutes"
+                           class="form-label mb-1"
+                           id="songDurationMinutes-label">
+                        Duration &#40;min&#41;
+                    </label>
+                    <input asp-for="DurationMinutes"
+                           type="number"
+                           min="1"
+                           max="600"
+                           class="form-control mb-1"
+                           aria-labelledby="songDurationMinutes-label"
+                           aria-describedby="songDurationMinutes-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="DurationMinutes"
+                          class="text-danger"
+                          id="songDurationMinutes-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Notes"
+                           class="form-label mb-1"
+                           id="songNotes-label">
+                        Notes &#40;Optional&#41;
+                    </label>
+                    <textarea asp-for="Notes"
+                              class="form-control mb-1"
+                              rows="2"
+                              aria-labelledby="songNotes-label"
+                              aria-describedby="songNotes-validation"
+                              autocomplete="off">
+                    </textarea>
+                    <span asp-validation-for="Notes"
+                          class="text-danger"
+                          id="songNotes-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3 text-center">
+                    <div class="d-grid gap-2 d-md-inline-block"
+                         role="group" aria-label="New song actions">
+                        <button type="submit"
+                                class="btn btn-primary btn-lg flex-btn"
+                                aria-label="Save changes to the song">
+                            Save
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+
+
+            @if (ViewData["Error"] != null)
+            {
+                <div class="alert alert-danger mt-3"
+                     role="alert"
+                     id="form-error">
+                    @ViewData["Error"]
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

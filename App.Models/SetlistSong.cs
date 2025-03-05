@@ -6,6 +6,7 @@ public class SetlistSong
     public int SetlistId { get; set; }
 
     public int SongId { get; set; }
+    public string SongTitle { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue, ErrorMessage = "Song order must be at least 1.")]
     public int SongOrder { get; set; }

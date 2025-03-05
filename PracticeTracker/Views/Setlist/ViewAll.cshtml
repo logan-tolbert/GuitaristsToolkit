@@ -3,66 +3,121 @@
 @{
     ViewData["Title"] = "Your Setlists";
 }
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="mb-4">
+                <h2 class="mb-3">Your Setlists</h2>
 
-<h2 class="mb-3">Your Setlists</h2>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4"
+                     role="group" aria-label="Setlist actions">
+                    <a asp-controller="Setlist"
+                       asp-action="Create"
+                       class="btn btn-primary btn-lg px-4"
+                       aria-label="Create new session">
+                        New Setlist
+                    </a>
+                    <a asp-controller="Home"
+                       asp-action="UserHub"
+                       class="btn btn-secondary btn-lg px-4"
+                       aria-label="Return to user hub">
+                        Back to Hub
+                    </a>
+                </div>
 
-@if (!Model.Any())
-{
-    <div class="alert alert-warning">You haven't created any setlists yet.</div>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Setlist Name</th>
-                <th>Date Created</th>
-                <th>Number of Songs</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var setlist in Model)
-            {
-                <tr>
-                    <td>@setlist.Title</td>
-                    <td>@setlist.CreatedAt.ToString("MMM dd, yyyy")</td>
-                    <td>@setlist.SongCount</td>
-                    <td>
-                        <div class="d-flex gap-2">
-                            <a asp-controller="Setlist" asp-action="Edit" asp-route-id="@setlist.Id" class="btn btn-success btn-sm">
-                                Edit
-                            </a>
-                            <button type="button" class="btn btn-danger btn-sm delete-btn" data-setlist-id="@setlist.Id" data-setlist-name="@setlist.Title"
-                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-<a asp-controller="Setlist" asp-action="Create" class="btn btn-success mt-3">New Setlist</a>
-<a asp-controller="Home" asp-action="UserHub" class="btn btn-secondary mt-3">Back to Hub</a>
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="alert alert-info" role="alert">
+                        <p>No setlists found.</p>
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Setlist Name</th>
+                                <th scope="col">Date Created</th>
+                                <th scope="col">Number of Songs</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var setlist in Model)
+                            {
+                                <tr>
+                                    <td>@setlist.Title</td>
+                                    <td>@setlist.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                    <td>@setlist.SongCount</td>
+                                    <td>
+                                        <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                            <a asp-controller="Setlist"
+                                               asp-action="Edit"
+                                               asp-route-id="@setlist.Id"
+                                               class="btn btn-primary btn-md flex-btn"
+                                               aria-label="View/Edit setlist: @setlist.Title"
+                                               >
+                                                View / Edit
+                                            </a>
+                                            <button class="btn btn-danger btn-md flex-btn"
+                                                    data-setlist-id="@setlist.Id"
+                                                    data-setlist-name="@setlist.Title"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    aria-label="Delete setlist: @setlist.Title"
+                                                   >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" 
+     id="deleteModal" 
+     tabindex="-1" 
+     aria-labelledby="deleteModalLabel" 
+     aria-hidden="true"
+     role="dialog"
+     aria-modal="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close the delete confirmation modal.">
+                </button>
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to delete <strong id="setlistName"></strong>?</p>
             </div>
             <div class="modal-footer">
-                <form id="deleteForm" method="post" asp-action="Delete" asp-controller="Setlist">
-                    <input type="hidden" name="id" id="deleteSetlistId" />
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                <form asp-action="Delete" asp-controller="Setlist" id="deleteForm" method="post">
+                    <input type="hidden"
+                           name="id"
+                           id="deleteSetlistId" />
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                            aria-label="Cancel the delete action and close the modal.">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="btn btn-danger"
+                            aria-label="Delete song from setlist.">
+                        Delete
+                    </button>
                 </form>
             </div>
         </div>
@@ -70,5 +125,11 @@ else
 </div>
 
 @section Scripts {
-        <script src="~/js/delete-setlist.js"></script>
+    <script src="~/js/delete-setlist.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }
+
+

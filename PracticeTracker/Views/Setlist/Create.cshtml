@@ -3,16 +3,68 @@
 @{
     ViewData["Title"] = "New Setlist";
 }
+<div class="row justify-content-center">
+    <!--SR Skip Link-->
+    <a href="#form-heading" class="sr-only sr-only-focusable">Skip to Main Content</a>
+    <div class="col-lg-8 col-md-10 col-sm-12">
 
-<h2>Create a New Setlist</h2>
+        <h2 id="form-heading" class="text-center mb-4">New Setlist</h2>
+        <form asp-controller="Setlist" asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
 
-<form asp-controller="Setlist" asp-action="Create" method="post">
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label">Setlist Name</label>
-        <input asp-for="Name" class="form-control" placeholder="Enter setlist name" required>
-        <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="form-group mb-3">
+                <label asp-for="Name"
+                       class="form-label mb-1"
+                       id="setlistName-label">
+                    Setlist Name
+                </label>
+                <input asp-for="Name"
+                       type="text"
+                       class="form-control mb-1"
+                       placeholder="Enter setlist name"
+                       required
+                       aria-required="true"
+                       aria-labelledby="setlistName-label"
+                       aria-describedby="setlistName-validation"
+                       autocomplete="off">
+                <span asp-validation-for="Name"
+                      class="text-danger"
+                      id="setlistName-validation"
+                      role="alert">
+                </span>
+            </div>
+
+            <div class="form-group mb-3 text-center">
+                <div class="d-grid gap-2 d-md-inline-block"
+                     role="group" aria-label="Form actions">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg px-4 me-md-2"
+                            aria-label="Create a setlist">
+                        Create
+                    </button>
+                    <a asp-controller="Home"
+                       asp-action="UserHub"
+                       class="btn btn-danger btn-lg px-4"
+                       aria-label="Cancel and return to User Hub">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        @if (ViewData["Error"] != null)
+        {
+            <div class="alert alert-danger mt-3"
+                 role="alert"
+                 id="form-error">
+                @ViewData["Error"]
+            </div>
+        }
     </div>
+</div>
 
-    <button type="submit" class="btn btn-success">Create</button>
-    <a asp-controller="Home" asp-action="UserHub" class="btn btn-danger">Cancel</a>
-</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

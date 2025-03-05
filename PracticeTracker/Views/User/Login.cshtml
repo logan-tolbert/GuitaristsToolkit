@@ -4,24 +4,86 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<div class="auth-container row justify-content-center">
+    <div class="col-md-6 col-sm-8 col-10 d-flex flex-column">
+        <div class="auth-form-container">
 
-<form asp-action="Login" method="post">
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        <label asp-for="EmailOrUsername"></label>
-        <input asp-for="EmailOrUsername" class="form-control" />
-        <span asp-validation-for="EmailOrUsername" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+            <h2 class="text-center mb-4" id="form-heading">Login</h2>
+            <form asp-action="Login" method="post" aria-labelledby="form-heading">
+                @Html.AntiForgeryToken()
 
-@if (ViewData["Error"] != null)
-{
-    <div class="alert alert-danger">@ViewData["Error"]</div>
+                <div class="form-group mb-3">
+                    <label asp-for="EmailOrUsername"
+                           class="form-label mb-1"
+                           id="emailOrUserName-label">
+                        Email or Username
+                    </label>
+                    <input asp-for="EmailOrUsername"
+                           type="text"
+                           class="form-control mb-1"
+                           required
+                           aria-required="true"
+                           aria-labelledby="emailOrUsername-label"
+                           aria-describedby="emailOrUsername-validation" />
+                    <span asp-validation-for="EmailOrUsername"
+                          class="text-danger"
+                          id="emailOrUsername-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Password"
+                           class="form-label mb-1"
+                           id="password-label">
+                        Password
+                    </label>
+                    <input asp-for="Password"
+                           type="password"
+                           class="form-control mb-1"
+                           required
+                           aria-required="true"
+                           aria-labelledby="password-label"
+                           aria-describedby="password-validation" />
+                    <span asp-validation-for="Password"
+                          class="text-danger"
+                          id="password-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-center gap-2"
+                     role="group" aria-label="Login actions">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg flex-btn"
+                            aria-label="Login to your account">
+                        Login
+                    </button>
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-secondary btn-lg flex-btn"
+                       aria-label="Cancel to login attempt and return to homepage">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+            @if (ViewData["Error"] != null)
+            {
+                <div class="alert alert-danger mt-3"
+                     role="alert"
+                     id="form-error">
+                    @ViewData["Error"]
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+

@@ -16,4 +16,6 @@ public class Setlist
     public DateTime CreatedAt { get; set; }
 
     public List<SetlistSong> SetlistSongs { get; set; } = new();
+
+    public Song NewSong { get; set; } = new();
 }

@@ -24,7 +24,7 @@ namespace App.Repo
 
             var id = _db.LoadData<int, dynamic>(sql, new
             {
-                UserId = setlist.UserId, 
+                UserId = setlist.UserId,
                 setlist.Name,
                 setlist.CreatedAt
             }).FirstOrDefault();
@@ -46,13 +46,13 @@ namespace App.Repo
 
         public Setlist GetSetlistWithSongs(int id)
         {
-            var sql = @"SELECT DISTINCT s.Id, s.UserId, s.Name, s.CreatedAt, 
-                           ss.SongId, ss.SongOrder, ss.Notes, 
-                           so.Id AS SongId, so.Title, so.[Key], so.BPM, so.DurationMinutes
-                        FROM Setlists s
-                        LEFT JOIN SetlistSongs ss ON s.Id = ss.SetlistId
-                        LEFT JOIN Songs so ON ss.SongId = so.Id
-                        WHERE s.Id = @Id;";
+            var sql = @"SELECT s.Id, s.UserId, s.Name, s.CreatedAt, 
+                   ss.SongId, ss.SongOrder, 
+                   so.Id AS SongId, so.Title, so.[Key], so.BPM, so.DurationMinutes, so.Notes
+                FROM Setlists s
+                LEFT JOIN SetlistSongs ss ON s.Id = ss.SetlistId
+                LEFT JOIN Songs so ON ss.SongId = so.Id
+                WHERE s.Id = @Id;";
 
             var result = _db.LoadData<SetlistSongResult, dynamic>(sql, new { Id = id });
 
@@ -65,7 +65,7 @@ namespace App.Repo
                     setlist = new Setlist
                     {
                         Id = row.Id,
-                        UserId = row.UserId, // Ensure UserId is treated as a Guid
+                        UserId = row.UserId,
                         Name = row.Name,
                         CreatedAt = row.CreatedAt,
                         SetlistSongs = new List<SetlistSong>()
@@ -76,26 +76,30 @@ namespace App.Repo
 
                 if (row.SongId.HasValue)
                 {
-                    setlist.SetlistSongs.Add(new SetlistSong
+                    var setlistSong = new SetlistSong
                     {
                         SetlistId = row.Id,
                         SongId = row.SongId.Value,
                         SongOrder = row.SongOrder ?? 0,
-                        Notes = row.Notes ?? string.Empty,
                         Song = new Song
                         {
                             Id = row.SongId.Value,
                             Title = row.Title ?? "Unknown",
                             Key = row.Key ?? "N/A",
                             BPM = row.BPM ?? 0,
-                            DurationMinutes = row.DurationMinutes ?? 0
+                            DurationMinutes = row.DurationMinutes ?? 0,
+                            Notes = row.Notes ?? string.Empty
                         }
-                    });
+                    };
+
+                    setlist.SetlistSongs.Add(setlistSong);
                 }
             }
 
-            return setlistDictionary.Values.FirstOrDefault();
+            return setlistDictionary.Values.First();
         }
+
+
 
         public IEnumerable<SetlistSummary> GetSetlistsForUser(Guid userId)
         {

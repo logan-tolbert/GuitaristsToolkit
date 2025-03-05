@@ -4,44 +4,169 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>Register</h2>
+<div class="container">
+    <div class="auth-container row justify-content-center">
+        <div class="col-md-6 col-sm-8 col-10 d-flex flex-column">
+            <div class="auth-form-container">
 
-<form asp-action="Register" method="post">
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        <label asp-for="Username"></label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" type="password" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-</form>
+                <h2 class="text-center mb-4">Register</h2>
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group mb-3">
+                        <label asp-for="Username"
+                               class="form-label mb-1"
+                               id="username-label">
+                            Username
+                        </label>
+                        <input asp-for="Username"
+                               class="form-control mb-1"
+                               type="text"
+                               required
+                               aria-required="true"
+                               aria-labelledby="username-label"
+                               aria-describedby="username-validation"
+                               autocomplete="username" />
+                        <span asp-validation-for="Username"
+                              class="text-danger"
+                              id="username-validation"
+                              role="alert">
+                        </span>
+                    </div>
 
-@if (ViewData["Error"] != null)
-{
-    <div class="alert alert-danger">@ViewData["Error"]</div>
+                    <div class="form-group mb-3">
+                        <label asp-for="FirstName"
+                               class="form-label mb-1"
+                               id="firstName-label">
+                            First Name
+                        </label>
+                        <input asp-for="FirstName"
+                               type="text"
+                               class="form-control mb-1"
+                               required
+                               aria-required="true"
+                               aria-labelledby="firstName-label"
+                               aria-describedby="firstName-validation"
+                               autocomplete="given-name" />
+                        <span asp-validation-for="FirstName"
+                              class="text-danger"
+                              id="firstName-validation"
+                              role="alert">
+                        </span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="LastName"
+                               class="form-label mb-1"
+                               id="lastName-label">
+                            Last Name
+                        </label>
+                        <input asp-for="LastName"
+                               type="text"
+                               class="form-control mb-1"
+                               required
+                               aria-required="true"
+                               aria-labelledby="lastName-label"
+                               aria-describedby="lastName-validation"
+                               autocomplete="family-name" />
+                        <span asp-validation-for="LastName"
+                              class="text-danger"
+                              id="lastName-validation"
+                              role="alert">
+                        </span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Email"
+                               class="form-label mb-1"
+                               id="email-label">
+                            Email
+                        </label>
+                        <input asp-for="Email"
+                               type="email"
+                               required
+                               class="form-control mb-1"
+                               aria-required="true"
+                               aria-labelledby="email-label"
+                               aria-describedby="email-validation"
+                               autocomplete="email" />
+                        <span asp-validation-for="Email"
+                              class="text-danger"
+                              id="email-validation"
+                              role="alert">
+                        </span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Password"
+                               class="form-label mb-1"
+                               id="password-label">
+                            Password
+                        </label>
+                        <input asp-for="Password"
+                               type="password"
+                               class="form-control mb-1"
+                               required
+                               aria-required="true"
+                               aria-labelledby="password-label"
+                               aria-describedby="password-validation password-strength"
+                               autocomplete="new-password"
+                               oninput="checkPasswordStrength(this.value)" />
+                        <span asp-validation-for="Password"
+                              class="text-danger"
+                              id="password-validation"
+                              role="alert">
+                        </span>
+                        <div id="password-strength" class="mt-2"></div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="ConfirmPassword"
+                               class="form-label mb-1"
+                               id="confirmPassword-label">
+                            Confirm Password
+                        </label>
+                        <input asp-for="ConfirmPassword"
+                               type="password"
+                               class="form-control mb-1"
+                               required
+                               aria-required="true"
+                               aria-labelledby="confirmPassword-label"
+                               aria-describedby="confirmPassword-validation"
+                               autocomplete="new-password"
+                               oninput="checkPasswordMatch()" />
+                        <span asp-validation-for="ConfirmPassword"
+                              class="text-danger"
+                              id="confirmPassword-validation"
+                              role="alert">
+                        </span>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit"
+                                class="btn btn-primary btn-lg mt-3 px-4"
+                                aria-label="Register your account">
+                            Register
+                        </button>
+                    </div>
+                </form>
+
+                @if (ViewData["Error"] != null)
+                {
+                    <div class="alert alert-danger mt-3"
+                         role="alert"
+                         id="form-error">
+                        @ViewData["Error"]
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/register.js"></script>
 }
+

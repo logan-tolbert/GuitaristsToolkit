@@ -2,47 +2,103 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1>Welcome to</h1>
-    <img src="~/images/gt-logo.svg" />
-    <p>Your all-in-one app for organizing setlists and tracking your practice sessions.</p>
+<div class="container vh80">
+    <!--SR Skip Link-->
+    <a href="#home-features" class="sr-only sr-only-focusable">Skip to Features</a>
+    <div class="row justify-content-center ">
+        <div class="col-lg-10 col-md-12">
+            <div class="text-center">
 
-    @if (!User.Identity!.IsAuthenticated)
-    {
-        <a class="btn btn-primary btn-lg" asp-controller="User" asp-action="Register">Sign Up</a>
+                <h1>Welcome to</h1>
 
-        <hr class="my-4">
+                <img src="~/images/gt-logo.svg"
+                     id="logo"
+                     alt="Guitarist's Toolkit Logo" />
 
-        <h2>Why Use Guitarist's Toolkit?</h2>
-        <div class="d-flex justify-content-center">
-            <div class="card m-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">🎵 Organize Your Setlists</h5>
-                    <p class="card-text">Easily create, manage, and reorder songs for gigs or jam sessions.</p>
-                </div>
-            </div>
-            <div class="card m-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">🎯 Track Your Practice</h5>
-                    <p class="card-text">Log your practice sessions and monitor your progress over time.</p>
-                </div>
-            </div>
-            <div class="card m-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">🚀 Improve Efficiency</h5>
-                    <p class="card-text">Plan gigs effectively with a structured approach to song management.</p>
-                </div>
+                <p class="lead">Your all-in-one app for organizing setlists and tracking your practice sessions.</p>
+
+                @if (!User.Identity!.IsAuthenticated)
+                {
+                    <div class="mt-4 d-flex justify-content-center gap-2"
+                         role="group" aria-label="Authentication actions">
+                        <a asp-controller="User"
+                           asp-action="Register"
+                           class="btn btn-primary btn-lg flex-btn"
+                           aria-label="Sign up for a new account">
+                            Sign Up
+                        </a>
+                        <a asp-controller="User"
+                           asp-action="Login"
+                           class="btn btn-primary btn-lg flex-btn"
+                           aria-label="Log in to your account">
+                            Login
+                        </a>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <section id="home-features" class="container" 
+                             role="region" aria-labelledby="features-heading">
+                        <h2 id="features-heading" class="mb-3">Why Use Guitarist's Toolkit?</h2>
+                        <div class="row justify-content-center">
+                            <div class="col-md-4 col-sm-12 d-flex justify-content-center mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">🎵 Organize Your Setlists</h5>
+                                        <p class="card-text">Easily create, manage, and reorder songs for gigs or jam sessions.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12 d-flex justify-content-center mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">🎯 Track Your Practice</h5>
+                                        <p class="card-text">Log your practice sessions and monitor your progress over time.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12 d-flex justify-content-center mb-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">🚀 Improve Efficiency</h5>
+                                        <p class="card-text">Plan gigs effectively with a structured approach to song management.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                }
+                else
+                {
+                    <h2>Welcome back, @User.Identity.Name!</h2>
+                    <p class="lead">Ready to get started? Jump right back into your toolkit.</p>
+
+                    <div class="mt-4 d-flex justify-content-center gap-2"
+                         role="group" aria-label="User navigation actions">
+                        <a asp-controller="Home"
+                           asp-action="UserHub"
+                           class="btn btn-primary btn-lg flex-btn"
+                           aria-label="Go to user hub">
+                            User Hub
+                        </a>
+                        <a asp-controller="Session"
+                           asp-action="ViewAll"
+                           class="btn btn-primary btn-lg flex-btn"
+                           aria-label="View your sessions">
+                            Sessions
+                        </a>
+                        <a asp-controller="Setlist"
+                           asp-action="ViewAll"
+                           class="btn btn-primary btn-lg flex-grow-1 flex-btn"
+                           aria-label="View your setlists">
+                            Setlists
+                        </a>
+                    </div>
+
+
+
+                }
             </div>
         </div>
-    }
-    else
-    {
-        <h2>Welcome back, @User.Identity.Name!</h2>
-        <p>Ready to get started? Jump right back into your toolkit.</p>
-
-        <div class="mt-4">
-            <a class="btn btn-success btn-lg" asp-controller="Home" asp-action="UserHub">Go to User Hub</a>
-            <a class="btn btn-info btn-lg" asp-controller="Setlist" asp-action="ViewAll">View Your Setlists</a>
-        </div>
-    }
+    </div>
 </div>

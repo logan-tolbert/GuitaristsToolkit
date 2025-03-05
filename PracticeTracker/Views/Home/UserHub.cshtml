@@ -4,80 +4,147 @@
     ViewData["Title"] = "User Hub";
 }
 
-<div class="container mt-5">
-    <div class="text-center">
-        <h2 class="mb-4">Welcome, @Model.Username</h2>
-        <p class="lead">Manage your practice sessions efficiently.</p>
+<div class="container mt-4">
+    <!-- SR Skip Links -->
+    <a href="#main-content" class="sr-only sr-only-focusable">Skip to Main Content</a>
+    <a href="#sessions-heading" class="sr-only sr-only-focusable">Skip to Latest Sessions</a>
+    <a href="#setlists-heading" class="sr-only sr-only-focusable">Skip to Setlists</a>
+
+    <div id="main-content" class="text-center" aria-labelledby="main-heading">
+        <h2 id="main-heading" class="mb-3">Welcome, @Model.Username</h2>
     </div>
 
-    <h2>Latest Sessions</h2>
-    <a asp-controller="Session" asp-action="ViewAll">View All</a>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Duration (min)</th>
-                <th>Focus Area</th>
-                <th>Notes</th>
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var session in Model.PracticeSessions)
-            {
-                <tr>
-                    <td>@session.CreatedAt.ToString("MM/dd/yyyy")</td>
-                    <td>@session.DurationMinutes min</td>
-                    <td>@session.FocusArea</td>
-                    <td>@session.Notes</td>
-                    <td class="text-center">
-                        <a asp-controller="Session" asp-action="Edit" asp-route-id="@session.Id" class="btn btn-success btn-sm text-light px-3 py-1">
-                            Edit
-                        </a>
-                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                data-session-id="@session.Id">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow-sm mb-3">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">Start a New Practice Session</h4>
-                        <p class="card-text">Log a new session to track your progress.</p>
-                        <a asp-controller="Session" asp-action="Create" class="btn btn-primary btn-lg">
+    <div class="row align-items-start">
+        <!-- Left Side: Create Session/Setlist -->
+        <div class="col-lg-4 mb-4 mt-3 d-flex flex-column justify-content-center">
+            <div class="card shadow-sm mb-3">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Start a New Practice Session</h4>
+                    <p class="card-text">Log a new session to track your progress.</p>
+                    <div class="d-grid">
+                        <a asp-controller="Session"
+                           asp-action="Create"
+                           class="btn btn-primary btn-lg"
+                           aria-label="Create new practice session">
                             New Session
-                        </a>
-                    </div>
-                </div>
-
-                <div class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <h4 class="card-title">Start a New Setlist</h4>
-                        <p class="card-text">Keep track of your favorite songs or tonight's big show.</p>
-                        <a asp-controller="Setlist" asp-action="Create" class="btn btn-primary btn-lg">
-                            New Setlist
                         </a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-8">
-                <h2>Setlists</h2>
-                <a asp-controller="Setlist" asp-action="ViewAll">View All</a>
-                <table class="table" id="setlistTable">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h4 class="card-title">Start a New Setlist</h4>
+                    <p class="card-text">Keep track of your favorite songs or tonight's big show.</p>
+                    <div class="d-grid">
+                        <a asp-controller="Setlist"
+                           asp-action="Create"
+                           class="btn btn-primary btn-lg"
+                           aria-label="Create new setlist">
+                            New Setlist
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Sessions & Setlists -->
+        <div class="col-lg-8 mt-3">
+
+            <!-- Latest Sessions -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                <h2 id="sessions-heading" class="mb-2">Latest Sessions</h2>
+                <a asp-controller="Session"
+                   asp-action="ViewAll"
+                   class="btn btn-primary px-2"
+                   style="width: auto;"
+                   aria-label="View all practice sessions">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                    <span>View All</span>
+                </a>
+            </div>
+
+            @if (Model.PracticeSessions == null || !Model.PracticeSessions.Any())
+            {
+                <div class="alert alert-info" role="alert">
+                    <p>No practice sessions found.</p>
+                </div>
+            }
+            else
+            {
+
+                <table class="table" aria-labelledby="sessions-heading">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Song Count</th>
-                            <th class="text-center">Actions</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Focus Area</th>
+                            <th scope="col">Duration &#40;min&#41;</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var session in Model.PracticeSessions)
+                        {
+                            <tr>
+                                <td>@session.CreatedAt.ToString("MM/dd/yyyy")</td>
+                                <td>@session.FocusArea</td>
+                                <td>@session.DurationMinutes min</td>
+
+                                <td>
+                                    <div class="d-flex gap-2 justify-content-center flex-wrap" role="group" aria-label="Session actions">
+                                        <a asp-controller="Session"
+                                           asp-action="Edit"
+                                           asp-route-id="@session.Id"
+                                           class="btn btn-primary px-3"
+                                           style="min-width: 80px; width: auto;"
+                                           aria-label="View / Edit session from @session.CreatedAt.ToString("MM/dd/yyyy")">
+                                            View
+                                        </a>
+                                        <button class="btn btn-danger px-3"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
+                                                data-session-id="@session.Id"
+                                                style="min-width: 80px; width: auto;"
+                                                aria-label="Delete session from @session.CreatedAt.ToString("MM/dd/yyyy")">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+
+            <!-- Setlists -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 mt-5">
+                <h2 id="setlists-heading" class="mb-2">Setlists</h2>
+                <a asp-controller="Setlist"
+                   asp-action="ViewAll"
+                   class="btn btn-primary px-2"
+                   style="width: auto;"
+                   aria-label="View all setlists">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                    <span>View All</span>
+                </a>
+            </div>
+
+            @if (Model.Setlists == null || !Model.Setlists.Any())
+
+            {
+                <div class="alert alert-info" role="alert">
+                    <p>No setlists found.</p>
+                </div>
+            }
+            else
+            {
+                <table class="table" id="setlistTable" aria-labelledby="setlists-heading">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Song Count</th>
+                            <th scope="col" class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,40 +153,67 @@
                             <tr>
                                 <td>@setlist.Title</td>
                                 <td>@setlist.SongCount</td>
-                                <td class="text-center">
-                                    <a asp-controller="Setlist" asp-action="Edit" asp-route-id="@setlist.Id" class="btn btn-primary btn-sm text-light px-3 py-1">
-                                        View
-                                    </a>
+                                <td>
+                                    <div class="d-flex justify-content-center" role="group" aria-label="Setlist actions">
+                                        <a asp-controller="Setlist"
+                                           asp-action="Details"
+                                           asp-route-id="@setlist.Id"
+                                           class="btn btn-primary px-3"
+                                           style="min-width: 80px; width: auto;"
+                                           aria-label="View setlist titled @setlist.Title">
+                                            View
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-
-            </div>
+            }
         </div>
     </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1"
+     aria-labelledby="deleteModalLabel"
+     aria-hidden="true"
+     role="dialog"
+     aria-modal="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close the delete confirmation modal.">
+                </button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete this practice session?
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
+            <div class="modal-footer" role="group" aria-label="Delete confirmation actions">
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        aria-label="Cancel the delete action and close the modal.">
+                    Cancel
+                </button>
+                <a id="confirmDeleteBtn"
+                   href="#"
+                   class="btn btn-danger"
+                   aria-label="Delete session">
+                    Delete
+                </a>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-     <script src="~/js/delete-session-modal.js"></script>    
+    <script src="~/js/delete-session-modal.js"></script>
 }
+

@@ -1,104 +1,267 @@
 ﻿@model App.Models.Setlist
 
 @{
-    ViewData["Title"] = "Edit Setlist";
+    ViewData["Title"] = "View / Edit Setlist";
 }
+<div class="container">
+    <!-- SR Skip Link -->
+    <a href="#setlist-heading" class="sr-only sr-only-focusable">Skip to main content</a>
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="mb-4">
+                <div class="d-flex justify-content-end mb-2">
+                    <a asp-controller="Setlist"
+                       asp-action="ViewAll"
+                       class="btn btn-secondary btn-md flex-btn"
+                       aria-label="View setlists">
+                        View Setlists
+                    </a>
+                </div>
+                @if (Model.SetlistSongs == null || !Model.SetlistSongs.Any())
+                {
+                    <div class="alert alert-info text-center" role="alert">
+                        <p>No songs found in this setlist.</p>
+                    </div>
 
-<h2>Edit Setlist: @Model.Name</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Key</th>
-            <th>BPM</th>
-            <th>Duration</th>
-            <th>Notes</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.SetlistSongs != null && Model.SetlistSongs.Any())
-        {
-            @foreach (var song in Model.SetlistSongs)
-            {
-                <tr>
-                    <td>@song.Song.Title</td>
-                    <td>@song.Song.Key</td>
-                    <td>@song.Song.BPM</td>
-                    <td>@song.Song.DurationMinutes</td>
-                    <td>@song.Notes</td>
-                    <td>
-                        <a asp-controller="Song" asp-action="Edit" asp-route-id="@song.Song.Id" asp-route-setlistId="@Model.Id" class="btn btn-success btn-sm">
-                            Edit
-                        </a>
-                        <button class="btn btn-danger btn-sm delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                data-song-id="@song.Song.Id" data-setlist-id="@Model.Id">
-                            Delete
+                }
+                else
+                {
+                    <h2 id="setlist-heading">Setlist: @Model.Name</h2>
+                    <table class="table table-striped" aria-labelledby="setlist-heading">
+                        <thead>
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Key</th>
+                                <th scope="col">BPM</th>
+                                <th scope="col">Duration</th>
+                                <th scope="col">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var song in Model.SetlistSongs)
+                            {
+                                <tr>
+                                    <td>@song.Song.Title</td>
+                                    <td>@song.Song.Key</td>
+                                    <td>@song.Song.BPM</td>
+                                    <td>@song.Song.DurationMinutes</td>
+
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(song.Song.Notes))
+                                        {
+                                            <i class="fa fa-check note-available"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-times note-not-available"></i>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2 justify-content-center flex-wrap"
+                                             role="group" aria-label="Setlist song actions">
+                                            <a asp-controller="Song"
+                                               asp-action="Edit"
+                                               asp-route-id="@song.Song.Id"
+                                               asp-route-setlistId="@Model.Id"
+                                               class="btn btn-primary btn-md flex-btn"
+                                               aria-label="View / Edit song from @Model.Name">
+                                                View / Edit
+                                            </a>
+                                            <button class="btn btn-danger btn-md flex-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    data-song-id="@song.Song.Id"
+                                                    data-setlist-id="@Model.Id"
+                                                    aria-label="Delete song from @Model.Name">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+            </div>
+
+            <h3 id="form-heading">Add a New Song</h3>
+            <form asp-controller="Setlist" asp-action="AddSong" method="post" aria-labelledby="form-heading">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label asp-for="NewSong.Title"
+                           class="form-label mb-1"
+                           id="newSongTitle-label">
+                    </label>
+                    <input asp-for="NewSong.Title"
+                           class="form-control mb-1"
+                           required
+                           aria-required="true"
+                           aria-labelledby="newSongTitle-label"
+                           aria-describedby="newSongTitle-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="NewSong.Title"
+                          class="text-danger"
+                          id="newSongTitle-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NewSong.Key"
+                           class="form-label mb-1"
+                           id="newSongKey-label">
+                    </label>
+                    <input asp-for="NewSong.Key"
+                           type="text"
+                           class="form-control mb-1"
+                           placeholder="Enter song key (e.g., C, G, Am)"
+                           aria-labelledby="newSongKey-label"
+                           aria-describedby="newSongKey-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="NewSong.Key"
+                          class="text-danger"
+                          id="newSongKey-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NewSong.BPM"
+                           class="form-label mb-1"
+                           id="newSongBeatsPerMinute-label">
+                    </label>
+                    <input asp-for="NewSong.BPM"
+                           type="number"
+                           class="form-control mb-1"
+                           value="10"
+                           min="10"
+                           max="300"
+                           aria-labelledby="newSongBeatsPerMinute-label"
+                           aria-describedby="newSongBeatsPerMinute-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="NewSong.BPM"
+                          class="text-danger"
+                          id="newSongBeatsPerMinute-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NewSong.DurationMinutes"
+                           class="form-label mb-1"
+                           id="newSongDurationMinutes-label">
+                        Duration &#40;min&#41;
+                    </label>
+                    <input asp-for="NewSong.DurationMinutes"
+                           type="number"
+                           value="1"
+                           min="1"
+                           max="600"
+                           class="form-control mb-1"
+                           aria-labelledby="newSongDurationMinutes-label"
+                           aria-describedby="newSongDurationMinutes-validation"
+                           autocomplete="off" />
+                    <span asp-validation-for="NewSong.DurationMinutes"
+                          class="text-danger"
+                          id="newSongDurationMinutes-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NewSong.Notes"
+                           class="form-label mb-1"
+                           id="newSongNotes-label">
+                        Notes &#40;Optional&#41;
+                    </label>
+                    <textarea asp-for="NewSong.Notes"
+                              class="form-control mbb-1"
+                              rows="2"
+                              placeholder="Any notes about the song"
+                              aria-labelledby="newSongNotes-label"
+                              aria-describedby="newSongNotes-validation"
+                              autocomplete="off">
+                    </textarea>
+                    <span asp-validation-for="NewSong.Notes"
+                          class="text-danger"
+                          id="newSongNotes-validation"
+                          role="alert">
+                    </span>
+                </div>
+                <div class="d-flex justify-content-center form-group mb-3 text-center">
+                    <div class="d-grid gap-2 d-md-inline-block"
+                         role="group" aria-label="New song actions">
+                        <button type="submit"
+                                class="btn btn-primary btn-lg flex-btn"
+                                aria-label="Add new song to setlist @Model.Name">
+                            Add Song
                         </button>
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </form>
+
+            @if (ViewData["Error"] != null)
+            {
+                <div class="alert alert-danger mt-3"
+                     role="alert"
+                     id="form-error">
+                    @ViewData["Error"]
+                </div>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="6" class="text-center">No songs in this setlist. Add one below.</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<h3>Add a New Song</h3>
-<form asp-controller="Setlist" asp-action="AddSong" method="post">
-    <input type="hidden" name="setlistId" value="@Model.Id" />
-    <div class="mb-3">
-        <label for="songTitle" class="form-label">Song Title</label>
-        <input type="text" name="songTitle" class="form-control" required />
+        </div>
     </div>
-    <div class="mb-3">
-        <label for="songKey" class="form-label">Key</label>
-        <input type="text" name="songKey" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label for="songBPM" class="form-label">BPM</label>
-        <input type="number" name="songBPM" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label for="songDuration" class="form-label">Duration (Minutes)</label>
-        <input type="number" name="songDuration" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label for="notes" class="form-label">Notes (Optional)</label>
-        <textarea name="notes" class="form-control" rows="2"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Song</button>
-</form>
-
-<a asp-controller="Setlist" asp-action="ViewAll" class="btn btn-secondary mt-3">Back to Setlists</a>
+</div>
+</div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1"
+     aria-labelledby="deleteModalLabel"
+     aria-hidden="true"
+     role="dialog"
+     aria-modal="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close the delete confirmation modal.">
+                </button>
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to remove this song?</p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <div class="modal-footer" role="group" aria-label="Delete confirmation actions">
                 <form id="deleteForm" method="post">
-                    <input type="hidden" id="songIdInput" name="id" />
-                    <input type="hidden" id="setlistIdInput" name="setlistId" />
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <input type="hidden"
+                           id="songIdInput"
+                           name="id" />
+                    <input type="hidden"
+                           id="setlistIdInput"
+                           name="setlistId" />
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                            aria-label="Cancel the delete action and close the modal.">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="btn btn-danger"
+                            aria-label="Delete song from setlist.">
+                        Delete
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 
 @section Scripts {
     <script src="~/js/delete-setlist-song.js"></script>

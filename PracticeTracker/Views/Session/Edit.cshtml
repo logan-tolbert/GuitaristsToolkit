@@ -2,37 +2,128 @@
 @model PracticeSession
 
 @{
-    ViewData["Title"] = "New Session";
+    ViewData["Title"] = "Edit Session";
 }
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <h2 class="text-center mb-4">Edit Session</h2>
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CreatedAt">Date:</label>
-                <input asp-for="CreatedAt" type="date" class="form-control" required max="@DateTime.UtcNow.ToString("dd-MM-yyyy")">
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DurationMinutes">Duration (min):</label>
-                <input asp-for="DurationMinutes" type="number" class="form-control" placeholder="Enter duration in minutes" required min="1">
-                <span asp-validation-for="DurationMinutes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FocusArea">Focus Area:</label>
-                <input asp-for="FocusArea" type="text" class="form-control" placeholder="e.g., Scales, Rhythm, Song X" required maxlength="100">
-                <span asp-validation-for="FocusArea" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes">Notes:</label>
-                <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Any notes about the practice session" maxlength="1000"></textarea>
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success" />
-                <a asp-controller="Home" asp-action="UserHub" class="btn btn-primary">Back To Hub</a>
-            </div>
-        </form>
+<div class="container">
+    <!--SR Skip Link-->
+    <a href="#form-heading" class="sr-only sr-only-focusable">Skip to Main Content</a>
+
+    <div class="row justify-content-center" style="min-height: 80vh;">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <h2 id="form-heading" class="text-center mb-4">Edit Session</h2>
+
+            <form asp-action="Edit" class="px-2 px-sm-3" aria-labelledby="form-heading" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group mb-3">
+                    <label asp-for="CreatedAt"
+                           class="form-label mb-1"
+                           id="practiceDate-label">
+                        Date:
+                    </label>
+                    <input asp-for="CreatedAt"
+                           type="date"
+                           class="form-control mb-1"
+                           value="@Model.CreatedAt.ToString("yyyy-MM-dd")"
+                           max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
+                           readonly
+                           aria-labelledby="practiceData-label" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="DurationMinutes"
+                           class="form-label mb-1"
+                           id="practiceTimeInMinutes-label">
+                        Duration &#40;minutes&#41;
+                    </label>
+                    <input asp-for="DurationMinutes"
+                           required
+                           type="number"
+                           min="1"
+                           max="100"
+                           class="form-control mb-1"
+                           placeholder="Enter duration in minutes"
+                           aria-required="true"
+                           aria-labelledby="practiceTimeInMinutes-label"
+                           aria-describedby="practiceTimeInMinutes-validation">
+                    <span asp-validation-for="DurationMinutes"
+                          class="text-danger"
+                          id="practiceTimeInMinutes-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="FocusArea"
+                           class="form-label mb-1"
+                           id="focusArea-label">
+                        Focus Area:
+                    </label>
+                    <input asp-for="FocusArea"
+                           type="text"
+                           class="form-control mb-1"
+                           placeholder="e.g., Scales, Rhythm, Song X"
+                           maxlength="100"
+                           aria-labelledby="focusArea-label"
+                           aria-describedby="focusArea-validation">
+                    <span asp-validation-for="FocusArea"
+                          class="text-danger"
+                          id="focusArea-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Notes"
+                           class="form-label mb-1"
+                           id="practiceNotes-label">
+                        Notes:
+                    </label>
+                    <textarea asp-for="Notes"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Any notes about the practice session"
+                              maxlength="1000"
+                              aria-labelledby="practiceNotes-label"
+                              aria-describedby="practiceNotes-validation">
+                </textarea>
+                    <span asp-validation-for="Notes"
+                          class="text-danger"
+                          id="practiceNotes-validation"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3 text-center">
+                    <div class="d-grid gap-2 d-md-inline-block"
+                         role="group" aria-label="Form actions">
+                        <input type="submit"
+                               value="Save"
+                               class="btn btn-primary btn-lg px-4 me-md-2"
+                               aria-label="Save changes to the session" />
+                        <a asp-controller="Session"
+                           asp-action="ViewAll"
+                           class="btn btn-secondary btn-lg px-4"
+                           aria-label="View all practice sessions">
+                            View Sessions
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            @if (ViewData["Error"] != null)
+            {
+                <div class="alert alert-danger mt-3"
+                     role="alert"
+                     id="form-error">
+                    @ViewData["Error"]
+                </div>
+            }
+        </div>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

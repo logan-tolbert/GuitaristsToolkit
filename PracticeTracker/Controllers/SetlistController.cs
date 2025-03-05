@@ -45,23 +45,43 @@ public class SetlistController : Controller
         return RedirectToAction("Edit", new { id = setListId });
     }
 
+    //[HttpPost]
+    //public IActionResult AddSong(int setlistId, string songTitle, string? songKey, int? songBPM, int? songDuration, string? notes)
+    //{
+    //    var song = new Song
+    //    {
+    //        Title = songTitle,
+    //        Key = songKey,
+    //        BPM = songBPM,
+    //        DurationMinutes = songDuration,
+    //        Notes = notes
+    //    };
+
+    //    int songId = _songRepo.Create(song);
+
+    //    var setlistSong = new SetlistSong
+    //    {
+    //        SetlistId = setlistId,
+    //        SongId = songId,
+    //        SongOrder = 0,
+    //        Notes = song.Notes
+    //    };
+
+    //    _repo.AddSongToSetlist(setlistSong);
+
+    //    return RedirectToAction("Edit", new { id = setlistId });
+    //}
+
     [HttpPost]
-    public IActionResult AddSong(int setlistId, string songTitle, string? songKey, int? songBPM, int? songDuration, string? notes)
+    public IActionResult AddSong(Setlist setlist)
     {
-        var song = new Song
-        {
-            Title = songTitle,
-            Key = songKey,
-            BPM = songBPM,
-            DurationMinutes = songDuration,
-            Notes = notes
-        };
+        var song = setlist.NewSong;
 
         int songId = _songRepo.Create(song);
 
         var setlistSong = new SetlistSong
         {
-            SetlistId = setlistId,
+            SetlistId = setlist.Id,
             SongId = songId,
             SongOrder = 0,
             Notes = song.Notes
@@ -69,8 +89,9 @@ public class SetlistController : Controller
 
         _repo.AddSongToSetlist(setlistSong);
 
-        return RedirectToAction("Edit", new { id = setlistId });
+        return RedirectToAction("Edit", new { id = setlist.Id });
     }
+
 
     [HttpGet]
     public IActionResult ViewAll()
@@ -95,8 +116,13 @@ public class SetlistController : Controller
     {
         ViewData["ShowLogin"] = false;
         var setlist = _repo.GetSetlistWithSongs(id);
+        if (setlist == null)
+        {
+            return NotFound();
+        }
         return View(setlist);
     }
+
 
     [HttpGet]
     public IActionResult Edit(int id)
