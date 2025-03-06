@@ -13,16 +13,14 @@
 
 
             <h2 id="form-heading" class="text-center mb-4">View / Edit Session</h2>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex flex-wrap justify-content-end align-items-center mb-3">
                 <a asp-controller="Session"
                    asp-action="ViewAll"
-                   class="btn btn-primary px-2"
-                   style="width: auto;"
+                   class="btn btn-primary btn-md flex-btn"
                    aria-label="View all practice sessions">
                     <i class="fas fa-list" aria-hidden="true"></i>
                     <span>View All</span>
                 </a>
-
             </div>
 
             <form asp-action="Edit" class="px-2 px-sm-3" aria-labelledby="form-heading" method="post">
