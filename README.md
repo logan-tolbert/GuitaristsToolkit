@@ -1,42 +1,112 @@
-# The Guitarist's Toolkit (Name Subject to Change)
+# 🎸 Guitarist's Toolkit
 
-## Introduction
-The Guitarist's Toolkit aims to help musicians track their practice routines and manage setlists for performances. This web application provides a structured way for guitarists to log practice sessions, track progress, and organize songs for gigs or jam sessions.
+Guitarist's Toolkit is a web application designed for musicians to track their practice sessions and manage setlists for performances. This tool helps guitarists develop structured practice habits and organize songs for gigs or jam sessions.
 
-## Objectives
-- Create an intuitive web application for tracking guitar practice and managing setlists.
-- Help musicians develop structured practice habits and improve performance preparation.
-- Provide tools for organizing songs and planning gigs effectively.
+## Table of Contents
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Installation & Setup](#-installation--setup)
+- [Authentication & Authorization](#-authentication--authorization)
+- [Project Structure](#-project-structure)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-## Project Description
-The application features practice logging and setlist creation. It targets musicians of all skill levels who want to enhance their practice efficiency and streamline their gig organization.
+## 🚀 Features
 
-## Technologies and Tools
-- **Languages:** C# for backend development, HTML/CSS/JavaScript/Razor Pages for frontend
-- **Frameworks:** ASP.NET Core MVC for web development
-- **Database:** SQL Server for data storage
-- **Tools:** Visual Studio IDE, Git for version control
+### 🎵 Practice Tracker
 
-## Features
-1. **Practice Tracker:**
-    - Log practice sessions with date, duration, and focus area (e.g., scales, chords, songs).
-    - View practice history.
+Log practice sessions with date, duration, and focus area (e.g., scales, chords, songs).
+View practice history and track progress over time.
 
-2. **Setlist Manager:**
-    - Create, edit, and manage setlists for gigs or jam sessions.
-    - Add song details (title, key, BPM, duration, notes).
-    - Drag-and-drop to reorder songs.
+### 📋 Setlist Manager
 
-## User Interface (UI) Design
-- Simple, intuitive, and mobile-responsive UI for optimal user experience.
+Create, edit, and manage setlists for gigs or jam sessions.
+Add song details (title, key, BPM, duration, and notes).
 
-## Testing Plan
-- Unit testing using xUnit.
-- Integration testing for seamless functionality.
+### 🔐 User Authentication
 
-## Expected Outcome
-- A fully functional Guitarist’s Toolkit accessible via web browsers.
-- Success criteria: Proper implementation of CRUD operations, functional UI, and database interactions.
+Custom authentication system using cookie-based authentication (no Identity).
+Secure user registration and login with BCrypt password hashing.
 
-## Conclusion
-The Guitarist’s Toolkit will provide musicians with a structured way to enhance their practice routines and prepare for performances efficiently. This project serves as a demonstration of ASP.NET Core fundamentals, database integration, and CRUD functionality
+## 🛠️ Tech Stack
+
+- C# Backend logic
+- JavaScript for client-side interactivity
+- ASP.NET Core MVC Web application with Razor Pages View rendering 
+- SQL Server Database
+- Dapper ORM for database access
+- Bootstrap + CSS UI styling
+- BCrypt Password hashing
+- xUnit: For unit testing.
+- Moq: For creating mock objects in unit tests.
+
+## 🏗️ Installation & Setup
+
+### 1️⃣ Prerequisites
+
+.NET 8.0 SDK
+SQL Server or localdb
+Visual Studio or VS Code
+
+### 2️⃣ Clone the Repository
+
+```sh
+git clone https://github.com/logan-tolbert/TheGuitaristsToolkit.git
+cd TheGuitaristsToolkit
+```
+
+### 3️⃣ Configure Database
+
+Modify appsettings.json to include your database connection string:
+
+```json
+"ConnectionStrings": {
+	"Default": "Server=YOUR_SERVER;Database=GuitaristsToolkitDB;Trusted_Connection=True;MultipleActiveResultSets=true"
+}
+```
+
+### 4️⃣ Apply Migrations
+
+```sh
+dotnet ef database update
+```
+
+### 5️⃣ Run the Application
+
+```sh
+dotnet run
+```
+
+Then navigate to http://localhost:5000 in your browser.
+
+### 6️⃣ Configure Integration Tests
+
+Create a separate `appsettings.Test.json` file in the `IntegrationTests` folder with its own connection string:
+```json
+"ConnectionStrings": {
+	"Testing": "Server=YOUR_SERVER;Database=GuitaristsToolkitTestDB;Trusted_Connection=True;MultipleActiveResultSets=true"
+}
+```
+
+## 🔑 Authentication & Authorization
+
+User authentication is handled via cookie-based authentication.
+Practice sessions and setlists are tied to the logged-in user.
+
+## 📂 Project Structure
+
+```plaintext
+/Controllers - Handles HTTP requests
+/Models - Defines data models
+/Repo - Database access layer
+/Views - Razor pages for UI
+/wwwroot - Static assets (CSS, JS)
+```
+
+## 👥 Contributing
+
+Feel free to submit pull requests and report issues!
+
+## 📜 License
+
+This project is licensed under the MIT License.
