@@ -15,7 +15,6 @@
         });
     }
 
-    
     window.addEventListener("beforeunload", function () {
         controller.abort();
     });

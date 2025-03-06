@@ -1,16 +1,17 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-    const deleteButtons = document.querySelectorAll(".delete-btn");
+    const deleteModal = document.getElementById("deleteModal");
 
-    deleteButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const setlistId = this.getAttribute("data-setlist-id");
-            const setlistName = this.getAttribute("data-setlist-name");
+    if (deleteModal) {
+        document.body.addEventListener("click", function (event) {
+            if (event.target.matches("[data-setlist-id]")) {
+                const setlistId = event.target.getAttribute("data-setlist-id");
+                const setlistName = event.target.getAttribute("data-setlist-name");
 
-            document.getElementById("setlistName").textContent = setlistName;
-            document.getElementById("deleteSetlistId").value = setlistId;
+                document.getElementById("setlistName").textContent = setlistName;
 
-            // Ensure form action is correct
-            document.getElementById("deleteForm").action = `/Setlist/Delete`;
+                const deleteUrl = `/Setlist/Delete/${setlistId}`;
+                document.getElementById("confirmDeleteBtn").setAttribute("href", deleteUrl);
+            }
         });
-    });
+    }
 });

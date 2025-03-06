@@ -135,7 +135,7 @@ public class SetlistController : Controller
         return View(setlist);
     }
 
-    [HttpPost]
+    [HttpGet]
     public IActionResult Delete(int id)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -148,14 +148,14 @@ public class SetlistController : Controller
         try
         {
             _repo.Delete(id);
-            
-            return RedirectToAction("ViewAll", "Setlist");
+            return RedirectToAction("ViewAll");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            return RedirectToAction("ViewAll", "Setlist");
+            return BadRequest("Failed to remove setlist.");
         }
     }
+
     [HttpGet]
     public IActionResult DeleteSong(int setlistId, int songId)
     {
@@ -171,7 +171,7 @@ public class SetlistController : Controller
             _repo.RemoveSongFromSetlist(setlistId, songId);
             return RedirectToAction("Edit", new { id = setlistId });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return BadRequest("Failed to remove song from setlist.");
         }
