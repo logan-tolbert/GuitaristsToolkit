@@ -24,6 +24,27 @@
                 <input type="hidden" name="setlistId" value="@ViewBag.SetlistId" />
 
                 <div class="form-group mb-3">
+                    <label for="SongOrder"
+                           class="form-label mb-1"
+                           id="songOrder-label">
+                        Song Order
+                    </label>
+                    <input type="number"
+                           id="SongOrder"
+                           name="SongOrder"
+                           value="@ViewBag.SongOrder"
+                           class="form-control mb-1"
+                           min="1"
+                           aria-labelledby="songOrder-label"
+                           aria-describedby="songOrder-validation"
+                           autocomplete="off" />
+                    <span id="songOrder-validation"
+                          class="text-danger"
+                          role="alert">
+                    </span>
+                </div>
+
+                <div class="form-group mb-3">
                     <label asp-for="Title"
                            class="form-label mb-1"
                            id="songTitle-label">

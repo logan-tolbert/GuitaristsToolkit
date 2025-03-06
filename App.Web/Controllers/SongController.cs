@@ -2,17 +2,21 @@
 
 using App.Models;
 using App.Repo;
+using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using System.Security.Claims;
 
 [AutoValidateAntiforgeryToken]
 public class SongController : Controller
 {
     private readonly ISongRepo _repo;
+    private readonly ISetlistRepo _setlistRepo;
 
-    public SongController(ISongRepo repo)
+    public SongController(ISongRepo repo, ISetlistRepo setlistRepo)
     {
         _repo = repo;
+        _setlistRepo = setlistRepo;
     }
 
     [HttpGet]
@@ -26,14 +30,15 @@ public class SongController : Controller
         {
             return NotFound();
         }
-
+        var setlistSong = _setlistRepo.GetSetlistSong(setlistId, id);
         ViewBag.SetlistId = setlistId;
+        ViewBag.SongOrder = setlistSong?.SongOrder ?? 1;
         return View(song);
     }
 
 
     [HttpPost]
-    public IActionResult Edit(Song song, int setlistId)
+    public IActionResult Edit(Song song, int setlistId, int songOrder)
     {
         if(!ModelState.IsValid)
         {
@@ -49,7 +54,7 @@ public class SongController : Controller
         }
 
         _repo.Update(song);
-
+        _setlistRepo.UpdateSetlistSongOrder(setlistId, song.Id, songOrder);
         return RedirectToAction("Edit", "Setlist", new { id = setlistId });
     }
 

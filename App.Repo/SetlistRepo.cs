@@ -135,6 +135,28 @@ namespace App.Repo
             });
         }
 
+        public SetlistSong? GetSetlistSong(int setlistId, int songId)
+        {
+            var sql = @"SELECT * FROM SetlistSongs WHERE SetlistId = @SetlistId AND SongId = @SongId;";
+            return _db.LoadData<SetlistSong, dynamic>(sql, new { SetlistId = setlistId, SongId = songId }).FirstOrDefault();
+        }
+
+
+        public void UpdateSetlistSongOrder(int setlistId, int songId, int order)
+        {
+            var sql = @"UPDATE SetlistSongs 
+                SET SongOrder = @SongOrder
+                WHERE SetlistId = @SetlistId AND SongId = @SongId;";
+
+            _db.SaveData<dynamic, dynamic>(sql, new
+            {
+                SetlistId = setlistId,
+                SongId = songId,
+                SongOrder = order
+            });
+        }
+
+
         public void Delete(int id)
         {
             var sql = @" DELETE FROM SetlistSongs WHERE SetlistId = @id;

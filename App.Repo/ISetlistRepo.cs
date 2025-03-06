@@ -14,5 +14,7 @@ namespace App.Repo
         IEnumerable<SetlistSummary> GetSetlistsForUser(Guid userId);
         void AddSongToSetlist(SetlistSong setlistSong);
         void RemoveSongFromSetlist(int setlistId, int songId);
+        SetlistSong? GetSetlistSong(int setlistId, int songId);
+        void UpdateSetlistSongOrder(int setlistId, int songId, int order);
     }
 }
