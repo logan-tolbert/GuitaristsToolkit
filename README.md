@@ -13,22 +13,22 @@ Guitarist's Toolkit is a web application designed for musicians to track their p
 
 ## 🚀 Features
 
-### 🎵 Practice Tracker
+ #### 🎵 Practice Tracker
 
 Log practice sessions with date, duration, and focus area (e.g., scales, chords, songs).
 View practice history and track progress over time.
 
-### 📋 Setlist Manager
+ #### 📋 Setlist Manager
 
 Create, edit, and manage setlists for gigs or jam sessions.
 Add song details (title, key, BPM, duration, and notes).
 
-### 🔐 User Authentication
+#### 🔐 User Authentication
 
 Custom authentication system using cookie-based authentication (no Identity).
 Secure user registration and login with BCrypt password hashing.
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
 - C# Backend logic
 - JavaScript for client-side interactivity
@@ -40,13 +40,13 @@ Secure user registration and login with BCrypt password hashing.
 - xUnit: For unit testing.
 - Moq: For creating mock objects in unit tests.
 
-## 🏗️ Installation & Setup
+## 🏗 Installation & Setup
 
 **Prerequisites**
 
-.NET 8.0 SDK
-SQL Server or localdb
-Visual Studio or VS Code
+- .NET 8.0 SDK
+- SQL Server or localdb
+- Visual Studio or VS Code
 
 ### 📌 Step 1: Clone the Repository
 
