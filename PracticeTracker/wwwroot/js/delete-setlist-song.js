@@ -1,17 +1,18 @@
-﻿
-    document.addEventListener("DOMContentLoaded", function () {
-    const deleteButtons = document.querySelectorAll(".delete-btn");
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const deleteModal = document.getElementById("deleteModal");
 
-    deleteButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            const songId = this.getAttribute("data-song-id");
-            const setlistId = this.getAttribute("data-setlist-id");
+    if (deleteModal) {
+        document.body.addEventListener("click", function (event) {
+            if (event.target.matches("[data-song-id]")) {
+                
+                const songId = event.target.getAttribute("data-song-id");
+                const setlistId = event.target.getAttribute("data-setlist-id");
 
-            document.getElementById("songIdInput").value = songId;
-            document.getElementById("setlistIdInput").value = setlistId;
 
-            // Set the form action dynamically
-            document.getElementById("deleteForm").action = `/Song/Delete`;
+                const deleteUrl = `/Setlist/DeleteSong?setlistId=${setlistId}&songId=${songId}`;
+                document.getElementById("confirmDeleteBtn").setAttribute("href", deleteUrl);
+
+            }
         });
-    });
+    }
 });

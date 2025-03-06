@@ -13,5 +13,6 @@ namespace App.Repo
         void Delete(int id);
         IEnumerable<SetlistSummary> GetSetlistsForUser(Guid userId);
         void AddSongToSetlist(SetlistSong setlistSong);
+        void RemoveSongFromSetlist(int setlistId, int songId);
     }
 }

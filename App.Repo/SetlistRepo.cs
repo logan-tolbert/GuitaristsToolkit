@@ -143,5 +143,11 @@ namespace App.Repo
             _db.SaveData<dynamic, dynamic>(sql, new { id = id });
         }
 
+        public void RemoveSongFromSetlist(int setlistId, int songId)
+        {
+            var sql = @"DELETE FROM SetlistSongs WHERE SetlistId = @SetlistId AND SongId = @SongId;";
+            _db.SaveData<dynamic, dynamic>(sql, new { SetlistId = setlistId, SongId = songId });
+        }
+
     }
 }

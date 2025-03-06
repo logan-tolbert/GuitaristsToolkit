@@ -156,6 +156,26 @@ public class SetlistController : Controller
             return RedirectToAction("ViewAll", "Setlist");
         }
     }
+    [HttpGet]
+    public IActionResult DeleteSong(int setlistId, int songId)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim))
+        {
+            return Unauthorized();
+        }
+
+        try
+        {
+            _repo.RemoveSongFromSetlist(setlistId, songId);
+            return RedirectToAction("Edit", new { id = setlistId });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest("Failed to remove song from setlist.");
+        }
+    }
 
 
 }
