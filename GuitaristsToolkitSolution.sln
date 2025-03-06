@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35731.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitaristsToolkit", "PracticeTracker\GuitaristsToolkit.csproj", "{CA6A4B12-6796-49F2-B8B3-BDCE58D73776}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Web", "App.Web\App.Web.csproj", "{CA6A4B12-6796-49F2-B8B3-BDCE58D73776}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "App.DbDeploy", "App.DbDeploy\App.DbDeploy.sqlproj", "{CB225BE5-B6FF-44D7-8F0A-9BA9E822BE00}"
 EndProject
