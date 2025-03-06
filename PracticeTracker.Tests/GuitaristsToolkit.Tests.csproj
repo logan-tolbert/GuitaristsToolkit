@@ -30,7 +30,7 @@
     <ProjectReference Include="..\App.Repo\App.Repo.csproj" />
     <ProjectReference Include="..\App.Security\App.Security.csproj" />
     <ProjectReference Include="..\App.Services\App.Services.csproj" />
-    <ProjectReference Include="..\AppData\App.Data.csproj" />
+    <ProjectReference Include="..\App.Data\App.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
