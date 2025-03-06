@@ -16,7 +16,7 @@
                 <div class="form-group mb-3">
                     <label asp-for="CreatedAt"
                            class="form-label mb-1"
-                           id="dateCreated-label">
+                           id="practiceDate-label">
                         Date:
                     </label>
                     <input asp-for="CreatedAt"
@@ -68,6 +68,7 @@
                            required
                            type="text"
                            class="form-control mb-1"
+                           maxlength="100"
                            placeholder="e.g., Scales, Rhythm, Song X"
                            aria-required="true"
                            aria-labelledby="focusArea-label"
@@ -88,6 +89,7 @@
                     <textarea asp-for="Notes"
                               class="form-control mb-1"
                               rows="3"
+                              maxlength="1000"
                               placeholder="Any notes about the practice session"
                               aria-labelledby="practiceNotes-label"
                               aria-describedby="practiceNotes-validation">
@@ -107,7 +109,7 @@
                                aria-label="Submit new session" />
                         <a asp-controller="Home"
                            asp-action="UserHub"
-                           class="btn btn-danger btn-lg px-4"
+                           class="btn btn-secondary btn-lg px-4"
                            aria-label="Cancel and return to User Hub">
                             Cancel
                         </a>

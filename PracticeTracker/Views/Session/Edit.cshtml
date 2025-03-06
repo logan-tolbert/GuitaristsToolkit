@@ -10,7 +10,20 @@
 
     <div class="row justify-content-center" style="min-height: 80vh;">
         <div class="col-lg-8 col-md-10 col-sm-12">
-            <h2 id="form-heading" class="text-center mb-4">Edit Session</h2>
+
+
+            <h2 id="form-heading" class="text-center mb-4">View / Edit Session</h2>
+            <div class="d-flex justify-content-end">
+                <a asp-controller="Session"
+                   asp-action="ViewAll"
+                   class="btn btn-primary px-2"
+                   style="width: auto;"
+                   aria-label="View all practice sessions">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                    <span>View All</span>
+                </a>
+
+            </div>
 
             <form asp-action="Edit" class="px-2 px-sm-3" aria-labelledby="form-heading" method="post">
                 @Html.AntiForgeryToken()
@@ -27,7 +40,7 @@
                            value="@Model.CreatedAt.ToString("yyyy-MM-dd")"
                            max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
                            readonly
-                           aria-labelledby="practiceData-label" />
+                           aria-labelledby="practiceDate-label" />
                 </div>
 
                 <div class="form-group mb-3">
@@ -40,9 +53,8 @@
                            required
                            type="number"
                            min="1"
-                           max="100"
+                           max="600"
                            class="form-control mb-1"
-                           placeholder="Enter duration in minutes"
                            aria-required="true"
                            aria-labelledby="practiceTimeInMinutes-label"
                            aria-describedby="practiceTimeInMinutes-validation">
@@ -80,7 +92,7 @@
                         Notes:
                     </label>
                     <textarea asp-for="Notes"
-                              class="form-control"
+                              class="form-control mb-1"
                               rows="3"
                               placeholder="Any notes about the practice session"
                               maxlength="1000"
@@ -104,8 +116,8 @@
                         <a asp-controller="Session"
                            asp-action="ViewAll"
                            class="btn btn-secondary btn-lg px-4"
-                           aria-label="View all practice sessions">
-                            View Sessions
+                           aria-label="Back to user hub">
+                            Back to Hub
                         </a>
                     </div>
                 </div>
