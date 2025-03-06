@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitaristsToolkit", "Practi
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GuitaristsToolkitTestDB", "PracticeTrackerDB\GuitaristsToolkitTestDB.sqlproj", "{CB225BE5-B6FF-44D7-8F0A-9BA9E822BE00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Data", "AppData\App.Data.csproj", "{FEAF0165-9AF1-4665-9B78-C76CD21118FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Data", "App.Data\App.Data.csproj", "{FEAF0165-9AF1-4665-9B78-C76CD21118FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitaristsToolkit.Tests", "PracticeTracker.Tests\GuitaristsToolkit.Tests.csproj", "{E75C4DBB-C2ED-46F0-98BD-253554A46C79}"
 EndProject
