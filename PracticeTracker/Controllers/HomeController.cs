@@ -69,7 +69,7 @@ public class HomeController : Controller
             var model = new UserHubViewModel
             {
                 UserId = userId,
-                Username = User.Identity.Name,
+                Username = User.Identity.Name!,
                 PracticeSessions = _repo.GetAll()
                     .Where(s => s.UserId == userId)
                     .OrderByDescending(s => s.CreatedAt)
