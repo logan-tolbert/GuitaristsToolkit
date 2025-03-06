@@ -42,46 +42,90 @@ Secure user registration and login with BCrypt password hashing.
 
 ## 🏗️ Installation & Setup
 
-### 1️⃣ Prerequisites
+**Prerequisites**
 
 .NET 8.0 SDK
 SQL Server or localdb
 Visual Studio or VS Code
 
-### 2️⃣ Clone the Repository
+### 📌 Step 1: Clone the Repository
 
 ```sh
 git clone https://github.com/logan-tolbert/TheGuitaristsToolkit.git
 cd TheGuitaristsToolkit
 ```
+### 📌 Step 2: Open the Project in Visual Studio
+- Open Visual Studio.
+- Click on File > Open > Project/Solution.
+- Select the .sln file in the project folder.
 
-### 3️⃣ Configure Database
+### 📌 Step 3: Restore Dependencies
+Before running the project, ensure all required dependencies are installed:
 
-Modify appsettings.json to include your database connection string:
+- Open the Package Manager Console in Visual Studio (Tools > NuGet Package Manager > Package Manager Console).
+- Run the following command:
+```powershell
+dotnet restore
+```
+### 📌 Step 4: Build the Project
+To build the project, either:
 
+- Click Build > Build Solution from the menu, or
+Run the following command in the Terminal or Package Manager Console:
+```powershell
+dotnet build
+```
+### 📌 Step 5: Database Setup 
+
+To set up the database using **App.DbDeploy**, follow these steps:
+
+#### 🚀 Step 1: Open the Publish Wizard
+1. Open **Visual Studio** and navigate to the **Solution Explorer**.
+2. Locate the project containing **App.DbDeploy**.
+3. **Right-click** on the project name.
+4. Select **Publish** from the context menu.
+
+#### ⚙️ Step 2: Configure the Database Connection
+1. In the **Publish** window, enter the **Database Name**.
+2. Set up the **Connection String** by selecting or creating a new database.
+3. *(Optional)* Save a **Publish Profile** for future use.
+4. Click **Publish** to deploy the database.
+
+#### 📜 Step 3: Execute the Deployment Script
+Once published, the **post-deployment script** will automatically:
+- **Populate the database with initial data**.
+- **Create an admin user** with the default password:  `testPassword`
+
+#### 🔑 Step 4: Customizing the Admin Password
+If you want to **change the default admin password**, follow these steps:
+1. Locate the **post-deployment script** in `App.DpDeploy/scripts` before publishing.
+2. Find the section where the **admin user** is created.
+3. Replace the default password hash with a new **bcrypt hash**.
+4. Save the changes before publishing.
+
+#### 🔗 Step 5: Retrieve and Configure the Connection String
+1. After publishing, retrieve the **Connection String** from the database configuration.
+2. Create as **`appsettings.json`** file in `App.Web`.
+3. Update the **ConnectionStrings** section with your new database connection:
 ```json
 "ConnectionStrings": {
-	"Default": "Server=YOUR_SERVER;Database=GuitaristsToolkitDB;Trusted_Connection=True;MultipleActiveResultSets=true"
+	"Defaulte": "Server=YOUR_SERVER;Database=GuitaristsToolkitTestDB;Trusted_Connection=True;MultipleActiveResultSets=true"
 }
 ```
+### ⚡Step 5: Run the Project
+Once the build is successful, you can run the application:
 
-### 4️⃣ Apply Migrations
-
-```sh
-dotnet ef database update
-```
-
-### 5️⃣ Run the Application
-
-```sh
+- Click Run (▶️) / Start Debugging (F5) in Visual Studio,
+OR
+- Use the command:
+```powershell
 dotnet run
 ```
+This will start the application, and you should see output indicating that your ASP.NET Core server is running.
 
-Then navigate to http://localhost:5000 in your browser.
+## Configure Integration Tests
 
-### 6️⃣ Configure Integration Tests
-
-Create a separate `appsettings.Test.json` file in the `IntegrationTests` folder with its own connection string:
+Create a separate `appsettings.Test.json` file in the `App.Tests` project with its own connection string:
 ```json
 "ConnectionStrings": {
 	"Testing": "Server=YOUR_SERVER;Database=GuitaristsToolkitTestDB;Trusted_Connection=True;MultipleActiveResultSets=true"
