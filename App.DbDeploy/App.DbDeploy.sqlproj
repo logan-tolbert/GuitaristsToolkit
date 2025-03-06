@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>GuitaristsToolkitTestDB</Name>
+    <Name>App.DbDeploy</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{cb225be5-b6ff-44d7-8f0a-9ba9e822be00}</ProjectGuid>
