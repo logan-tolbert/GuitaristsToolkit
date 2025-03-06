@@ -8,24 +8,30 @@
     <!-- SR Skip Link -->
     <a href="#setlistSongs-heading" class="sr-only sr-only-focusable">Skip to main content</a>
 
-    <h2>Setlist: @Model.Name</h2>
-    <p><strong>Created At:</strong> @Model.CreatedAt.ToString("MM/dd/yyyy")</p>
+    <div class="text-center">
+        <h2>Setlist: @Model.Name</h2>
+        <p><strong>Created At:</strong> @Model.CreatedAt.ToString("MM/dd/yyyy")</p>
+    </div>
+
 
     <h3 id="setlistSongs-heading">Songs</h3>
 
-    <div class="d-flex flex-wrap justify-content-end  mb-3" role="group">
+    <div class="d-flex flex-wrap justify-content-end align-content-between mb-3 gap-2" role="group">
         <a asp-controller="Setlist"
-           asp-action="AddSong"
+           asp-action="Edit"
            asp-route-id="@Model.Id"
-           class="btn btn-primary btn-md flex-btn me-2"
+           class="btn btn-primary px-3"
+           style="min-width: 80px;"
            aria-label="Add a song to this setlist">
             Add Song
         </a>
         <a asp-controller="Setlist"
            asp-action="ViewAll"
-           class="btn btn-secondary btn-md flex-btn"
+           class="btn btn-primary px-3"
+           style="min-width: 80px;"
            aria-label="View all setlists">
-            View Setlists
+            <i class="fas fa-list" aria-hidden="true"></i>
+            <span>View All</span>
         </a>
     </div>
 
@@ -63,21 +69,26 @@
                             }
                         </td>
                         <td>
-                            <a asp-controller="Song"
-                               asp-action="Edit"
-                               asp-route-id="@setlistSong.Song.Id"
-                               asp-route-setlistId="@Model.Id"
-                               class="btn btn-primary btn-md flex-btn"
-                               aria-label="View song information for @setlistSong.Song.Title">
-                                View
-                            </a>
-                            <button class="btn btn-danger btn-md delete-btn flex-btn"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal"
-                                    data-song-id="@setlistSong.Song.Id"
-                                    data-setlist-id="@Model.Id">
-                                Delete
-                            </button>
+                            <div class="d-flex gap-2 justify-content-center flex-wrap"
+                                 role="group" aria-label="Song actions">
+                                <a asp-controller="Song"
+                                   asp-action="Edit"
+                                   asp-route-id="@setlistSong.Song.Id"
+                                   asp-route-setlistId="@Model.Id"
+                                   class="btn btn-primary px-3"
+                                   style="min-width: 90px;"
+                                   aria-label="View song information for @setlistSong.Song.Title">
+                                    View
+                                </a>
+                                <button class="btn btn-danger px-3"
+                                        style="min-width: 90px;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal"
+                                        data-song-id="@setlistSong.Song.Id"
+                                        data-setlist-id="@Model.Id">
+                                    Delete
+                                </button>
+                            </div>
                         </td>
 
                     </tr>

@@ -50,22 +50,23 @@
                                     <td>@setlist.CreatedAt.ToString("MMM dd, yyyy")</td>
                                     <td>@setlist.SongCount</td>
                                     <td>
-                                        <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                        <div class="d-flex gap-2 justify-content-center flex-wrap"
+                                             role="group" aria-label="Setlist actions">
                                             <a asp-controller="Setlist"
                                                asp-action="Edit"
                                                asp-route-id="@setlist.Id"
-                                               class="btn btn-primary btn-md flex-btn"
-                                               aria-label="View/Edit setlist: @setlist.Title"
-                                               >
+                                               class="btn btn-primary px-3"
+                                               style="min-width: 100px;"
+                                               aria-label="View/Edit setlist: @setlist.Title">
                                                 View / Edit
                                             </a>
-                                            <button class="btn btn-danger btn-md flex-btn"
+                                            <button class="btn btn-danger px-3"
+                                                    style="min-width: 100px;"
                                                     data-setlist-id="@setlist.Id"
                                                     data-setlist-name="@setlist.Title"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#deleteModal"
-                                                    aria-label="Delete setlist: @setlist.Title"
-                                                   >
+                                                    aria-label="Delete setlist: @setlist.Title">
                                                 Delete
                                             </button>
                                         </div>
@@ -82,10 +83,10 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" 
-     id="deleteModal" 
-     tabindex="-1" 
-     aria-labelledby="deleteModalLabel" 
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1"
+     aria-labelledby="deleteModalLabel"
      aria-hidden="true"
      role="dialog"
      aria-modal="true">
