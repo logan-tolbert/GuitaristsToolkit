@@ -141,12 +141,19 @@
                         </span>
                     </div>
 
-                    <div class="text-center">
+                    <div class="mt-4 d-flex justify-content-center gap-2"
+                         role="group" aria-label="User registration actions">
                         <button type="submit"
-                                class="btn btn-primary btn-lg mt-3 px-4"
+                                class="btn btn-primary btn-lg flex-btn"
                                 aria-label="Register your account">
                             Register
                         </button>
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="btn btn-secondary btn-lg flex-btn"
+                           aria-label="Cancel registration and return to homepage">
+                            Cancel
+                        </a>
                     </div>
                 </form>
 

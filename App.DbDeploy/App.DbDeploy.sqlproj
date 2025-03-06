@@ -58,7 +58,6 @@
     <Folder Include="Properties" />
     <Folder Include="dbo" />
     <Folder Include="dbo\tables" />
-    <Folder Include="dbo\PublishProfiles" />
     <Folder Include="scripts" />
   </ItemGroup>
   <ItemGroup>
@@ -70,8 +69,5 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="scripts\Script.PostDeployment1.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dbo\PublishProfiles\DEV-GuitaristsToolkitDB.publish.publish.xml" />
   </ItemGroup>
 </Project>
