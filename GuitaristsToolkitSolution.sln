@@ -9,7 +9,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "App.DbDeploy", "App.DbDeplo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Data", "App.Data\App.Data.csproj", "{FEAF0165-9AF1-4665-9B78-C76CD21118FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitaristsToolkit.Tests", "PracticeTracker.Tests\GuitaristsToolkit.Tests.csproj", "{E75C4DBB-C2ED-46F0-98BD-253554A46C79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Tests", "App.Tests\App.Tests.csproj", "{E75C4DBB-C2ED-46F0-98BD-253554A46C79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Models", "App.Models\App.Models.csproj", "{A4424DC0-432C-4F9C-985B-BFB9C53D9EBE}"
 EndProject
