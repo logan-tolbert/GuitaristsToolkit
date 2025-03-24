@@ -46,7 +46,7 @@ Secure user registration and login with BCrypt password hashing.
 
 - .NET 8.0 SDK
 - SQL Server or localdb
-- Visual Studio or VS Code
+- Visual Studio
 
 ### 📌 Step 1: Clone the Repository
 
@@ -140,11 +140,20 @@ Practice sessions and setlists are tied to the logged-in user.
 ## 📂 Project Structure
 
 ```plaintext
-/Controllers - Handles HTTP requests
-/Models - Defines data models
-/Repo - Database access layer
-/Views - Razor pages for UI
-/wwwroot - Static assets (CSS, JS)
+/App.DbDeploy - SQL Server Database Project (Database schema and deployments)
+/App.Data - Dapper SQL Server database interaction layer
+/App.Models - Data model definitions
+/App.Repo - Database access layer
+/App.Security - BCrypt password hashing implementation
+/App.Services - User registration, authentication, & authorization services
+/App.Tests - Unit & Integration Tests
+/App.Web - Razor pages for UI
+  |-/Controllers - Handles HTTP requests and responses
+  |-/Models - View models for Razor Pages
+  |-/Properties - Application configuration
+  |-/Views - Razor Page views
+  |-/wwwroot - Static assets (CSS, JS)
+  |-Program.cs - Application entry point
 ```
 
 ## 👥 Contributing
