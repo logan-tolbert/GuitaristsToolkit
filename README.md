@@ -2,6 +2,8 @@
 
 Guitarist's Toolkit is a web application designed for musicians to track their practice sessions and manage setlists for performances. This tool helps guitarists develop structured practice habits and organize songs for gigs or jam sessions.
 
+![Guitarist's Toolkit Preview](https://github.com/logan-tolbert/dev-space/blob/main/demos/gtk-preview.gif)
+
 ## Table of Contents
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
